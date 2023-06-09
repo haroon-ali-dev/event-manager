@@ -62,7 +62,7 @@
 		"prop-types": "^15.8.1",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
-		"react-router-dom": "^6.11.0",
+		"react-router-dom": "^6.12.1",
 		"style-loader": "^3.3.2",
 		"wait-on": "^7.0.1",
 		"webpack": "^5.81.0",
@@ -82,7 +82,8 @@
 		"pg": "^8.10.0",
 		"react-bootstrap": "^2.7.4",
 		"react-hook-form": "^7.44.3",
-		"winston": "^3.8.2"
+		"winston": "^3.8.2",
+		"yup": "^1.2.0"
 	},
 	"engines": {
 		"node": "^16 || ^18 || ^20",
