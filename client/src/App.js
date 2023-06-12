@@ -4,6 +4,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import LoginButton from "./components/LoginButton";
 import LogoutButton from "./components/LogoutButton";
 import User from "./components/User";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 
 const App = () => {
@@ -13,7 +14,6 @@ const App = () => {
     <div className="App">
       {!isAuthenticated ? (
         <div>
-          <p style={{ fontSize: "1.5rem" }}>Please Login.</p>
           <LoginButton />
         </div>
       ) : (
