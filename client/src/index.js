@@ -1,10 +1,14 @@
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-
+import Auth0ProviderWithHistory from "./components/Auth0ProviderWithHistory";
 import App from "./App";
 
-createRoot(document.getElementById("root")).render(
+const root = createRoot(document.getElementById("root"));
+
+root.render(
 	<BrowserRouter>
-		<App />
+		<Auth0ProviderWithHistory>
+			<App />
+		</Auth0ProviderWithHistory>
 	</BrowserRouter>
 );
