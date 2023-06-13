@@ -3,8 +3,9 @@ import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import LoginButton from "./components/LoginButton";
 import LogoutButton from "./components/LogoutButton";
-import User from "./components/User";
+import Admin from "./components/Admin";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
 
 
 const App = () => {
@@ -18,8 +19,7 @@ const App = () => {
         </div>
       ) : (
         <div>
-          <LogoutButton />
-          <User />
+          <Admin />
         </div>
       )}
     </div>

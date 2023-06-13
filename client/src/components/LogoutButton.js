@@ -12,7 +12,7 @@ const LogoutButton = () => {
     <Container>
       <Row>
         <Col>
-          <Button onClick={() => logout({ returnTo: window.location.origin })} variant="primary">
+          <Button onClick={() => logout({ returnTo: window.location.origin })} variant="danger">
           Log Out
           </Button>
         </Col>
