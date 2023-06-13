@@ -2,24 +2,25 @@ create table members (
 	id SERIAL PRIMARY KEY,
 	first_name VARCHAR(150) NOT NULL,
 	last_name VARCHAR(150) NOT NULL,
-	date_of_birth DATE NOT NULL,
-	member_since DATE NOT NULL,
-	address VARCHAR(300) NOT NULL,
 	gender VARCHAR(50) NOT NULL,
-	mobile VARCHAR(11) NOT NULL,
+	date_of_birth DATE NOT NULL,
+	address VARCHAR(300) NOT NULL,
+	post_code VARCHAR(20) NOT NULL,
 	email VARCHAR(256) NOT NULL,
+	mobile VARCHAR(11) NOT NULL,
 	additional_info TEXT,
+	member_since DATE NOT NULL,
 	created_by VARCHAR(100) NOT NULL
 );
 
-insert into members (id, first_name, last_name, date_of_birth, member_since, address, gender, mobile, email, additional_info, created_by) values (1, 'Jelene', 'Emsden', '2023-05-08', '2022-12-17', '5th Floor', 'Female', 99999999999, 'jemsden0@altervista.org', 'Phasellus sit amet erat. Nulla tempus. Vivamus in felis eu sapien cursus vestibulum.
+insert into members (id, first_name, last_name, gender, date_of_birth, address, post_code, email, mobile, additional_info, member_since, created_by) values (1, 'Terence', 'Berens', 'Male', '2022-11-04', 'PO Box 59247', 'Suite 87', 'tberens0@feedburner.com', 99999999999, 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin risus. Praesent lectus.', '2022-07-16', '01H2T9G2QH8QH11G2ERM5BS8D5');
+insert into members (id, first_name, last_name, gender, date_of_birth, address, post_code, email, mobile, additional_info, member_since, created_by) values (2, 'Marlowe', 'Greensted', 'Male', '2022-12-12', 'Apt 397', 'Suite 81', 'mgreensted1@networkadvertising.org', 99999999999, 'Sed ante. Vivamus tortor. Duis mattis egestas metus.
 
-Proin eu mi. Nulla ac enim. In tempor, turpis nec euismod scelerisque, quam turpis adipiscing lorem, vitae mattis nibh ligula nec sem.', '01H2QQFTG2N6NY09S795Q0QZZ9');
-insert into members (id, first_name, last_name, date_of_birth, member_since, address, gender, mobile, email, additional_info, created_by) values (2, 'Billie', 'Noury', '2022-09-30', '2022-07-22', 'Room 1063', 'Female', 99999999999, 'bnoury1@bizjournals.com', 'Sed ante. Vivamus tortor. Duis mattis egestas metus.', '01H2QQFTG3N4XTKBN9EXVACSED');
-insert into members (id, first_name, last_name, date_of_birth, member_since, address, gender, mobile, email, additional_info, created_by) values (3, 'Gaylor', 'Gahagan', '2022-06-24', '2022-09-29', 'Apt 18', 'Male', 99999999999, 'ggahagan2@paginegialle.it', 'In sagittis dui vel nisl. Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus.
+Aenean fermentum. Donec ut mauris eget massa tempor convallis. Nulla neque libero, convallis eget, eleifend luctus, ultricies eu, nibh.', '2022-10-08', '01H2T9G2QJ6NCVHD9XGB1EXSJY');
+insert into members (id, first_name, last_name, gender, date_of_birth, address, post_code, email, mobile, additional_info, member_since, created_by) values (3, 'Shawn', 'Burchnall', 'Male', '2022-12-26', 'Room 937', 'Suite 64', 'sburchnall2@creativecommons.org', 99999999999, 'Aliquam quis turpis eget elit sodales scelerisque. Mauris sit amet eros. Suspendisse accumsan tortor quis turpis.
 
-Suspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst.', '01H2QQFTG5QED9E4ERPR9TJS1R');
-insert into members (id, first_name, last_name, date_of_birth, member_since, address, gender, mobile, email, additional_info, created_by) values (4, 'Sarajane', 'Tenney', '2022-10-31', '2022-06-13', '16th Floor', 'Female', 99999999999, 'stenney3@yahoo.co.jp', 'Duis aliquam convallis nunc. Proin at turpis a pede posuere nonummy. Integer non velit.
+Sed ante. Vivamus tortor. Duis mattis egestas metus.', '2022-07-28', '01H2T9G2QMYZV6RSAAADKJG5YH');
+insert into members (id, first_name, last_name, gender, date_of_birth, address, post_code, email, mobile, additional_info, member_since, created_by) values (4, 'Marven', 'Hitchens', 'Male', '2022-07-04', 'Suite 8', 'PO Box 66745', 'mhitchens3@4shared.com', 99999999999, 'Proin interdum mauris non ligula pellentesque ultrices. Phasellus id sapien in sapien iaculis congue. Vivamus metus arcu, adipiscing molestie, hendrerit at, vulputate vitae, nisl.
 
-Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque.', '01H2QQFTG6N6ESZQ6RWWFXKGJ0');
-insert into members (id, first_name, last_name, date_of_birth, member_since, address, gender, mobile, email, additional_info, created_by) values (5, 'Husein', 'Asman', '2022-09-27', '2023-04-06', 'Suite 12', 'Male', 99999999999, 'hasman4@arstechnica.com', 'Phasellus sit amet erat. Nulla tempus. Vivamus in felis eu sapien cursus vestibulum.', '01H2QQFTG7WVQKKFM6F88G6WKY');
+Aenean lectus. Pellentesque eget nunc. Donec quis orci eget orci vehicula condimentum.', '2023-01-17', '01H2T9G2QPZN6Q2ME7F6MEGJXF');
+insert into members (id, first_name, last_name, gender, date_of_birth, address, post_code, email, mobile, additional_info, member_since, created_by) values (5, 'Federico', 'Thickett', 'Male', '2022-11-24', 'PO Box 92204', 'Apt 997', 'fthickett4@hugedomains.com', 99999999999, 'Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus vestibulum sagittis sapien. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.', '2022-12-19', '01H2T9G2QQWZ3F5ASJS9G952JD');
