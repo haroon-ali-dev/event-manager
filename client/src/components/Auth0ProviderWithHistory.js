@@ -17,7 +17,7 @@ const Auth0ProviderWithHistory = ({ children }) => {
       domain={domain}
       clientId={clientId}
       authorizationParams={{
-        redirect_uri: window.location.origin,
+        redirect_uri: window.location.origin + "/dashboard",
       }}
       onRedirectCallback={onRedirectCallback}
     >
