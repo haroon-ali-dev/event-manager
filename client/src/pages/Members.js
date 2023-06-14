@@ -1,11 +1,17 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
+import Table from "react-bootstrap/Table";
+import Button from "react-bootstrap/Button";
 
 const Members = () => {
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 
   const [members, setMembers] = useState([]);
+
+  const create = () => {
+
+  };
 
   useEffect(() => {
     async function getMembers() {
@@ -23,7 +29,6 @@ const Members = () => {
         });
 
         const members = await res.json();
-        console.log(members);
         setMembers(members);
 
       } catch (e) {
@@ -35,7 +40,40 @@ const Members = () => {
   }, []);
 
   return (
-    <div>Members</div>
+    <>
+      <h1>Members</h1>
+
+      <div className="text-center">
+        <Button variant="success" onClick={create} className="mb-4">
+          Add New
+        </Button>
+      </div>
+
+      <Table striped bordered hover style={{ tableLayout: "fixed", wordWrap: "break-word" }}>
+        <thead>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Gender</th>
+            <th>Email</th>
+            <th>Mobile</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {members.map((member, i) => (
+            <tr key={i}>
+              <td>{member["first_name"]}</td>
+              <td>{member["last_name"]}</td>
+              <td>{member["gender"]}</td>
+              <td>{member["email"]}</td>
+              <td>{member["mobile"]}</td>
+              <td></td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    </>
   );
 };
 
