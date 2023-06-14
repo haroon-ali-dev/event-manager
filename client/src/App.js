@@ -4,7 +4,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Navbar from "./components/navigation/NavBar";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
-import Members from "./pages/Members";
+import Members from "./pages/members/Members";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";

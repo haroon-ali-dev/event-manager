@@ -5,16 +5,21 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
+import styles from "./Members.module.css";
+
 const Members = () => {
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 
   const [members, setMembers] = useState([]);
-  const [showFormModal, setShowFormModal] = useState(false);
   const [formAction, setFormAction] = useState("");
-
+  const [showFormModal, setShowFormModal] = useState(false);
+  const [reqInProcess, setReqInProcess] = useState(false);
+  const [errorAlert, setErrorAlert] = useState(false);
 
   const create = () => {
     setFormAction("create");
+    setReqInProcess(false);
+    setErrorAlert(false);
     setShowFormModal(true);
   };
 
@@ -57,7 +62,7 @@ const Members = () => {
         </Modal.Footer>
       </Modal>
 
-      <h1>Members</h1>
+      <h1 className={styles.heading}>Members</h1>
 
       <div className="text-center">
         <Button variant="success" onClick={create} className="mb-4">
