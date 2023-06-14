@@ -22,11 +22,15 @@ function parseDateString(value, originalValue) {
 }
 
 const schema = yup.object({
-  first_name: yup.string().min(3).max(150).required().label("First Name"),
-  last_name: yup.string().min(3).max(150).required().label("Last Name"),
+  firstName: yup.string().min(3).max(150).required().label("First Name"),
+  lastName: yup.string().min(3).max(150).required().label("Last Name"),
   gender: yup.string().required("Please select a gender.").label("Gender"),
   dateOfBirth: yup.date().transform(parseDateString).max(today).label("Date of Birth"),
   address: yup.string().min(3).max(300).required().label("Address"),
+  postCode: yup.string().min(3).max(20).required().label("Post Code"),
+  email: yup.string().max(256).email().required().label("Email"),
+  mobile: yup.string().min(3).max(11).required().label("Mobile"),
+  additionalInfo: yup.string().max(1000).label("Additional Info"),
 }).required();
 
 export default function CreateMember({
@@ -55,7 +59,7 @@ export default function CreateMember({
 
   return (
     <Form className="w-75 mx-auto mt-3" onSubmit={handleSubmit(onSubmit)}>
-      <Form.Group className="mb-3" controlId="first_name">
+      <Form.Group className="mb-3" controlId="firstName">
         <Row>
           <Col>
             <Form.Label>First Name</Form.Label>
@@ -63,17 +67,17 @@ export default function CreateMember({
           <Col>
             <Form.Control
               type="text"
-              {...register("first_name")}
-              isInvalid={errors.first_name?.message}
+              {...register("firstName")}
+              isInvalid={errors.firstName?.message}
             />
             <Form.Control.Feedback type="invalid">
-              {errors.first_name?.message}
+              {errors.firstName?.message}
             </Form.Control.Feedback>
           </Col>
         </Row>
       </Form.Group>
 
-      <Form.Group className="mb-3" controlId="last_name">
+      <Form.Group className="mb-3" controlId="lastName">
         <Row>
           <Col>
             <Form.Label>Last Name</Form.Label>
@@ -81,11 +85,11 @@ export default function CreateMember({
           <Col>
             <Form.Control
               type="text"
-              {...register("last_name")}
-              isInvalid={errors.last_name?.message}
+              {...register("lastName")}
+              isInvalid={errors.lastName?.message}
             />
             <Form.Control.Feedback type="invalid">
-              {errors.last_name?.message}
+              {errors.lastName?.message}
             </Form.Control.Feedback>
           </Col>
         </Row>
@@ -145,6 +149,78 @@ export default function CreateMember({
             />
             <Form.Control.Feedback type="invalid">
               {errors.address?.message}
+            </Form.Control.Feedback>
+          </Col>
+        </Row>
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="postCode">
+        <Row>
+          <Col>
+            <Form.Label>Post Code</Form.Label>
+          </Col>
+          <Col>
+            <Form.Control
+              type="text"
+              {...register("postCode")}
+              isInvalid={errors.postCode?.message}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.postCode?.message}
+            </Form.Control.Feedback>
+          </Col>
+        </Row>
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="email">
+        <Row>
+          <Col>
+            <Form.Label>Email</Form.Label>
+          </Col>
+          <Col>
+            <Form.Control
+              type="text"
+              {...register("email")}
+              isInvalid={errors.email?.message}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.email?.message}
+            </Form.Control.Feedback>
+          </Col>
+        </Row>
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="mobile">
+        <Row>
+          <Col>
+            <Form.Label>Mobile</Form.Label>
+          </Col>
+          <Col>
+            <Form.Control
+              type="text"
+              {...register("mobile")}
+              isInvalid={errors.mobile?.message}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.mobile?.message}
+            </Form.Control.Feedback>
+          </Col>
+        </Row>
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="additionalInfo">
+        <Row>
+          <Col>
+            <Form.Label>Additional Info</Form.Label>
+          </Col>
+          <Col>
+            <Form.Control
+              as="textarea"
+              {...register("additionalInfo")}
+              isInvalid={errors.additionalInfo?.message}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.additionalInfo?.message}
             </Form.Control.Feedback>
           </Col>
         </Row>
