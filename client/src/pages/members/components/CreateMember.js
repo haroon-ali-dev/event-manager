@@ -42,7 +42,7 @@ export default function CreateMember({
   errorAlert,
   setErrorAlert
 }) {
-  const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently, user } = useAuth0();
 
   const {
     register,
@@ -54,6 +54,7 @@ export default function CreateMember({
 
   const onSubmit = async (data) => {
     data.dateOfBirth = moment(data.dateOfBirth).utcOffset('+0100').format('YYYY-MM-DD');
+    data.userName = user.name;
 
     setReqInProcess(true);
     setErrorAlert(false);
@@ -76,11 +77,10 @@ export default function CreateMember({
         });
 
         if (res.status === 200) {
-          const id = await res.json();
-          console.log(id);
-          // createMember(data, id);
-          // setReqInProcess(false);
-          // setShowFormModal(false);
+          const member = await res.json();
+          createMember(member);
+          setReqInProcess(false);
+          setShowFormModal(false);
         } else {
           const data = await res.json();
           console.log(data);

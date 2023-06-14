@@ -29,10 +29,11 @@ router.post("/", jwtCheck, async (req, res) => {
     }
 
     req.body.dateOfBirth = moment(req.body.dateOfBirth).utcOffset('+0100').format('YYYY-MM-DD');
+    const member_since = moment().utcOffset('+0100').format('YYYY-MM-DD');
 
     try {
         const rs = await db.query(
-            "INSERT INTO members (first_name, last_name, gender, date_of_birth, address, post_code, email, mobile, additional_info) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id",
+            "INSERT INTO members (first_name, last_name, gender, date_of_birth, address, post_code, email, mobile, additional_info, member_since, created_by) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *",
             [
                 req.body.firstName,
                 req.body.lastName,
@@ -43,10 +44,12 @@ router.post("/", jwtCheck, async (req, res) => {
                 req.body.email,
                 req.body.mobile,
                 req.body.additionalInfo,
+                member_since,
+                req.body.userName
             ]
         );
 
-        res.json(rs.rows[0].id);
+        res.json(rs.rows[0]);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

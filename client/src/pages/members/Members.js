@@ -24,8 +24,8 @@ const Members = () => {
     setShowFormModal(true);
   };
 
-  const createMember = (data, id) => {
-    
+  const createMember = (member) => {
+    setMembers([...members, member]);
   };
 
   useEffect(() => {
