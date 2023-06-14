@@ -26,6 +26,7 @@ const schema = yup.object({
   last_name: yup.string().min(3).max(150).required().label("Last Name"),
   gender: yup.string().required("Please select a gender.").label("Gender"),
   dateOfBirth: yup.date().transform(parseDateString).max(today).label("Date of Birth"),
+  address: yup.string().min(3).max(300).required().label("Address"),
 }).required();
 
 export default function CreateMember({
@@ -126,6 +127,24 @@ export default function CreateMember({
             />
             <Form.Control.Feedback type="invalid">
               {errors.dateOfBirth?.message}
+            </Form.Control.Feedback>
+          </Col>
+        </Row>
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="address">
+        <Row>
+          <Col>
+            <Form.Label>Address</Form.Label>
+          </Col>
+          <Col>
+            <Form.Control
+              type="text"
+              {...register("address")}
+              isInvalid={errors.address?.message}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.address?.message}
             </Form.Control.Feedback>
           </Col>
         </Row>

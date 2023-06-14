@@ -91,6 +91,8 @@ const Members = () => {
             <th>Gender</th>
             <th>Email</th>
             <th>Mobile</th>
+            <th>Member Since</th>
+            <th>Created By</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -102,6 +104,8 @@ const Members = () => {
               <td>{member["gender"]}</td>
               <td>{member["email"]}</td>
               <td>{member["mobile"]}</td>
+              <td>{member["member_since"]}</td>
+              <td>{member["created_by"]}</td>
               <td></td>
             </tr>
           ))}
