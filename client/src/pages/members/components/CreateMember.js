@@ -54,7 +54,45 @@ export default function CreateMember({
 
   const onSubmit = async (data) => {
     data.dateOfBirth = moment(data.dateOfBirth).utcOffset('+0100').format('YYYY-MM-DD');
-    console.log(data);
+
+    setReqInProcess(true);
+    setErrorAlert(false);
+
+    if (formAction === "create") {
+      try {
+        const accessToken = await getAccessTokenSilently({
+          authorizationParams: {
+            audience: process.env.NODE_ENV === "development" ? "http://localhost:3000/api/" : "",
+          },
+        });
+
+        const res = await fetch("/api/members", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(data),
+        });
+
+        if (res.status === 200) {
+          const id = await res.json();
+          console.log(id);
+          // createMember(data, id);
+          // setReqInProcess(false);
+          // setShowFormModal(false);
+        } else {
+          const data = await res.json();
+          console.log(data);
+          setReqInProcess(false);
+          setErrorAlert(true);
+        }
+      } catch (e) {
+        console.log(e.message);
+        setReqInProcess(false);
+        setErrorAlert(true);
+      }
+    }
   };
 
   return (
