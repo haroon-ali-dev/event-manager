@@ -2,6 +2,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { parse, isDate } from "date-fns";
+import moment from "moment";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
@@ -9,10 +11,21 @@ import Col from "react-bootstrap/Col";
 import Spinner from "react-bootstrap/Spinner";
 import Alert from 'react-bootstrap/Alert';
 
+const today = new Date();
+
+function parseDateString(value, originalValue) {
+  const parsedDate = isDate(originalValue)
+    ? originalValue
+    : parse(originalValue, "yyyy-MM-dd", new Date());
+
+  return parsedDate;
+}
+
 const schema = yup.object({
   first_name: yup.string().min(3).max(150).required().label("First Name"),
   last_name: yup.string().min(3).max(150).required().label("Last Name"),
   gender: yup.string().required("Please select a gender.").label("Gender"),
+  dateOfBirth: yup.date().transform(parseDateString).max(today).label("Date of Birth"),
 }).required();
 
 export default function CreateMember({
@@ -35,6 +48,7 @@ export default function CreateMember({
   });
 
   const onSubmit = async (data) => {
+    data.dateOfBirth = moment(data.dateOfBirth).utcOffset('+0100').format('YYYY-MM-DD');
     console.log(data);
   };
 
@@ -76,7 +90,7 @@ export default function CreateMember({
         </Row>
       </Form.Group>
 
-      <Form.Group controlId="gender">
+      <Form.Group className="mb-3" controlId="gender">
         <Row>
           <Col>
             <Form.Label>Gender</Form.Label>
@@ -94,6 +108,24 @@ export default function CreateMember({
             </Form.Select>
             <Form.Control.Feedback type="invalid">
               {errors.gender?.message}
+            </Form.Control.Feedback>
+          </Col>
+        </Row>
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="dateOfBirth">
+        <Row>
+          <Col>
+            <Form.Label>Date of Birth</Form.Label>
+          </Col>
+          <Col>
+            <Form.Control
+              type="date"
+              {...register("dateOfBirth")}
+              isInvalid={errors?.dateOfBirth}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.dateOfBirth?.message}
             </Form.Control.Feedback>
           </Col>
         </Row>
