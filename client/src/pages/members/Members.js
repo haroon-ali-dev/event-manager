@@ -6,6 +6,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
 import styles from "./Members.module.css";
+import CreateMember from "./components/CreateMember";
 
 const Members = () => {
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
@@ -21,6 +22,10 @@ const Members = () => {
     setReqInProcess(false);
     setErrorAlert(false);
     setShowFormModal(true);
+  };
+
+  const createMember = (data, id) => {
+    
   };
 
   useEffect(() => {
@@ -56,7 +61,15 @@ const Members = () => {
           <Modal.Title>{formAction === "create" ? "Create Member" : "Edit Member"}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          
+          <CreateMember
+            formAction={formAction}
+            createMember={createMember}
+            setShowFormModal={setShowFormModal}
+            reqInProcess={reqInProcess}
+            setReqInProcess={setReqInProcess}
+            errorAlert={errorAlert}
+            setErrorAlert={setErrorAlert}
+          />
         </Modal.Body>
         <Modal.Footer>
         </Modal.Footer>
