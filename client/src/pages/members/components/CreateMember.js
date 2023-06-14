@@ -11,6 +11,8 @@ import Alert from 'react-bootstrap/Alert';
 
 const schema = yup.object({
   first_name: yup.string().min(3).max(150).required().label("First Name"),
+  last_name: yup.string().min(3).max(150).required().label("Last Name"),
+  gender: yup.string().required("Please select a gender.").label("Gender"),
 }).required();
 
 export default function CreateMember({
@@ -56,6 +58,47 @@ export default function CreateMember({
         </Row>
       </Form.Group>
 
+      <Form.Group className="mb-3" controlId="last_name">
+        <Row>
+          <Col>
+            <Form.Label>Last Name</Form.Label>
+          </Col>
+          <Col>
+            <Form.Control
+              type="text"
+              {...register("last_name")}
+              isInvalid={errors.last_name?.message}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.last_name?.message}
+            </Form.Control.Feedback>
+          </Col>
+        </Row>
+      </Form.Group>
+
+      <Form.Group controlId="gender">
+        <Row>
+          <Col>
+            <Form.Label>Gender</Form.Label>
+          </Col>
+          <Col>
+            <Form.Select
+              aria-label="gender"
+              {...register("gender")}
+              isInvalid={errors?.gender}
+            >
+              <option value="">Select...</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </Form.Select>
+            <Form.Control.Feedback type="invalid">
+              {errors.gender?.message}
+            </Form.Control.Feedback>
+          </Col>
+        </Row>
+      </Form.Group>
+
       <div className="container-btn mt-4 mb-2">
         {formAction === "create" &&
           <Button variant="success" type="submit" disabled={reqInProcess}>
@@ -65,7 +108,7 @@ export default function CreateMember({
                 <span className="visually-hidden">Loading...</span>
               </Spinner>}
           </Button>}
-        {formAction === "update" && 
+        {formAction === "update" &&
           <Button variant="warning" type="submit" disabled={reqInProcess}>
             Save
             {reqInProcess &&
