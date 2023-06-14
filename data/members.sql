@@ -10,7 +10,7 @@ create table members (
 	mobile VARCHAR(11) NOT NULL,
 	additional_info TEXT,
 	member_since DATE NOT NULL,
-	created_by VARCHAR(100) NOT NULL
+	created_by VARCHAR(300) NOT NULL
 );
 
 insert into members (id, first_name, last_name, gender, date_of_birth, address, post_code, email, mobile, additional_info, member_since, created_by) values (1, 'Terence', 'Berens', 'Male', '2022-11-04', 'PO Box 59247', 'Suite 87', 'tberens0@feedburner.com', 99999999999, 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin risus. Praesent lectus.', '2022-07-16', '01H2T9G2QH8QH11G2ERM5BS8D5');

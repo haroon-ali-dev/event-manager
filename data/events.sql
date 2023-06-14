@@ -3,7 +3,7 @@ create table events (
 	name VARCHAR(300) NOT NULL,
 	date DATE NOT NULL,
 	information TEXT NOT NULL,
-	created_by VARCHAR(100) NOT NULL
+	created_by VARCHAR(300) NOT NULL
 );
 
 insert into events (id, name, date, information, created_by) values (1, 'sem', '2023-04-29', 'Duis consequat dui nec nisi volutpat eleifend. Donec ut dolor. Morbi vel lectus in quam fringilla rhoncus.
