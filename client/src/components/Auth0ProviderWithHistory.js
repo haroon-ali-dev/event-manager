@@ -18,6 +18,7 @@ const Auth0ProviderWithHistory = ({ children }) => {
       clientId={clientId}
       authorizationParams={{
         redirect_uri: window.location.origin + "/dashboard",
+        audience: process.env.NODE_ENV === "development" ? "http://localhost:3000/api/" : ""
       }}
       onRedirectCallback={onRedirectCallback}
     >
