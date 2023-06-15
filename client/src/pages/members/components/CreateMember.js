@@ -36,6 +36,7 @@ const schema = yup.object({
 export default function CreateMember({
   formAction,
   createMember,
+  singleMember,
   setShowFormModal,
   reqInProcess,
   setReqInProcess,
@@ -49,7 +50,19 @@ export default function CreateMember({
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
+    defaultValues: {
+      firstName: formAction === "update" ? singleMember[0].first_name : "",
+      lastName: formAction === "update" ? singleMember[0].last_name : "",
+      gender: formAction === "update" ? singleMember[0].gender : "",
+      dateOfBirth: formAction === "update" ? moment(singleMember[0].date_of_birth).utcOffset('+0100').format('YYYY-MM-DD') : "",
+      address: formAction === "update" ? singleMember[0].address : "",
+      postCode: formAction === "update" ? singleMember[0].post_code : "",
+      address: formAction === "update" ? singleMember[0].address : "",
+      email: formAction === "update" ? singleMember[0].email : "",
+      mobile: formAction === "update" ? singleMember[0].mobile : "",
+      additionalInfo: formAction === "update" ? singleMember[0].additional_info : "",
+    },
   });
 
   const onSubmit = async (data) => {

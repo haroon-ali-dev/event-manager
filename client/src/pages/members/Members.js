@@ -4,14 +4,18 @@ import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import Stack from "react-bootstrap/Stack";
+import { PencilSquare } from 'react-bootstrap-icons';
+import { Trash } from 'react-bootstrap-icons';
 
 import styles from "./Members.module.css";
 import CreateMember from "./components/CreateMember";
 
 const Members = () => {
-  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
 
   const [members, setMembers] = useState([]);
+  const [singleMember, setSingleMember] = useState({});
   const [formAction, setFormAction] = useState("");
   const [showFormModal, setShowFormModal] = useState(false);
   const [reqInProcess, setReqInProcess] = useState(false);
@@ -19,6 +23,14 @@ const Members = () => {
 
   const create = () => {
     setFormAction("create");
+    setReqInProcess(false);
+    setErrorAlert(false);
+    setShowFormModal(true);
+  };
+
+  const update = (id) => {
+    setFormAction("update");
+    setSingleMember(members.filter((member) => member.id === id));
     setReqInProcess(false);
     setErrorAlert(false);
     setShowFormModal(true);
@@ -64,6 +76,7 @@ const Members = () => {
           <CreateMember
             formAction={formAction}
             createMember={createMember}
+            singleMember={singleMember}
             setShowFormModal={setShowFormModal}
             reqInProcess={reqInProcess}
             setReqInProcess={setReqInProcess}
@@ -106,7 +119,12 @@ const Members = () => {
               <td>{member["mobile"]}</td>
               <td>{member["member_since"]}</td>
               <td>{member["created_by"]}</td>
-              <td></td>
+              <td>
+                <Stack direction="horizontal" gap={3}>
+                  <PencilSquare className={styles.icon} onClick={() => update(member.id)} />
+                  <Trash className={styles.icon} onClick={() => { setReqInProcess(false); setErrorAlert(false); setShowDeleteModal([true, ngo.id]); }} />
+                </Stack>
+              </td>
             </tr>
           ))}
         </tbody>
