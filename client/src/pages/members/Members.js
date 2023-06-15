@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
+import moment from "moment";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -122,7 +123,7 @@ const Members = () => {
               <td>{member["gender"]}</td>
               <td>{member["email"]}</td>
               <td>{member["mobile"]}</td>
-              <td>{member["member_since"]}</td>
+              <td>{moment(member["member_since"]).utcOffset('+0100').format('DD-MM-YYYY')}</td>
               <td>{member["created_by"]}</td>
               <td>
                 <Stack direction="horizontal" gap={3}>

@@ -13,7 +13,7 @@ const jwtCheck = auth({
 
 router.get("/", jwtCheck, async (req, res) => {
     try {
-        const { rows } = await db.query("SELECT * FROM members");
+        const { rows } = await db.query("SELECT * FROM members ORDER BY id");
 
         res.json(rows);
     } catch (err) {
@@ -46,6 +46,41 @@ router.post("/", jwtCheck, async (req, res) => {
                 req.body.additionalInfo,
                 member_since,
                 req.body.userName
+            ]
+        );
+
+        res.json(rs.rows[0]);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+router.put("/:id", jwtCheck, async (req, res) => {
+    try {
+        await validate(req.body);
+    } catch (error) {
+        return res.status(400).json({ message: error.message });
+    }
+
+    try {
+        let rs = await db.query("SELECT * FROM members WHERE id = $1", [req.params.id]);
+        if (rs.rowCount <= 0) return res.status(404).json({ message: "Member does not exist." });
+
+        req.body.dateOfBirth = moment(req.body.dateOfBirth).utcOffset('+0100').format('YYYY-MM-DD');
+
+        rs = await db.query(
+            "UPDATE members SET first_name = $1, last_name = $2, gender = $3, date_of_birth = $4, address = $5, post_code = $6, email = $7, mobile = $8, additional_info = $9 WHERE id = $10 RETURNING *",
+            [
+                req.body.firstName,
+                req.body.lastName,
+                req.body.gender,
+                req.body.dateOfBirth,
+                req.body.address,
+                req.body.postCode,
+                req.body.email,
+                req.body.mobile,
+                req.body.additionalInfo,
+                req.params.id
             ]
         );
 
