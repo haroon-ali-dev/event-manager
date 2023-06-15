@@ -36,6 +36,7 @@ const schema = yup.object({
 export default function CreateMember({
   formAction,
   createMember,
+  updateMember,
   singleMember,
   setShowFormModal,
   reqInProcess,
@@ -52,16 +53,16 @@ export default function CreateMember({
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      firstName: formAction === "update" ? singleMember[0].first_name : "",
-      lastName: formAction === "update" ? singleMember[0].last_name : "",
-      gender: formAction === "update" ? singleMember[0].gender : "",
-      dateOfBirth: formAction === "update" ? moment(singleMember[0].date_of_birth).utcOffset('+0100').format('YYYY-MM-DD') : "",
-      address: formAction === "update" ? singleMember[0].address : "",
-      postCode: formAction === "update" ? singleMember[0].post_code : "",
-      address: formAction === "update" ? singleMember[0].address : "",
-      email: formAction === "update" ? singleMember[0].email : "",
-      mobile: formAction === "update" ? singleMember[0].mobile : "",
-      additionalInfo: formAction === "update" ? singleMember[0].additional_info : "",
+      firstName: formAction === "update" ? singleMember.first_name : "",
+      lastName: formAction === "update" ? singleMember.last_name : "",
+      gender: formAction === "update" ? singleMember.gender : "",
+      dateOfBirth: formAction === "update" ? moment(singleMember.date_of_birth).utcOffset('+0100').format('YYYY-MM-DD') : "",
+      address: formAction === "update" ? singleMember.address : "",
+      postCode: formAction === "update" ? singleMember.post_code : "",
+      address: formAction === "update" ? singleMember.address : "",
+      email: formAction === "update" ? singleMember.email : "",
+      mobile: formAction === "update" ? singleMember.mobile : "",
+      additionalInfo: formAction === "update" ? singleMember.additional_info : "",
     },
   });
 
@@ -92,6 +93,41 @@ export default function CreateMember({
         if (res.status === 200) {
           const member = await res.json();
           createMember(member);
+          setReqInProcess(false);
+          setShowFormModal(false);
+        } else {
+          const data = await res.json();
+          console.log(data);
+          setReqInProcess(false);
+          setErrorAlert(true);
+        }
+      } catch (e) {
+        console.log(e.message);
+        setReqInProcess(false);
+        setErrorAlert(true);
+      }
+    }
+
+    if (formAction === "update") {
+      try {
+        const accessToken = await getAccessTokenSilently({
+          authorizationParams: {
+            audience: process.env.NODE_ENV === "development" ? "http://localhost:3000/api/" : "",
+          },
+        });
+
+        const res = await fetch(`/api/members/${singleMember.id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(data),
+        });
+
+        if (res.status === 200) {
+          const member = await res.json();
+          updateMember(member);
           setReqInProcess(false);
           setShowFormModal(false);
         } else {

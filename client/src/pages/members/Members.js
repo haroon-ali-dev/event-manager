@@ -30,7 +30,7 @@ const Members = () => {
 
   const update = (id) => {
     setFormAction("update");
-    setSingleMember(members.filter((member) => member.id === id));
+    setSingleMember(members.filter((member) => member.id === id)[0]);
     setReqInProcess(false);
     setErrorAlert(false);
     setShowFormModal(true);
@@ -38,6 +38,10 @@ const Members = () => {
 
   const createMember = (member) => {
     setMembers([...members, member]);
+  };
+
+  const updateMember = (member) => {
+    setMembers(members.map((mem) => (mem.id === member.id ? member : mem)));
   };
 
   useEffect(() => {
@@ -76,6 +80,7 @@ const Members = () => {
           <CreateMember
             formAction={formAction}
             createMember={createMember}
+            updateMember={updateMember}
             singleMember={singleMember}
             setShowFormModal={setShowFormModal}
             reqInProcess={reqInProcess}
