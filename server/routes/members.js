@@ -90,4 +90,17 @@ router.put("/:id", jwtCheck, async (req, res) => {
     }
 });
 
+router.delete("/:id", async (req, res) => {
+    try {
+        let rs = await db.query("SELECT * FROM members WHERE id = $1", [req.params.id]);
+        if (rs.rowCount <= 0) return res.status(404).json({ message: "Member does not exist." });
+
+        await db.query("DELETE FROM members WHERE id = $1", [req.params.id]);
+
+        res.send("ok");
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 module.exports = router;

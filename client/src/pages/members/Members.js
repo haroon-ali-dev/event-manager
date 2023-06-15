@@ -6,6 +6,7 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Stack from "react-bootstrap/Stack";
+import Spinner from "react-bootstrap/Spinner";
 import { PencilSquare } from 'react-bootstrap-icons';
 import { Trash } from 'react-bootstrap-icons';
 
@@ -19,32 +20,10 @@ const Members = () => {
   const [singleMember, setSingleMember] = useState({});
   const [formAction, setFormAction] = useState("");
   const [showFormModal, setShowFormModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState([false, 0]);
   const [reqInProcess, setReqInProcess] = useState(false);
   const [errorAlert, setErrorAlert] = useState(false);
-
-  const create = () => {
-    setFormAction("create");
-    setReqInProcess(false);
-    setErrorAlert(false);
-    setShowFormModal(true);
-  };
-
-  const update = (id) => {
-    setFormAction("update");
-    setSingleMember(members.filter((member) => member.id === id)[0]);
-    setReqInProcess(false);
-    setErrorAlert(false);
-    setShowFormModal(true);
-  };
-
-  const createMember = (member) => {
-    setMembers([...members, member]);
-  };
-
-  const updateMember = (member) => {
-    setMembers(members.map((mem) => (mem.id === member.id ? member : mem)));
-  };
-
+  
   useEffect(() => {
     async function getMembers() {
       try {
@@ -71,6 +50,64 @@ const Members = () => {
     getMembers();
   }, []);
 
+  const create = () => {
+    setFormAction("create");
+    setReqInProcess(false);
+    setErrorAlert(false);
+    setShowFormModal(true);
+  };
+
+  const update = (id) => {
+    setFormAction("update");
+    setSingleMember(members.filter((member) => member.id === id)[0]);
+    setReqInProcess(false);
+    setErrorAlert(false);
+    setShowFormModal(true);
+  };
+
+  const createMember = (member) => {
+    setMembers([...members, member]);
+  };
+
+  const updateMember = (member) => {
+    setMembers(members.map((mem) => (mem.id === member.id ? member : mem)));
+  };
+
+  const deleteMember = async (id) => {
+    setReqInProcess(true);
+    setErrorAlert(false);
+
+    try {
+      const accessToken = await getAccessTokenSilently({
+        authorizationParams: {
+          audience: process.env.NODE_ENV === "development" ? "http://localhost:3000/api/" : "",
+        },
+      });
+
+      const res = await fetch(`/api/members/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      if (res.status === 200) {
+        setMembers(members.filter((member) => member.id !== id));
+        setShowDeleteModal([false, 0]);
+      } else {
+        const data = await res.json();
+        console.log(data);
+        setErrorAlert(true);
+        setReqInProcess(false);
+      }
+    } catch (e) {
+      console.log(e.message);
+      setErrorAlert(true);
+      setReqInProcess(false);
+    }
+  };
+
   return (
     <>
       <Modal size="lg" show={showFormModal} onHide={() => setShowFormModal(false)}>
@@ -91,6 +128,28 @@ const Members = () => {
           />
         </Modal.Body>
         <Modal.Footer>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showDeleteModal[0]} onHide={() => setShowDeleteModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirmation</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Are You Sure?
+          {errorAlert &&
+            <Alert className="mt-3" variant="danger">
+              There was a problem. Please try again.
+            </Alert>}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger" onClick={() => deleteMember(showDeleteModal[1])} disabled={reqInProcess}>
+            Yes
+            {reqInProcess &&
+              <Spinner className="ms-2" animation="border" role="status" size="sm">
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>}
+          </Button>
         </Modal.Footer>
       </Modal>
 
@@ -128,7 +187,7 @@ const Members = () => {
               <td>
                 <Stack direction="horizontal" gap={3}>
                   <PencilSquare className={styles.icon} onClick={() => update(member.id)} />
-                  <Trash className={styles.icon} onClick={() => { setReqInProcess(false); setErrorAlert(false); setShowDeleteModal([true, ngo.id]); }} />
+                  <Trash className={styles.icon} onClick={() => { setReqInProcess(false); setErrorAlert(false); setShowDeleteModal([true, member.id]); }} />
                 </Stack>
               </td>
             </tr>
