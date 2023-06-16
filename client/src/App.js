@@ -5,6 +5,7 @@ import Navbar from "./components/navigation/NavBar";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Members from "./pages/members/Members";
+import Events from "./pages/events/Events";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
@@ -27,6 +28,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/members" element={<Members />} />
+        <Route path="/events" element={<Events />} />
       </Routes>
       </>
   );
