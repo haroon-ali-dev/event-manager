@@ -1,5 +1,6 @@
 import express from "express";
 const members = require("./routes/members");
+const events = require("./routes/events");
 
 import apiRouter from "./api";
 import config from "./utils/config";
@@ -27,6 +28,7 @@ if (config.production) {
 app.use(apiRoot, apiRouter);
 app.use("/health", (_, res) => res.sendStatus(200));
 app.use("/api/members", members);
+app.use("/api/events", events);
 app.use(clientRouter(apiRoot));
 
 app.use(logErrors());
