@@ -3,14 +3,19 @@ import { useState, useEffect } from "react";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+
 
 const Events = () => {
     const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 
     const [events, setEvents] = useState([]);
+    const [showFormModal, setShowFormModal] = useState(false);
+    const [formAction, setFormAction] = useState("");
 
     const create = () => {
-
+        setFormAction("create");
+        setShowFormModal(true);
     };
 
     useEffect(() => {
@@ -40,6 +45,16 @@ const Events = () => {
     }, []);
   return (
     <>
+        <Modal size="lg" show={showFormModal} onHide={() => setShowFormModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>{formAction === "create" ? "Create Event" : "Edit Event"}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+
+        </Modal.Body>
+        <Modal.Footer>
+        </Modal.Footer>
+      </Modal>
           <h1>Events</h1>
 
 <div className="text-center">
