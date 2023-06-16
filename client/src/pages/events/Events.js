@@ -1,11 +1,13 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
+import moment from "moment";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import styles from "./Events.module.css";
 import CreateEvent from "./components/CreateEvent";
+
 
 
 const Events = () => {
@@ -24,9 +26,7 @@ const Events = () => {
         setShowFormModal(true);
     };
 
-    const createEvent = (data, id) => {
 
-    };
 
     useEffect(() => {
       async function getEvents() {
@@ -53,6 +53,10 @@ const Events = () => {
 
       getEvents();
     }, []);
+
+    const createEvent = (event) => {
+        setEvents([...events, event]);
+    };
   return (
     <>
         <Modal size="lg" show={showFormModal} onHide={() => setShowFormModal(false)}>
@@ -62,7 +66,7 @@ const Events = () => {
         <Modal.Body>
         <CreateEvent
             formAction={formAction}
-            createMember={createEvent}
+            createEvent={createEvent}
             setShowFormModal={setShowFormModal}
             reqInProcess={reqInProcess}
             setReqInProcess={setReqInProcess}
@@ -95,9 +99,9 @@ const Events = () => {
     {events.map((events, i) => (
       <tr key={i}>
         <td>{events["name"]}</td>
-        <td>{events["date"]}</td>
+        <td>{moment(events["date"]).utcOffset("+0100").format("DD-MM-YYYY")}</td>
         <td>{events["information"]}</td>
-        <td></td>
+        <td>{events["created_by"]}</td>
       </tr>
     ))}
   </tbody>

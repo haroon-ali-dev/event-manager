@@ -11,7 +11,6 @@ import Col from "react-bootstrap/Col";
 import Spinner from "react-bootstrap/Spinner";
 import Alert from "react-bootstrap/Alert";
 
-
 function parseDateString(value, originalValue) {
   const parsedDate = isDate(originalValue)
     ? originalValue
@@ -21,11 +20,10 @@ function parseDateString(value, originalValue) {
 }
 
 const schema = yup.object({
-name: yup.string().min(3).max(150).required().label("Name"),
-date: yup.date().transform(parseDateString).label("Date"),
-information: yup.string().max(1000).label("Information"),
+  name: yup.string().min(3).max(150).required().label("Name"),
+  date: yup.date().transform(parseDateString).label("Date"),
+  information: yup.string().max(1000).label("Information"),
 }).required();
-
 
 export default function CreateEvent({
   formAction,
@@ -36,7 +34,7 @@ export default function CreateEvent({
   errorAlert,
   setErrorAlert,
 }) {
-  const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently, user } = useAuth0();
 
   const {
     register,
@@ -44,11 +42,58 @@ export default function CreateEvent({
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: {
+        name: "",
+        date: "",
+        information: "",
+    },
   });
 
   const onSubmit = async (data) => {
     data.date = moment(data.date).utcOffset("+0100").format("YYYY-MM-DD");
-    console.log(data);
+    data.userName = user.name;
+
+    setReqInProcess(true);
+    setErrorAlert(false);
+
+    if (formAction === "create") {
+      try {
+        const accessToken = await getAccessTokenSilently({
+          authorizationParams: {
+            audience:
+              process.env.NODE_ENV === "development"
+                ? "http://localhost:3000/api/"
+                : "",
+          },
+        });
+
+        const res = await fetch("/api/events", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(data),
+        });
+
+        if (res.status === 200) {
+          const id = await res.json();
+          console.log(id);
+          setReqInProcess(false);
+          setShowFormModal(false);
+            window.location.reload();
+        } else {
+          const data = await res.json();
+          console.log(data);
+          setReqInProcess(false);
+          setErrorAlert(true);
+        }
+      } catch (e) {
+        console.log(e.message);
+        setReqInProcess(false);
+        setErrorAlert(true);
+      }
+    }
   };
 
   return (
@@ -94,7 +139,7 @@ export default function CreateEvent({
           </Col>
           <Col>
             <Form.Control
-              type="textarea"
+              as="textarea"
               {...register("information")}
               isInvalid={errors?.information?.message}
             />
@@ -106,27 +151,32 @@ export default function CreateEvent({
       </Form.Group>
 
       <div className="container-btn mt-4 mb-2">
-        {formAction === "create" &&
+        {formAction === "create" && (
           <Button variant="success" type="submit" disabled={reqInProcess}>
             Add
-            {reqInProcess &&
+            {reqInProcess && (
               <Spinner className="ms-2" animation="border" role="status" size="sm">
                 <span className="visually-hidden">Loading...</span>
-              </Spinner>}
-          </Button>}
-        {formAction === "update" &&
+              </Spinner>
+            )}
+          </Button>
+        )}
+        {formAction === "update" && (
           <Button variant="warning" type="submit" disabled={reqInProcess}>
             Save
-            {reqInProcess &&
+            {reqInProcess && (
               <Spinner className="ms-2" animation="border" role="status" size="sm">
                 <span className="visually-hidden">Loading...</span>
-              </Spinner>}
-          </Button>}
+              </Spinner>
+            )}
+          </Button>
+        )}
 
-        {errorAlert &&
+        {errorAlert && (
           <Alert className="mt-3" variant="danger">
             There was a problem. Please try again.
-          </Alert>}
+          </Alert>
+        )}
       </div>
     </Form>
   );
