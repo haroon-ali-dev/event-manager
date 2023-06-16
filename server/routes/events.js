@@ -3,7 +3,7 @@ const router = express.Router();
 import db from "../db";
 
 router.get("/", async (req, res) => {
-    res.send("ok");
+    res.json("ok");
 });
 
 module.exports = router;
