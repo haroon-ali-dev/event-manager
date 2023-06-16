@@ -5,6 +5,7 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import styles from "./Events.module.css";
+import CreateEvent from "./components/CreateEvent";
 
 
 const Events = () => {
@@ -21,6 +22,10 @@ const Events = () => {
         setReqInProcess(false);
         setErrorAlert(false);
         setShowFormModal(true);
+    };
+
+    const createEvent = (data, id) => {
+
     };
 
     useEffect(() => {
@@ -55,7 +60,15 @@ const Events = () => {
           <Modal.Title>{formAction === "create" ? "Create Event" : "Edit Event"}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-
+        <CreateEvent
+            formAction={formAction}
+            createMember={createEvent}
+            setShowFormModal={setShowFormModal}
+            reqInProcess={reqInProcess}
+            setReqInProcess={setReqInProcess}
+            errorAlert={errorAlert}
+            setErrorAlert={setErrorAlert}
+          />
         </Modal.Body>
         <Modal.Footer>
         </Modal.Footer>

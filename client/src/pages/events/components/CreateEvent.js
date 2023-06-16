@@ -8,9 +8,12 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Spinner from "react-bootstrap/Spinner";
 import Alert from "react-bootstrap/Alert";
-import fieldData from "../../../../../data/fieldData";
 
-export default function CreateMember({
+const schema = yup.object({
+    name: yup.string().min(3).max(150).required().label("Name"),
+  }).required();
+
+export default function CreateEvent({
   formAction,
   createMember,
   setShowFormModal,
@@ -21,9 +24,61 @@ export default function CreateMember({
 }) {
   const { getAccessTokenSilently } = useAuth0();
 
-  return (
-    <Form className="w-75 mx-auto mt-3">
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
+  const onSubmit = async (data) => {
+    console.log(data);
+  };
+
+  return (
+    <Form className="w-75 mx-auto mt-3" onSubmit={handleSubmit(onSubmit)}>
+      <Form.Group className="mb-3" controlId="name">
+        <Row>
+          <Col>
+            <Form.Label>Name</Form.Label>
+          </Col>
+          <Col>
+            <Form.Control
+              type="text"
+              {...register("name")}
+              isInvalid={errors.name?.message}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.name?.message}
+            </Form.Control.Feedback>
+          </Col>
+        </Row>
+      </Form.Group>
+
+      <div className="container-btn mt-4 mb-2">
+        {formAction === "create" &&
+          <Button variant="success" type="submit" disabled={reqInProcess}>
+            Add
+            {reqInProcess &&
+              <Spinner className="ms-2" animation="border" role="status" size="sm">
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>}
+          </Button>}
+        {formAction === "update" &&
+          <Button variant="warning" type="submit" disabled={reqInProcess}>
+            Save
+            {reqInProcess &&
+              <Spinner className="ms-2" animation="border" role="status" size="sm">
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>}
+          </Button>}
+
+        {errorAlert &&
+          <Alert className="mt-3" variant="danger">
+            There was a problem. Please try again.
+          </Alert>}
+      </div>
     </Form>
   );
 }
