@@ -4,17 +4,22 @@ import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import styles from "./Events.module.css";
 
 
 const Events = () => {
     const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 
     const [events, setEvents] = useState([]);
-    const [showFormModal, setShowFormModal] = useState(false);
     const [formAction, setFormAction] = useState("");
+    const [showFormModal, setShowFormModal] = useState(false);
+    const [reqInProcess, setReqInProcess] = useState(false);
+    const [errorAlert, setErrorAlert] = useState(false);
 
     const create = () => {
         setFormAction("create");
+        setReqInProcess(false);
+        setErrorAlert(false);
         setShowFormModal(true);
     };
 
@@ -55,7 +60,7 @@ const Events = () => {
         <Modal.Footer>
         </Modal.Footer>
       </Modal>
-          <h1>Events</h1>
+          <h1 className={styles.heading}>Events</h1>
 
 <div className="text-center">
   <Button variant="success" onClick={create} className="mb-4">
