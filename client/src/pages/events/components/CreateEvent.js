@@ -27,6 +27,7 @@ const schema = yup.object({
 
 export default function CreateEvent({
   formAction,
+  createEvent,
   updateEvent,
   singleEvent,
   setShowFormModal,
@@ -78,11 +79,11 @@ export default function CreateEvent({
         });
 
         if (res.status === 200) {
-          const id = await res.json();
-          console.log(id);
+          // i want to update the events anytime a new event is created
+          const event = await res.json();
+          createEvent(event);
           setReqInProcess(false);
           setShowFormModal(false);
-            window.location.reload();
         } else {
           const data = await res.json();
           console.log(data);

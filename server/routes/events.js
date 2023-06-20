@@ -31,11 +31,11 @@ router.post("/", jwtCheck, async (req, res) => {
 
     try {
         const rs = await db.query(
-            "INSERT INTO events (name, date, information, created_by) VALUES ($1, $2, $3, $4) RETURNING id",
+            "INSERT INTO events (name, date, information, created_by) VALUES ($1, $2, $3, $4) RETURNING *",
             [req.body.name, req.body.date, req.body.information, req.body.userName]
         );
 
-        res.json(rs.rows[0].id);
+        res.json(rs.rows[0]);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

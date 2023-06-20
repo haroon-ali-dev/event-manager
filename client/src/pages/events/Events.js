@@ -53,6 +53,9 @@ const Events = () => {
     setErrorAlert(false);
     setShowFormModal(true);
   };
+  const createEvent = (event) => {
+    setEvents([...events, event]);
+  };
 
   const update = (id) => {
     setFormAction("update");
@@ -67,9 +70,6 @@ const Events = () => {
     setShowFormModal(true);
   };
 
-  const createEvent = (event) => {
-    setEvents([...events, event]);
-  };
 
   const updateEvent = (event) => {
     setEvents(events.map((ev) => (ev.id === event.id ? event : ev)));
@@ -206,14 +206,14 @@ const Events = () => {
           </tr>
         </thead>
         <tbody>
-          {events.map((event) => (
-            <tr key={event.id}>
-              <td>{event.name}</td>
+          {events.map((event, index) => (
+            <tr key={index}>
+              <td>{event["name"]}</td>
               <td>
-                {moment(event.date).utcOffset("+0100").format("DD-MM-YYYY")}
+                {moment(event["date"]).utcOffset("+0100").format("DD-MM-YYYY")}
               </td>
-              <td>{event.information}</td>
-              <td>{event.created_by}</td>
+              <td>{event["information"]}</td>
+              <td>{event["created_by"]}</td>
               <td>
                 <Stack direction="horizontal" gap={3}>
                   <PencilSquare
