@@ -221,6 +221,7 @@ const Events = () => {
                     onClick={() => update(event.id)}
                   />
                   <Trash
+                  className={styles.icon}
                   onClick={() => {
                     setReqInProcess(false);
                     setErrorAlert(false);
