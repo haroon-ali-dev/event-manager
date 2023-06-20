@@ -27,7 +27,8 @@ const schema = yup.object({
 
 export default function CreateEvent({
   formAction,
-  createMember,
+  updateEvent,
+  singleEvent,
   setShowFormModal,
   reqInProcess,
   setReqInProcess,
@@ -43,9 +44,9 @@ export default function CreateEvent({
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-        name: "",
-        date: "",
-        information: "",
+      name: formAction === "update" ? singleEvent.name : "",
+      date: formAction === "update" ? singleEvent.date : "",
+      information: formAction === "update" ? singleEvent.information : "",
     },
   });
 
@@ -94,7 +95,42 @@ export default function CreateEvent({
         setErrorAlert(true);
       }
     }
-  };
+
+  if (formAction === "update") {
+    try {
+      const accessToken = await getAccessTokenSilently({
+        authorizationParams: {
+          audience: process.env.NODE_ENV === "development" ? "http://localhost:3000/api/" : "",
+        },
+      });
+
+      const res = await fetch(`/api/events/${singleEvent.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (res.status === 200) {
+        const event = await res.json();
+        updateEvent(event);
+        setReqInProcess(false);
+        setShowFormModal(false);
+      } else {
+        const data = await res.json();
+        console.log(data);
+        setReqInProcess(false);
+        setErrorAlert(true);
+      }
+    } catch (e) {
+      console.log(e.message);
+      setReqInProcess(false);
+      setErrorAlert(true);
+    }
+  }
+};
 
   return (
     <Form className="w-75 mx-auto mt-3" onSubmit={handleSubmit(onSubmit)}>
