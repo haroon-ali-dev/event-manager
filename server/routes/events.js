@@ -10,14 +10,14 @@ const jwtCheck = auth({
     issuerBaseURL: "https://dev-e5so586xmispuho0.us.auth0.com/",
     tokenSigningAlg: "RS256",
 });
-router.get("/",jwtCheck, async (req, res) => {
-      try {
-          const { rows } = await db.query("SELECT * FROM events");
 
-          res.json(rows);
-      } catch (err) {
-          res.status(500).json({ error: err.message });
-      }
+router.get("/", jwtCheck, async (req, res) => {
+    try {
+        const { rows } = await db.query("SELECT * FROM events");
+        res.json(rows);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
 router.post("/", jwtCheck, async (req, res) => {
@@ -32,15 +32,36 @@ router.post("/", jwtCheck, async (req, res) => {
     try {
         const rs = await db.query(
             "INSERT INTO events (name, date, information, created_by) VALUES ($1, $2, $3, $4) RETURNING id",
-            [
-                req.body.name,
-                req.body.date,
-                req.body.information,
-                req.body.userName,
-            ]
+            [req.body.name, req.body.date, req.body.information, req.body.userName]
         );
 
         res.json(rs.rows[0].id);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+router.put("/:id", jwtCheck, async (req, res) => {
+    try {
+        await validate(req.body);
+    } catch (error) {
+        return res.status(400).json({ message: error.message });
+    }
+
+    try {
+        let rs = await db.query("SELECT * FROM events WHERE id = $1", [req.params.id]);
+        if (rs.rowCount <= 0) {
+return res.status(404).json({ message: "Event does not exist." });
+}
+
+        req.body.date = moment(req.body.date).utcOffset("+0100").format("YYYY-MM-DD");
+
+        rs = await db.query(
+            "UPDATE events SET name = $1, date = $2, information = $3 WHERE id = $4 RETURNING *",
+            [req.body.name, req.body.date, req.body.information, req.params.id]
+        );
+
+        res.json(rs.rows[0]);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
