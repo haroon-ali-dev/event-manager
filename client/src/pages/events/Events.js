@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import moment from "moment";
-import Table from "react-bootstrap/Table";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import Stack from "react-bootstrap/Stack";
+import { Alert, Table, Button, Modal, Stack, Spinner } from "react-bootstrap";
 import { PencilSquare } from "react-bootstrap-icons";
+import { Trash } from "react-bootstrap-icons";
 import styles from "./Events.module.css";
 import CreateEvent from "./components/CreateEvent";
 
@@ -16,6 +14,8 @@ const Events = () => {
   const [singleEvent, setSingleEvent] = useState({});
   const [formAction, setFormAction] = useState("");
   const [showFormModal, setShowFormModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteEventId, setDeleteEventId] = useState(null);
   const [reqInProcess, setReqInProcess] = useState(false);
   const [errorAlert, setErrorAlert] = useState(false);
 
@@ -75,6 +75,50 @@ const Events = () => {
     setEvents(events.map((ev) => (ev.id === event.id ? event : ev)));
   };
 
+  const showDeleteConfirmation = (id) => {
+    setDeleteEventId(id);
+    setShowDeleteModal(true);
+    setErrorAlert(false);
+  };
+
+  const deleteEvent = async () => {
+    setReqInProcess(true);
+    setErrorAlert(false);
+
+    try {
+      const accessToken = await getAccessTokenSilently({
+        authorizationParams: {
+          audience:
+            process.env.NODE_ENV === "development"
+              ? "http://localhost:3000/api/"
+              : "",
+        },
+      });
+
+      const res = await fetch(`/api/events/${deleteEventId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      if (res.status === 200) {
+        setEvents(events.filter((event) => event.id !== deleteEventId));
+        setShowDeleteModal(false);
+      } else {
+        const data = await res.json();
+        console.log(data);
+        setErrorAlert(true);
+        setReqInProcess(false);
+      }
+    } catch (e) {
+      console.log(e.message);
+      setErrorAlert(true);
+      setReqInProcess(false);
+    }
+  };
+
   return (
     <>
       <Modal
@@ -100,7 +144,42 @@ const Events = () => {
             setErrorAlert={setErrorAlert}
           />
         </Modal.Body>
-        <Modal.Footer></Modal.Footer>
+      </Modal>
+
+      <Modal
+        show={showDeleteModal}
+        onHide={() => setShowDeleteModal(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Confirmation</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Are you sure you want to delete this event?
+          {errorAlert && (
+            <Alert className="mt-3" variant="danger">
+              There was a problem. Please try again.
+            </Alert>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="danger"
+            onClick={deleteEvent}
+            disabled={reqInProcess}
+          >
+            Delete
+            {reqInProcess && (
+              <Spinner
+                className="ms-2"
+                animation="border"
+                role="status"
+                size="sm"
+              >
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+            )}
+          </Button>
+        </Modal.Footer>
       </Modal>
 
       <h1 className={styles.heading}>Events</h1>
@@ -141,6 +220,13 @@ const Events = () => {
                     className={styles.icon}
                     onClick={() => update(event.id)}
                   />
+                  <Trash
+                  onClick={() => {
+                    setReqInProcess(false);
+                    setErrorAlert(false);
+                    showDeleteConfirmation(event.id);
+                  }}
+                />
                 </Stack>
               </td>
             </tr>
