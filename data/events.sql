@@ -1,6 +1,6 @@
 create table events (
 	id SERIAL PRIMARY KEY,
-	name VARCHAR(300) NOT NULL,
+	name VARCHAR(150) NOT NULL,
 	date DATE NOT NULL,
 	information TEXT NOT NULL,
 	created_by VARCHAR(300) NOT NULL
