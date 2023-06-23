@@ -10,18 +10,18 @@ import Spinner from "react-bootstrap/Spinner";
 import Alert from 'react-bootstrap/Alert';
 
 const schema = yup.object({
-  memberId: yup.string().min(3).max(10).required().label("Member ID")
+  memberId: yup.string().min(3).max(100).required().label("Member ID")
 }).required();
 
 export default function AddMemberToEvent({
-  addMemberToEvent,
-  ssetShowPersonAddModal,
+  showPersonAddModal,
+  setShowPersonAddModal,
   reqInProcess,
   setReqInProcess,
   errorAlert,
   setErrorAlert
 }) {
-  const { getAccessTokenSilently, user } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
 
   const {
     register,
@@ -32,7 +32,38 @@ export default function AddMemberToEvent({
   });
 
   const onSubmit = async (data) => {
-    console.log(data);
+    setReqInProcess(true);
+    setErrorAlert(false);
+
+    try {
+      const accessToken = await getAccessTokenSilently({
+        authorizationParams: {
+          audience: process.env.NODE_ENV === "development" ? "http://localhost:3000/api/" : "",
+        },
+      });
+
+      const res = await fetch("/api/add-member-to-event", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ ...data, eventId: showPersonAddModal[1] }),
+      });
+
+      if (res.status === 200) {
+        setReqInProcess(false);
+        setShowPersonAddModal(false);
+      } else {
+        const data = await res.json();
+        setReqInProcess(false);
+        setErrorAlert([true, data.message]);
+      }
+    } catch (e) {
+      console.log(e.message);
+      setReqInProcess(false);
+      setErrorAlert(true);
+    }
   };
 
   return (
@@ -66,7 +97,7 @@ export default function AddMemberToEvent({
 
         {errorAlert &&
           <Alert className="mt-3" variant="danger">
-            There was a problem. Please try again.
+            {errorAlert[1] ? errorAlert[1] : "There was a problem. Please try again."}
           </Alert>}
       </div>
     </Form>

@@ -120,12 +120,6 @@ const Events = () => {
     }
   };
 
-  const showAddMember = (eventId) => {
-    setShowDeleteModal(true);
-    setErrorAlert(false);
-    setDeleteEventId(id);
-  };
-
   return (
     <>
       <Modal
@@ -194,10 +188,16 @@ const Events = () => {
           <Modal.Title>Add Member To Event</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <AddMemberToEvent />
+          <AddMemberToEvent
+            showPersonAddModal={showPersonAddModal}
+            setShowPersonAddModal={setShowPersonAddModal}
+            reqInProcess={reqInProcess}
+            setReqInProcess={setReqInProcess}
+            errorAlert={errorAlert}
+            setErrorAlert={setErrorAlert}
+          />
         </Modal.Body>
-        <Modal.Footer>
-        </Modal.Footer>
+        <Modal.Footer></Modal.Footer>
       </Modal>
 
       <h1 className={styles.heading}>Events</h1>

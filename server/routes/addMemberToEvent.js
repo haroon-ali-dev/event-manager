@@ -10,7 +10,7 @@ const jwtCheck = auth({
     tokenSigningAlg: 'RS256'
 });
 
-router.post("/", async (req, res) => {
+router.post("/", jwtCheck, async (req, res) => {
     try {
         await validate(req.body);
     } catch (error) {
@@ -23,8 +23,8 @@ router.post("/", async (req, res) => {
 
         const uId = rs.rows[0].id;
 
-        rs = await db.query("SELECT * FROM attendance WHERE u_id = $1", [uId]);
-        if (rs.rowCount > 0) return res.status(404).json({ message: "Member already exists in event." });
+        rs = await db.query("SELECT * FROM attendance WHERE u_id = $1 AND e_id = $2", [uId, +req.body.eventId]);
+        if (rs.rowCount > 0) return res.status(400).json({ message: "Member already exists in event." });
 
         rs = await db.query(
             "INSERT INTO attendance (e_id, u_id) VALUES ($1, $2) RETURNING *",
