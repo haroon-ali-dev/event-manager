@@ -5,6 +5,7 @@ import { Alert, Table, Button, Modal, Stack, Spinner } from "react-bootstrap";
 import { PencilSquare, Trash, PersonAdd } from "react-bootstrap-icons";
 import styles from "./Events.module.css";
 import CreateEvent from "./components/CreateEvent";
+import AddMemberToEvent from "./components/AddMemberToEvent";
 
 const Events = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -193,7 +194,7 @@ const Events = () => {
           <Modal.Title>Add Member To Event</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {showPersonAddModal[1]}
+          <AddMemberToEvent />
         </Modal.Body>
         <Modal.Footer>
         </Modal.Footer>
