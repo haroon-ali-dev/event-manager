@@ -9,6 +9,7 @@ import Col from "react-bootstrap/Col";
 import Spinner from "react-bootstrap/Spinner";
 import Alert from 'react-bootstrap/Alert';
 import { Html5QrcodeScanner } from "html5-qrcode";
+import { QrCodeScan } from "react-bootstrap-icons";
 
 const schema = yup.object({
   memberId: yup.string().min(3).max(100).required().label("Member ID")
@@ -106,7 +107,7 @@ export default function AddMemberToEvent({
             </Form.Control.Feedback>
           </Col>
           <Col>
-            <Button variant="success" onClick={startQR}>QR Code</Button>
+            <QrCodeScan className="icon" style={{ fontSize: "29px", marginTop: "4px" }} onClick={startQR} />
           </Col>
         </Row>
       </Form.Group>
