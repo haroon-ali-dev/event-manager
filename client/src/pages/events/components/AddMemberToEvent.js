@@ -8,6 +8,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Spinner from "react-bootstrap/Spinner";
 import Alert from 'react-bootstrap/Alert';
+import { Html5QrcodeScanner } from "html5-qrcode";
 
 const schema = yup.object({
   memberId: yup.string().min(3).max(100).required().label("Member ID")
@@ -27,6 +28,7 @@ export default function AddMemberToEvent({
     register,
     handleSubmit,
     formState: { errors },
+    setValue
   } = useForm({
     resolver: yupResolver(schema)
   });
@@ -66,6 +68,26 @@ export default function AddMemberToEvent({
     }
   };
 
+  let html5QrcodeScanner;
+
+  const startQR = () => {
+    html5QrcodeScanner = new Html5QrcodeScanner(
+      "reader",
+      { fps: 10, qrbox: {width: 250, height: 250} },
+      false);
+
+    html5QrcodeScanner.render(onScanSuccess);
+  }
+
+  async function onScanSuccess(decodedText) {
+    try {
+      await html5QrcodeScanner.clear();
+      setValue("memberId", decodedText);
+    } catch (error) {
+      console.log(error);
+    } 
+  }
+
   return (
     <Form className="w-75 mx-auto mt-3" onSubmit={handleSubmit(onSubmit)}>
       <Form.Group className="mb-3" controlId="memberId">
@@ -83,8 +105,13 @@ export default function AddMemberToEvent({
               {errors.memberId?.message}
             </Form.Control.Feedback>
           </Col>
+          <Col>
+            <Button variant="success" onClick={startQR}>QR Code</Button>
+          </Col>
         </Row>
       </Form.Group>
+
+      <div id="reader" width="600px"></div>
 
       <div className="container-btn mt-4 mb-2">
         <Button variant="success" type="submit" disabled={reqInProcess}>
