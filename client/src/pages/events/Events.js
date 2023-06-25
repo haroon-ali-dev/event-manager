@@ -3,9 +3,11 @@ import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import moment from "moment";
 import { Alert, Table, Button, Modal, Stack, Spinner } from "react-bootstrap";
 import { PencilSquare, Trash, PersonAdd } from "react-bootstrap-icons";
-import styles from "./Events.module.css";
+
 import CreateEvent from "./components/CreateEvent";
-import AddMemberToEvent from "./components/AddMemberToEvent";
+import AddMemberToEventModal from "./components/AddMemberToEventModal";
+
+import styles from "./Events.module.css";
 
 const Events = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -183,22 +185,14 @@ const Events = () => {
         </Modal.Footer>
       </Modal>
 
-      <Modal size="lg" show={showPersonAddModal[0]} onHide={() => setShowPersonAddModal([false, 0])}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add Member To Event</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <AddMemberToEvent
-            showPersonAddModal={showPersonAddModal}
-            setShowPersonAddModal={setShowPersonAddModal}
-            reqInProcess={reqInProcess}
-            setReqInProcess={setReqInProcess}
-            errorAlert={errorAlert}
-            setErrorAlert={setErrorAlert}
-          />
-        </Modal.Body>
-        <Modal.Footer></Modal.Footer>
-      </Modal>
+      <AddMemberToEventModal
+        showPersonAddModal={showPersonAddModal}
+        setShowPersonAddModal={setShowPersonAddModal}
+        reqInProcess={reqInProcess}
+        setReqInProcess={setReqInProcess}
+        errorAlert={errorAlert}
+        setErrorAlert={setErrorAlert}
+      />
 
       <h1 className={styles.heading}>Events</h1>
 
