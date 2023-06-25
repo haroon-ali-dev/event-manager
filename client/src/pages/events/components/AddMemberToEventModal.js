@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useForm } from "react-hook-form";
