@@ -1,18 +1,18 @@
 const express = require("express");
 const router = express.Router();
-const requestSource = require("../middlewares/requestSource");
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 router.post("/", async (req, res) => {
   const { body } = req;
+  console.log(body);
 
   const formatData = (data) => {
     let result = "";
-    if (!data) {
+    if (!data || typeof data !== "object") {
       return result;
     }
-    result += "First test";
+    result += `Name: ${data.first_name} ${data.last_name} \nMembership ID: ${data.g_id}\n\n`;
     return result;
   };
 
@@ -22,7 +22,7 @@ router.post("/", async (req, res) => {
     to: body.to,
     from: `Event Manager System <${process.env.SENDGRID_EMAIL}>`,
     subject: "Your Membership Information",
-    text: "Your Membership Information",
+    text: `Your Membership Information is as follows:\n\n${formattedData}\n\nThank you for your membership!`,
   };
 
   try {

@@ -2,13 +2,14 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import moment from "moment";
+import Alert from "react-bootstrap/Alert";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Stack from "react-bootstrap/Stack";
 import Spinner from "react-bootstrap/Spinner";
-import { PencilSquare } from 'react-bootstrap-icons';
-import { Trash } from 'react-bootstrap-icons';
+import { PencilSquare } from "react-bootstrap-icons";
+import { Trash } from "react-bootstrap-icons";
 
 import styles from "./Members.module.css";
 import CreateMember from "./components/CreateMember";
@@ -23,7 +24,7 @@ const Members = () => {
   const [showDeleteModal, setShowDeleteModal] = useState([false, 0]);
   const [reqInProcess, setReqInProcess] = useState(false);
   const [errorAlert, setErrorAlert] = useState(false);
-  
+
   useEffect(() => {
     async function getMembers() {
       try {
@@ -184,12 +185,14 @@ const Members = () => {
               <td>{member["gender"]}</td>
               <td>{member["email"]}</td>
               <td>{member["mobile"]}</td>
-              <td>{moment(member["member_since"]).utcOffset('+0100').format('DD-MM-YYYY')}</td>
+              <td>{moment(member["member_since"]).utcOffset("+0100").format("DD-MM-YYYY")}</td>
               <td>{member["created_by"]}</td>
               <td>
                 <Stack direction="horizontal" gap={3}>
                   <PencilSquare className={styles.icon} onClick={() => update(member.id)} />
-                  <Trash className={styles.icon} onClick={() => { setReqInProcess(false); setErrorAlert(false); setShowDeleteModal([true, member.id]); }} />
+                  <Trash className={styles.icon} onClick={() => {
+ setReqInProcess(false); setErrorAlert(false); setShowDeleteModal([true, member.id]);
+}} />
                 </Stack>
               </td>
             </tr>

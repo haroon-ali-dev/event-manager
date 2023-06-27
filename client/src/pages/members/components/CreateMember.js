@@ -9,7 +9,7 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Spinner from "react-bootstrap/Spinner";
-import Alert from 'react-bootstrap/Alert';
+import Alert from "react-bootstrap/Alert";
 
 const today = new Date();
 
@@ -42,7 +42,7 @@ export default function CreateMember({
   reqInProcess,
   setReqInProcess,
   errorAlert,
-  setErrorAlert
+  setErrorAlert,
 }) {
   const { getAccessTokenSilently, user } = useAuth0();
 
@@ -56,7 +56,7 @@ export default function CreateMember({
       firstName: formAction === "update" ? singleMember.first_name : "",
       lastName: formAction === "update" ? singleMember.last_name : "",
       gender: formAction === "update" ? singleMember.gender : "",
-      dateOfBirth: formAction === "update" ? moment(singleMember.date_of_birth).utcOffset('+0100').format('YYYY-MM-DD') : "",
+      dateOfBirth: formAction === "update" ? moment(singleMember.date_of_birth).utcOffset("+0100").format("YYYY-MM-DD") : "",
       address: formAction === "update" ? singleMember.address : "",
       postCode: formAction === "update" ? singleMember.post_code : "",
       address: formAction === "update" ? singleMember.address : "",
@@ -67,7 +67,7 @@ export default function CreateMember({
   });
 
   const onSubmit = async (data) => {
-    data.dateOfBirth = moment(data.dateOfBirth).utcOffset('+0100').format('YYYY-MM-DD');
+    data.dateOfBirth = moment(data.dateOfBirth).utcOffset("+0100").format("YYYY-MM-DD");
     data.userName = user.name;
 
     setReqInProcess(true);
@@ -95,6 +95,24 @@ export default function CreateMember({
           createMember(member);
           setReqInProcess(false);
           setShowFormModal(false);
+
+          const emailRes = await fetch("/api/sendmail", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify({
+              to: member.email,
+              data: member,
+            }),
+          });
+          if (emailRes.status === 200) {
+            console.log("Email sent successfully.");
+          } else {
+            console.log("Failed to send email.");
+          }
+
         } else {
           const data = await res.json();
           console.log(data);
