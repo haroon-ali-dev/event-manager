@@ -4,12 +4,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { parse, isDate } from "date-fns";
 import moment from "moment";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Spinner from "react-bootstrap/Spinner";
-import Alert from "react-bootstrap/Alert";
+import { Form, Button, Row, Col, Spinner, Alert } from "react-bootstrap";
+
 
 const today = new Date();
 
