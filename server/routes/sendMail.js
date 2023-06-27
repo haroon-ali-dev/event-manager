@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const sgMail = require("@sendgrid/mail");
+const requestSource = require("../middlewares/requestSource");
 const QrCode = require("qrcode");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-router.post("/", async (req, res) => {
+router.post("/",requestSource, async (req, res) => {
   const { body } = req;
     const qrCode = await QrCode.toDataURL(body.data.g_id);
     body.data.qrCode = qrCode;
