@@ -2,15 +2,8 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import moment from "moment";
-import Alert from "react-bootstrap/Alert";
-import Table from "react-bootstrap/Table";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import Stack from "react-bootstrap/Stack";
-import Spinner from "react-bootstrap/Spinner";
-import { PencilSquare } from "react-bootstrap-icons";
-import { Trash } from "react-bootstrap-icons";
-
+import { Alert, Table, Button, Modal, Stack, Spinner } from "react-bootstrap";
+import { PencilSquare, Trash } from "react-bootstrap-icons";
 import styles from "./Members.module.css";
 import CreateMember from "./components/CreateMember";
 
