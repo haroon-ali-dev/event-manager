@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import moment from "moment";
 import { Alert, Table, Button, Modal, Stack, Spinner } from "react-bootstrap";
-import { PencilSquare } from "react-bootstrap-icons";
-import { Trash } from "react-bootstrap-icons";
-import styles from "./Events.module.css";
+import { PencilSquare, Trash, PersonAdd } from "react-bootstrap-icons";
+
 import CreateEvent from "./components/CreateEvent";
+import AddMemberToEventModal from "./components/AddMemberToEventModal";
+
+import styles from "./Events.module.css";
 
 const Events = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -16,6 +18,7 @@ const Events = () => {
   const [showFormModal, setShowFormModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteEventId, setDeleteEventId] = useState(null);
+  const [showPersonAddModal, setShowPersonAddModal] = useState([false, 0]);
   const [reqInProcess, setReqInProcess] = useState(false);
   const [errorAlert, setErrorAlert] = useState(false);
 
@@ -182,6 +185,15 @@ const Events = () => {
         </Modal.Footer>
       </Modal>
 
+      <AddMemberToEventModal
+        showPersonAddModal={showPersonAddModal}
+        setShowPersonAddModal={setShowPersonAddModal}
+        reqInProcess={reqInProcess}
+        setReqInProcess={setReqInProcess}
+        errorAlert={errorAlert}
+        setErrorAlert={setErrorAlert}
+      />
+
       <h1 className={styles.heading}>Events</h1>
 
       <div className="text-center">
@@ -221,13 +233,18 @@ const Events = () => {
                     onClick={() => update(event.id)}
                   />
                   <Trash
-                  className={styles.icon}
-                  onClick={() => {
+                    className={styles.icon}
+                    onClick={() => {
+                      setReqInProcess(false);
+                      setErrorAlert(false);
+                      showDeleteConfirmation(event.id);
+                    }}
+                  />
+                  <PersonAdd className={styles.icon} onClick={() => {
                     setReqInProcess(false);
                     setErrorAlert(false);
-                    showDeleteConfirmation(event.id);
-                  }}
-                />
+                    setShowPersonAddModal([true, event.id]);
+                  }} />
                 </Stack>
               </td>
             </tr>

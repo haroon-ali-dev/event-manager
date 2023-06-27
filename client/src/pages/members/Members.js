@@ -164,6 +164,7 @@ const Members = () => {
       <Table striped bordered hover style={{ tableLayout: "fixed", wordWrap: "break-word" }}>
         <thead>
           <tr>
+            <th>Member ID</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Gender</th>
@@ -177,6 +178,7 @@ const Members = () => {
         <tbody>
           {members.map((member, i) => (
             <tr key={i}>
+              <td>{member["g_id"]}</td>
               <td>{member["first_name"]}</td>
               <td>{member["last_name"]}</td>
               <td>{member["gender"]}</td>

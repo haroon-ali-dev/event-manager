@@ -18,6 +18,7 @@ module.exports = merge(common, {
 			},
 		],
 		static: false,
+		//allowedHosts: "all"
 	},
 	mode: "development",
 });
