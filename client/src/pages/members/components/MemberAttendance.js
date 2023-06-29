@@ -35,6 +35,21 @@ export default function MemberAttendance({ memberId }) {
     }, []);
 
     return (
-        <Table />
+        <Table striped bordered hover style={{ tableLayout: "fixed", wordWrap: "break-word" }}>
+            <thead>
+                <tr>
+                    <th>Event Date</th>
+                    <th>Event Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                {attendance.map((aItem, i) => (
+                    <tr key={i}>
+                        <td>{aItem["date"]}</td>
+                        <td>{aItem["name"]}</td>
+                    </tr>
+                ))}
+            </tbody>
+        </Table>
     );
 }
