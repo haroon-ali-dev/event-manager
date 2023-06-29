@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Table } from "react-bootstrap";
-import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
+import { useAuth0 } from "@auth0/auth0-react";
+import moment from "moment";
 
 export default function MemberAttendance({ memberId }) {
     const [attendance, setAttendance] = useState([]);
@@ -23,7 +24,6 @@ export default function MemberAttendance({ memberId }) {
                 });
 
                 const data = await res.json();
-                console.log(data);
                 setAttendance(data);
 
             } catch (e) {
@@ -45,7 +45,7 @@ export default function MemberAttendance({ memberId }) {
             <tbody>
                 {attendance.map((aItem, i) => (
                     <tr key={i}>
-                        <td>{aItem["date"]}</td>
+                        <td>{moment(aItem["date"]).utcOffset("+0100").format("DD-MM-YYYY")}</td>
                         <td>{aItem["name"]}</td>
                     </tr>
                 ))}
