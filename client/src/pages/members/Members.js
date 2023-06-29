@@ -1,11 +1,14 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
-import moment from "moment";
 import { Alert, Table, Button, Modal, Stack, Spinner } from "react-bootstrap";
 import { PencilSquare, Trash, ListCheck } from "react-bootstrap-icons";
-import styles from "./Members.module.css";
+import moment from "moment";
+
 import CreateMember from "./components/CreateMember";
+import MemberAttendance from "./components/MemberAttendance";
+
+import styles from "./Members.module.css";
 
 const Members = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -153,7 +156,7 @@ const Members = () => {
           <Modal.Title>Attendance</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {showAttendanceModal[1]}
+          <MemberAttendance memberId={showAttendanceModal[1]} />
         </Modal.Body>
         <Modal.Footer></Modal.Footer>
       </Modal>
