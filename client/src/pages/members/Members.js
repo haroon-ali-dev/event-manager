@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import moment from "moment";
 import { Alert, Table, Button, Modal, Stack, Spinner } from "react-bootstrap";
-import { PencilSquare, Trash } from "react-bootstrap-icons";
+import { PencilSquare, Trash, ListCheck } from "react-bootstrap-icons";
 import styles from "./Members.module.css";
 import CreateMember from "./components/CreateMember";
 
@@ -15,6 +15,7 @@ const Members = () => {
   const [formAction, setFormAction] = useState("");
   const [showFormModal, setShowFormModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState([false, 0]);
+  const [showAttendanceModal, setShowAttendanceModal] = useState([false, 0]);
   const [reqInProcess, setReqInProcess] = useState(false);
   const [errorAlert, setErrorAlert] = useState(false);
 
@@ -147,6 +148,16 @@ const Members = () => {
         </Modal.Footer>
       </Modal>
 
+      <Modal show={showAttendanceModal[0]} onHide={() => setShowAttendanceModal([false, 0])}>
+        <Modal.Header closeButton>
+          <Modal.Title>Attendance</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {showAttendanceModal[1]}
+        </Modal.Body>
+        <Modal.Footer></Modal.Footer>
+      </Modal>
+
       <h1 className={styles.heading}>Members</h1>
 
       <div className="text-center">
@@ -184,8 +195,9 @@ const Members = () => {
                 <Stack direction="horizontal" gap={3}>
                   <PencilSquare className={styles.icon} onClick={() => update(member.id)} />
                   <Trash className={styles.icon} onClick={() => {
- setReqInProcess(false); setErrorAlert(false); setShowDeleteModal([true, member.id]);
-}} />
+                    setReqInProcess(false); setErrorAlert(false); setShowDeleteModal([true, member.id]);
+                  }} />
+                  <ListCheck className={styles.icon} onClick={() => setShowAttendanceModal([true, member.id])} />
                 </Stack>
               </td>
             </tr>
