@@ -35,21 +35,28 @@ export default function MemberAttendance({ memberId }) {
     }, []);
 
     return (
-        <Table striped bordered hover style={{ tableLayout: "fixed", wordWrap: "break-word" }}>
-            <thead>
-                <tr>
-                    <th>Event Date</th>
-                    <th>Event Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                {attendance.map((aItem, i) => (
-                    <tr key={i}>
-                        <td>{moment(aItem["date"]).utcOffset("+0100").format("DD-MM-YYYY")}</td>
-                        <td>{aItem["name"]}</td>
-                    </tr>
-                ))}
-            </tbody>
-        </Table>
+        <>
+            {attendance.length <= 0 && (
+                <div className="text-center">Member hasn't attended any events.</div>
+            )}
+            {attendance.length > 1 && (
+                <Table striped bordered hover style={{ tableLayout: "fixed", wordWrap: "break-word" }}>
+                    <thead>
+                        <tr>
+                            <th>Event Date</th>
+                            <th>Event Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {attendance.map((aItem, i) => (
+                            <tr key={i}>
+                                <td>{moment(aItem["date"]).utcOffset("+0100").format("DD-MM-YYYY")}</td>
+                                <td>{aItem["name"]}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
+            )}
+        </>
     );
 }
