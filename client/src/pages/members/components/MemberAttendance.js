@@ -39,7 +39,7 @@ export default function MemberAttendance({ memberId }) {
             {attendance.length <= 0 && (
                 <div className="text-center">Member hasn't attended any events.</div>
             )}
-            {attendance.length > 1 && (
+            {attendance.length >= 1 && (
                 <Table striped bordered hover style={{ tableLayout: "fixed", wordWrap: "break-word" }}>
                     <thead>
                         <tr>

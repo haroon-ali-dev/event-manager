@@ -9,7 +9,7 @@ const jwtCheck = auth({
     tokenSigningAlg: "RS256",
 });
 
-router.get("/member/:id", jwtCheck, async (req, res) => {
+router.get("/member/:id", async (req, res) => {
     const memberId = +req.params.id;
 
     try {
