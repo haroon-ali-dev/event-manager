@@ -24,7 +24,6 @@ export default function EventAttendance({ eventID }) {
 
                 const data = await res.json();
                 setEventAttendance(data);
-                console.log(data);
 
             } catch (e) {
                 console.log(e.message);
