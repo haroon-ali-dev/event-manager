@@ -6,7 +6,7 @@ import { PencilSquare, Trash, PersonAdd, ListCheck } from "react-bootstrap-icons
 
 import CreateEvent from "./components/CreateEvent";
 import AddMemberToEventModal from "./components/AddMemberToEventModal";
-import EventAttendance from "../members/EventAttendance";
+import EventAttendance from "./components/EventAttendance";
 
 import styles from "./Events.module.css";
 
