@@ -29,4 +29,23 @@ router.get("/member/:id", async (req, res) => {
     }
 });
 
+router.get("/event/:id", async (req, res) => {
+    const eventID = +req.params.id;
+
+    try {
+        const query = `
+        SELECT m.first_name, m.last_name, m.g_id
+        FROM attendance AS a
+        JOIN members AS m ON a.u_id = m.id
+        WHERE a.e_id = $1;
+        `;
+
+        const { rows } = await db.query(query, [eventID]);
+
+        res.json(rows);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 module.exports = router;
