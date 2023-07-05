@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import moment from "moment";
 import { Alert, Table, Button, Modal, Stack, Spinner } from "react-bootstrap";
-import { PencilSquare, Trash, PersonAdd } from "react-bootstrap-icons";
+import { PencilSquare, Trash, PersonAdd, ListCheck } from "react-bootstrap-icons";
 
 import CreateEvent from "./components/CreateEvent";
 import AddMemberToEventModal from "./components/AddMemberToEventModal";
 
 import styles from "./Events.module.css";
+import { set } from "date-fns";
 
 const Events = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -244,6 +245,10 @@ const Events = () => {
                     setReqInProcess(false);
                     setErrorAlert(false);
                     setShowPersonAddModal([true, event.id]);
+                  }} />
+                  <ListCheck className={styles.icon} onClick={() => {
+                    setReqInProcess(false);
+                    setErrorAlert(false);
                   }} />
                 </Stack>
               </td>
