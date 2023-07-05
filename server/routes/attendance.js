@@ -30,18 +30,17 @@ router.get("/member/:id", async (req, res) => {
 });
 
 router.get("/event/:id", async (req, res) => {
-    const memberId = +req.params.id;
+    const eventID = +req.params.id;
 
     try {
         const query = `
-            SELECT e.name, e.date
-            FROM attendance a
-            INNER JOIN events e
-            ON a.e_id = e.id
-            WHERE a.u_id = $1
+        SELECT m.first_name, m.last_name, m.g_id
+        FROM attendance AS a
+        JOIN members AS m ON a.u_id = m.id
+        WHERE a.e_id = $1;
         `;
 
-        const { rows } = await db.query(query, [memberId]);
+        const { rows } = await db.query(query, [eventID]);
 
         res.json(rows);
     } catch (err) {

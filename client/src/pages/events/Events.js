@@ -6,9 +6,9 @@ import { PencilSquare, Trash, PersonAdd, ListCheck } from "react-bootstrap-icons
 
 import CreateEvent from "./components/CreateEvent";
 import AddMemberToEventModal from "./components/AddMemberToEventModal";
+import EventAttendance from "../members/EventAttendance";
 
 import styles from "./Events.module.css";
-import { set } from "date-fns";
 
 const Events = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -18,6 +18,7 @@ const Events = () => {
   const [formAction, setFormAction] = useState("");
   const [showFormModal, setShowFormModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showAttendanceModal, setShowAttendanceModal] = useState([false, 0]);
   const [deleteEventId, setDeleteEventId] = useState(null);
   const [showPersonAddModal, setShowPersonAddModal] = useState([false, 0]);
   const [reqInProcess, setReqInProcess] = useState(false);
@@ -194,6 +195,15 @@ const Events = () => {
         errorAlert={errorAlert}
         setErrorAlert={setErrorAlert}
       />
+        <Modal show={showAttendanceModal[0]} onHide={() => setShowAttendanceModal([false, 0])}>
+        <Modal.Header closeButton>
+          <Modal.Title>Attendance</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <EventAttendance eventID={showAttendanceModal[1]} />
+        </Modal.Body>
+        <Modal.Footer></Modal.Footer>
+      </Modal>
 
       <h1 className={styles.heading}>Events</h1>
 
@@ -246,10 +256,7 @@ const Events = () => {
                     setErrorAlert(false);
                     setShowPersonAddModal([true, event.id]);
                   }} />
-                  <ListCheck className={styles.icon} onClick={() => {
-                    setReqInProcess(false);
-                    setErrorAlert(false);
-                  }} />
+                  <ListCheck className={styles.icon} onClick={() => setShowAttendanceModal([true, event.id])} />
                 </Stack>
               </td>
             </tr>
