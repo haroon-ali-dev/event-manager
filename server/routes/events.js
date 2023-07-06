@@ -20,6 +20,16 @@ router.get("/", jwtCheck, async (req, res) => {
     }
 });
 
+router.get("/date/:date", async (req, res) => {
+    try {
+        const dbRes = await db.query("SELECT * FROM events WHERE date = $1", [req.params.date]);
+
+        res.json(dbRes.rows);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 router.post("/", jwtCheck, async (req, res) => {
     try {
         await validate(req.body);
