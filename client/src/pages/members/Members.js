@@ -170,7 +170,10 @@ const Members = () => {
         </Button>
       </div>
 
-      <Search />
+      <Search
+        reqInProcess={reqInProcess}
+        setReqInProcess={setReqInProcess}
+      />
 
       <Table striped bordered hover style={{ tableLayout: "fixed", wordWrap: "break-word" }}>
         <thead>
