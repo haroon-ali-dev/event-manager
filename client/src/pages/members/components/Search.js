@@ -1,23 +1,48 @@
 import { useState } from "react";
 import { Card, Form, Button, Spinner } from "react-bootstrap";
+import { useAuth0 } from "@auth0/auth0-react";
 
 import styles from "./Search.module.css";
 
 export default function Search({ reqInProcess, setReqInProcess }) {
+    const { getAccessTokenSilently } = useAuth0();
+
     const [email, setEmail] = useState("");
     const [timer, setTimer] = useState("");
+    const [error, setError] = useState("");
 
     const search = async (email) => {
         if (email) {
             clearTimeout(timer);
 
             setTimer(() => {
-                return setTimeout(() => {
+                return setTimeout(async () => {
                     setReqInProcess(true);
-                    setTimeout(() => {
-                        console.log("Request sent.");
-                        setReqInProcess(false);
-                    }, 1000);
+
+                    try {
+                        const accessToken = await getAccessTokenSilently({
+                            authorizationParams: {
+                                audience: process.env.NODE_ENV === "development" ? "http://localhost:3000/api/" : "",
+                            },
+                        });
+
+                        const res = await fetch(`/api/members/email/${email}`, {
+                            headers: {
+                                Authorization: `Bearer ${accessToken}`,
+                            },
+                        });
+
+                        const data = await res.json();
+
+                        if (res.status === 200) {
+                            console.log("Member found.");
+                        } else {
+                            setError(data.message);
+                        }
+
+                    } catch (e) {
+                        console.log(e.message);
+                    }
                 }, 1000);
             });
         }
@@ -36,10 +61,14 @@ export default function Search({ reqInProcess, setReqInProcess }) {
                         <Form.Control
                             type="text"
                             placeholder="Email"
+                            isInvalid={error}
                             value={email}
                             onChange={(e) => { setEmail(e.target.value); search(e.target.value); }}
                         />
                     </Form.Group>
+                    <Form.Control.Feedback type="invalid">
+                        {error && error}
+                    </Form.Control.Feedback>
                 </Form>
             </Card.Body>
         </Card>

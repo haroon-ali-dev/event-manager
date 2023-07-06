@@ -23,7 +23,7 @@ router.get("/", jwtCheck, async (req, res) => {
     }
 });
 
-router.get("/email/:email", async (req, res) => {
+router.get("/email/:email", jwtCheck, async (req, res) => {
     try {
         const dbRes = await db.query("SELECT * FROM members WHERE email = $1", [req.params.email]);
 
@@ -81,8 +81,8 @@ router.put("/:id", jwtCheck, async (req, res) => {
     try {
         let rs = await db.query("SELECT * FROM members WHERE id = $1", [req.params.id]);
         if (rs.rowCount <= 0) {
-return res.status(404).json({ message: "Member does not exist." });
-}
+            return res.status(404).json({ message: "Member does not exist." });
+        }
 
         req.body.dateOfBirth = moment(req.body.dateOfBirth).utcOffset("+0100").format("YYYY-MM-DD");
 
@@ -112,8 +112,8 @@ router.delete("/:id", async (req, res) => {
     try {
         let rs = await db.query("SELECT * FROM members WHERE id = $1", [req.params.id]);
         if (rs.rowCount <= 0) {
-return res.status(404).json({ message: "Member does not exist." });
-}
+            return res.status(404).json({ message: "Member does not exist." });
+        }
 
         await db.query("DELETE FROM members WHERE id = $1", [req.params.id]);
 
