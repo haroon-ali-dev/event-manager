@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { withAuthenticationRequired, useAuth0 } from "@auth0/auth0-react";
-import { Button, Card, Container } from "react-bootstrap";
+import { Button, Card, Container, Modal } from "react-bootstrap";
 
 import AddMemberToEventModal from "../pages/events/components/AddMemberToEventModal";
+import EventAttendance from "../pages/members/EventAttendance.js";
 
 const Dashboard = () => {
   const { getAccessTokenSilently } = useAuth0();
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [showPersonAddModal, setShowPersonAddModal] = useState([false, 0]);
+  const [showAttendanceModal, setShowAttendanceModal] = useState([false, 0]);
   const [reqInProcess, setReqInProcess] = useState(false);
   const [errorAlert, setErrorAlert] = useState(false);
 
@@ -49,6 +51,15 @@ const Dashboard = () => {
 
   return (
     <>
+      <Modal show={showAttendanceModal[0]} onHide={() => setShowAttendanceModal([false, 0])}>
+        <Modal.Header closeButton>
+          <Modal.Title>Attendance</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <EventAttendance eventID={showAttendanceModal[1]} />
+        </Modal.Body>
+        <Modal.Footer></Modal.Footer>
+      </Modal>
       <h1 className="heading">Upcoming Events</h1>
       <Container>
         <AddMemberToEventModal
@@ -73,8 +84,15 @@ const Dashboard = () => {
                 <Button
                   variant="success"
                   onClick={() => setShowPersonAddModal([true, event.id])}
+                  style={{ marginRight: "10px" }}
                 >
                   Check-in
+                </Button>
+                <Button
+                  variant="warning"
+                  onClick={() => setShowAttendanceModal([true, event.id])}
+                >
+                  Attended List
                 </Button>
               </Card.Body>
             </Card>
