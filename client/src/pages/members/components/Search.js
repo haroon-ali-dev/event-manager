@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, Form, Button, Spinner } from "react-bootstrap";
+import { Card, Form, Button, Spinner, InputGroup } from "react-bootstrap";
 import { useAuth0 } from "@auth0/auth0-react";
 
 import styles from "./Search.module.css";
@@ -58,10 +58,6 @@ export default function Search({ reqInProcess, setReqInProcess, setMembers, getM
         <Card className={`${styles.cardSearch} mb-4`}>
             <Card.Body>
                 <Card.Title>Search</Card.Title>
-                {reqInProcess &&
-                    <Spinner className="ms-2" animation="border" role="status" size="sm">
-                        <span className="visually-hidden">Loading...</span>
-                    </Spinner>}
                 <Form>
                     <Form.Group className="mb-2" controlId="email">
                         <Form.Control
@@ -80,12 +76,16 @@ export default function Search({ reqInProcess, setReqInProcess, setMembers, getM
                         type="button"
                         size="sm"
                         disabled={!email}
-                        onClick={() => {setEmail(""); setError(false); getMembers();}}
+                        onClick={() => { setEmail(""); setError(false); getMembers(); }}
                     >
                         Clear
                     </Button>
                 </Form>
             </Card.Body>
+            {reqInProcess &&
+                <Spinner className={styles.spinner} animation="border" role="status" size="sm">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>}
         </Card>
     );
 }
