@@ -9,6 +9,7 @@ import CreateMember from "./components/CreateMember";
 import MemberAttendance from "./components/MemberAttendance";
 
 import styles from "./Members.module.css";
+import Search from "./components/Search";
 
 const Members = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -169,16 +170,7 @@ const Members = () => {
         </Button>
       </div>
 
-      <Card className={`${styles.cardSearch} mb-4`}>
-        <Card.Body>
-          <Card.Title>Search</Card.Title>
-          <Form>
-            <Form.Group controlId="email">
-              <Form.Control type="text" placeholder="Email" />
-            </Form.Group>
-          </Form>
-        </Card.Body>
-      </Card>
+      <Search />
 
       <Table striped bordered hover style={{ tableLayout: "fixed", wordWrap: "break-word" }}>
         <thead>
