@@ -22,13 +22,21 @@ router.get("/", jwtCheck, async (req, res) => {
 
 router.get("/upcoming", jwtCheck, async (req, res) => {
     try {
-        const currentDate = moment().utcOffset("+0100").format("YYYY-MM-DD");
-        const { rows } = await db.query("SELECT * FROM events WHERE date > $1", [currentDate]);
-        res.json(rows);
+      const currentDate = moment().format("YYYY-MM-DD");
+      const query = `
+        SELECT e.id, e.name, e.date, e.information, COUNT(a.u_id) AS "checkedInCount"
+        FROM events e
+        LEFT JOIN attendance a ON a.e_id = e.id
+        WHERE e.date > $1
+        GROUP BY e.id, e.name, e.date, e.information
+        ORDER BY e.date ASC;
+      `;
+      const { rows } = await db.query(query, [currentDate]);
+      res.json(rows);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+      res.status(500).json({ error: err.message });
     }
-});
+  });
 
 router.post("/", jwtCheck, async (req, res) => {
     try {
