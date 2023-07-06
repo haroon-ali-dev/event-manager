@@ -3,9 +3,15 @@ import moment from "moment";
 import { withAuthenticationRequired, useAuth0 } from "@auth0/auth0-react";
 import { Button, Card, Container } from "react-bootstrap";
 
+import AddMemberToEventModal from "../pages/events/components/AddMemberToEventModal";
+
 const Dashboard = () => {
   const { getAccessTokenSilently } = useAuth0();
   const [upcomingEvents, setUpcomingEvents] = useState([]);
+  const [showPersonAddModal, setShowPersonAddModal] = useState([false, 0]);
+  const [reqInProcess, setReqInProcess] = useState(false);
+  const [errorAlert, setErrorAlert] = useState(false);
+
 
   useEffect(() => {
     async function getEvents() {
@@ -36,9 +42,19 @@ const Dashboard = () => {
   }, []);
 
   return (
+
     <>
       <h1 className="heading">Upcoming Events</h1>
       <Container>
+      <AddMemberToEventModal
+      showPersonAddModal={showPersonAddModal}
+      setShowPersonAddModal={setShowPersonAddModal}
+      reqInProcess={reqInProcess}
+      setReqInProcess={setReqInProcess}
+      errorAlert={errorAlert}
+      setErrorAlert={setErrorAlert}
+
+      />
         {upcomingEvents &&
           upcomingEvents.map((event) => (
             <Card key={event.id} className="mb-4">
@@ -48,7 +64,7 @@ const Dashboard = () => {
                 <Card.Text>
                   {event.information ? event.information : "No information available."}
                 </Card.Text>
-                <Button variant="success">Check-in</Button>
+                <Button variant="success" onClick={() => setShowPersonAddModal([true, event.id])}>Check-in</Button>
               </Card.Body>
             </Card>
           ))}
