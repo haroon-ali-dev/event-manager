@@ -1,7 +1,7 @@
 import { React, useEffect, useState } from "react";
 import moment from "moment";
 import { withAuthenticationRequired, useAuth0 } from "@auth0/auth0-react";
-import { Button, Card } from "react-bootstrap";
+import { Button, Card, Container } from "react-bootstrap";
 
 const Dashboard = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -37,24 +37,24 @@ const Dashboard = () => {
 
   return (
     <>
-        <h1 className="heading">Upcoming Events</h1>
-      <Card>
-        {upcomingEvents && upcomingEvents.map((event) => (
-          <>
-            <Card.Header>{event.name}</Card.Header>
-            <Card.Body>
-              <Card.Title>{moment(event.date).format("YYYY-MM-DD")}</Card.Title>
-              <Card.Text>
-                {event.information}
-              </Card.Text>
-              <Button variant="primary">Go somewhere</Button>
-            </Card.Body>
-          </>
-        ))}
-      </Card>
+      <h1 className="heading">Upcoming Events</h1>
+      <Container>
+        {upcomingEvents &&
+          upcomingEvents.map((event) => (
+            <Card key={event.id} className="mb-4">
+              <Card.Header style={{ fontSize:"20px" }}>{event.name}</Card.Header>
+              <Card.Body>
+                <Card.Title>{moment(event.date).format("YYYY-MM-DD")}</Card.Title>
+                <Card.Text>
+                  {event.information ? event.information : "No information available."}
+                </Card.Text>
+                <Button variant="success">Check-in</Button>
+              </Card.Body>
+            </Card>
+          ))}
+      </Container>
     </>
   );
-
 };
 
 export default withAuthenticationRequired(Dashboard);
