@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, Form, Button } from "react-bootstrap";
+import { Card, Form, Button, Spinner } from "react-bootstrap";
 
 import styles from "./Search.module.css";
 

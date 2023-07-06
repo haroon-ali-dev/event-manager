@@ -23,6 +23,18 @@ router.get("/", jwtCheck, async (req, res) => {
     }
 });
 
+router.get("/email/:email", async (req, res) => {
+    try {
+        const dbRes = await db.query("SELECT * FROM members WHERE email = $1", [req.params.email]);
+
+        if (dbRes.rowCount <= 0) return res.status(404).json({ message: "Member doesn't exist." });
+
+        res.json(dbRes.rows[0]);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 router.post("/", jwtCheck, async (req, res) => {
     try {
         await validate(req.body);
