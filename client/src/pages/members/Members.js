@@ -171,6 +171,7 @@ const Members = () => {
       </div>
 
       <Search
+        setMembers={setMembers}
         reqInProcess={reqInProcess}
         setReqInProcess={setReqInProcess}
       />

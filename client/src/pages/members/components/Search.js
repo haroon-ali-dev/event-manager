@@ -4,12 +4,12 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 import styles from "./Search.module.css";
 
-export default function Search({ reqInProcess, setReqInProcess }) {
+export default function Search({ reqInProcess, setReqInProcess, setMembers }) {
     const { getAccessTokenSilently } = useAuth0();
 
     const [email, setEmail] = useState("");
     const [timer, setTimer] = useState("");
-    const [error, setError] = useState("");
+    const [error, setError] = useState(false);
 
     const search = async (email) => {
         if (email) {
@@ -35,16 +35,21 @@ export default function Search({ reqInProcess, setReqInProcess }) {
                         const data = await res.json();
 
                         if (res.status === 200) {
-                            console.log("Member found.");
+                            setMembers([data]);
+                            setError(false);
                         } else {
                             setError(data.message);
                         }
-
                     } catch (e) {
                         console.log(e.message);
+                        setError("There was a problem.");
+                    } finally {
+                        setReqInProcess(false);
                     }
                 }, 1000);
             });
+        } else {
+            setError(false);
         }
     }
 
@@ -65,10 +70,10 @@ export default function Search({ reqInProcess, setReqInProcess }) {
                             value={email}
                             onChange={(e) => { setEmail(e.target.value); search(e.target.value); }}
                         />
+                        <Form.Control.Feedback type="invalid">
+                            {error && error}
+                        </Form.Control.Feedback>
                     </Form.Group>
-                    <Form.Control.Feedback type="invalid">
-                        {error && error}
-                    </Form.Control.Feedback>
                 </Form>
             </Card.Body>
         </Card>
