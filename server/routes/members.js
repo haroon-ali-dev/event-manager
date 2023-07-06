@@ -15,7 +15,7 @@ const jwtCheck = auth({
 
 router.get("/", jwtCheck, async (req, res) => {
     try {
-        const { rows } = await db.query("SELECT * FROM members ORDER BY id");
+        const { rows } = await db.query("SELECT * FROM members ORDER BY first_name");
 
         res.json(rows);
     } catch (err) {
