@@ -37,7 +37,7 @@ const Dashboard = () => {
 
   return (
     <>
-        <div>Upcoming Events</div>
+        <h1 className="heading">Upcoming Events</h1>
       <Card>
         {upcomingEvents && upcomingEvents.map((event) => (
           <>
