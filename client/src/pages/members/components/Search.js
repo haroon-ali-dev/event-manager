@@ -4,7 +4,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 import styles from "./Search.module.css";
 
-export default function Search({ reqInProcess, setReqInProcess, setMembers }) {
+export default function Search({ reqInProcess, setReqInProcess, setMembers, getMembers }) {
     const { getAccessTokenSilently } = useAuth0();
 
     const [email, setEmail] = useState("");
@@ -12,9 +12,10 @@ export default function Search({ reqInProcess, setReqInProcess, setMembers }) {
     const [error, setError] = useState(false);
 
     const search = async (email) => {
-        if (email) {
-            clearTimeout(timer);
+        clearTimeout(timer);
 
+        if (email) {
+            console.log(email);
             setTimer(() => {
                 return setTimeout(async () => {
                     setReqInProcess(true);
@@ -49,7 +50,9 @@ export default function Search({ reqInProcess, setReqInProcess, setMembers }) {
                 }, 1000);
             });
         } else {
+            console.log("hello");
             setError(false);
+            getMembers();
         }
     }
 
