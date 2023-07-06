@@ -15,7 +15,6 @@ export default function Search({ reqInProcess, setReqInProcess, setMembers, getM
         clearTimeout(timer);
 
         if (email) {
-            console.log(email);
             setTimer(() => {
                 return setTimeout(async () => {
                     setReqInProcess(true);
@@ -50,7 +49,6 @@ export default function Search({ reqInProcess, setReqInProcess, setMembers, getM
                 }, 1000);
             });
         } else {
-            console.log("hello");
             setError(false);
             getMembers();
         }
@@ -65,7 +63,7 @@ export default function Search({ reqInProcess, setReqInProcess, setMembers, getM
                         <span className="visually-hidden">Loading...</span>
                     </Spinner>}
                 <Form>
-                    <Form.Group controlId="email">
+                    <Form.Group className="mb-2" controlId="email">
                         <Form.Control
                             type="text"
                             placeholder="Email"
@@ -77,6 +75,15 @@ export default function Search({ reqInProcess, setReqInProcess, setMembers, getM
                             {error && error}
                         </Form.Control.Feedback>
                     </Form.Group>
+                    <Button
+                        variant="success"
+                        type="button"
+                        size="sm"
+                        disabled={!email}
+                        onClick={() => {setEmail(""); setError(false); getMembers();}}
+                    >
+                        Clear
+                    </Button>
                 </Form>
             </Card.Body>
         </Card>
