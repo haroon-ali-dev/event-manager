@@ -169,10 +169,14 @@ const Members = () => {
         </Button>
       </div>
 
-      <Card className={`${styles.cardSearch} ms-3 mb-4`}>
+      <Card className={`${styles.cardSearch} mb-4`}>
         <Card.Body>
           <Card.Title>Search</Card.Title>
-          
+          <Form>
+            <Form.Group controlId="email">
+              <Form.Control type="text" placeholder="Email" />
+            </Form.Group>
+          </Form>
         </Card.Body>
       </Card>
 
