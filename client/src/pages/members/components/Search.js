@@ -15,10 +15,10 @@ export default function Search({ reqInProcess, setReqInProcess, setMembers, getM
         clearTimeout(timer);
 
         if (email) {
+            setReqInProcess(true);
+
             setTimer(() => {
                 return setTimeout(async () => {
-                    setReqInProcess(true);
-
                     try {
                         const accessToken = await getAccessTokenSilently({
                             authorizationParams: {

@@ -25,31 +25,31 @@ const Events = () => {
   const [reqInProcess, setReqInProcess] = useState(false);
   const [errorAlert, setErrorAlert] = useState(false);
 
-  useEffect(() => {
-    async function getEvents() {
-      try {
-        const accessToken = await getAccessTokenSilently({
-          authorizationParams: {
-            audience:
-              process.env.NODE_ENV === "development"
-                ? "http://localhost:3000/api/"
-                : "",
-          },
-        });
+  async function getEvents() {
+    try {
+      const accessToken = await getAccessTokenSilently({
+        authorizationParams: {
+          audience:
+            process.env.NODE_ENV === "development"
+              ? "http://localhost:3000/api/"
+              : "",
+        },
+      });
 
-        const res = await fetch("/api/events", {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
+      const res = await fetch("/api/events", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
 
-        const events = await res.json();
-        setEvents(events);
-      } catch (e) {
-        console.log(e.message);
-      }
+      const events = await res.json();
+      setEvents(events);
+    } catch (e) {
+      console.log(e.message);
     }
+  }
 
+  useEffect(() => {
     getEvents();
   }, []);
 
@@ -196,7 +196,7 @@ const Events = () => {
         errorAlert={errorAlert}
         setErrorAlert={setErrorAlert}
       />
-        <Modal show={showAttendanceModal[0]} onHide={() => setShowAttendanceModal([false, 0])}>
+      <Modal show={showAttendanceModal[0]} onHide={() => setShowAttendanceModal([false, 0])}>
         <Modal.Header closeButton>
           <Modal.Title>Attendance</Modal.Title>
         </Modal.Header>
@@ -215,7 +215,10 @@ const Events = () => {
       </div>
 
       <Search
-        
+        setEvents={setEvents}
+        getEvents={getEvents}
+        reqInProcess={reqInProcess}
+        setReqInProcess={setReqInProcess}
       />
 
       <Table

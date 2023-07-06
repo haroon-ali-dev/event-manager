@@ -4,21 +4,21 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 import styles from "./Search.module.css";
 
-export default function Search({ reqInProcess, setReqInProcess, setMembers, getMembers }) {
+export default function Search({ reqInProcess, setReqInProcess, setEvents, getEvents }) {
     const { getAccessTokenSilently } = useAuth0();
 
-    const [email, setEmail] = useState("");
+    const [date, setDate] = useState("");
     const [timer, setTimer] = useState("");
     const [error, setError] = useState(false);
 
-    const search = async (email) => {
+    const search = async (date) => {
         clearTimeout(timer);
 
-        if (email) {
+        if (date) {
+            setReqInProcess(true);
+
             setTimer(() => {
                 return setTimeout(async () => {
-                    setReqInProcess(true);
-
                     try {
                         const accessToken = await getAccessTokenSilently({
                             authorizationParams: {
@@ -26,7 +26,7 @@ export default function Search({ reqInProcess, setReqInProcess, setMembers, getM
                             },
                         });
 
-                        const res = await fetch(`/api/members/email/${email}`, {
+                        const res = await fetch(`/api/events/date/${date}`, {
                             headers: {
                                 Authorization: `Bearer ${accessToken}`,
                             },
@@ -35,7 +35,7 @@ export default function Search({ reqInProcess, setReqInProcess, setMembers, getM
                         const data = await res.json();
 
                         if (res.status === 200) {
-                            setMembers([data]);
+                            setEvents(data);
                             setError(false);
                         } else {
                             setError(data.message);
@@ -50,7 +50,7 @@ export default function Search({ reqInProcess, setReqInProcess, setMembers, getM
             });
         } else {
             setError(false);
-            getMembers();
+            getEvents();
         }
     }
 
@@ -59,13 +59,12 @@ export default function Search({ reqInProcess, setReqInProcess, setMembers, getM
             <Card.Body>
                 <Card.Title>Search</Card.Title>
                 <Form>
-                    <Form.Group className="mb-2" controlId="email">
+                    <Form.Group className="mb-2" controlId="date">
                         <Form.Control
-                            type="text"
-                            placeholder="Email"
+                            type="date"
                             isInvalid={error}
-                            value={email}
-                            onChange={(e) => { setEmail(e.target.value); search(e.target.value); }}
+                            value={date}
+                            onChange={(e) => { setDate(e.target.value); search(e.target.value); }}
                         />
                         <Form.Control.Feedback type="invalid">
                             {error && error}
@@ -75,8 +74,8 @@ export default function Search({ reqInProcess, setReqInProcess, setMembers, getM
                         variant="success"
                         type="button"
                         size="sm"
-                        disabled={!email}
-                        onClick={() => { setEmail(""); setError(false); getMembers(); }}
+                        disabled={!date}
+                        onClick={() => { setDate(""); setError(false); getEvents(); }}
                     >
                         Clear
                     </Button>

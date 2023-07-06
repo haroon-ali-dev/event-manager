@@ -20,7 +20,7 @@ router.get("/", jwtCheck, async (req, res) => {
     }
 });
 
-router.get("/date/:date", async (req, res) => {
+router.get("/date/:date", jwtCheck, async (req, res) => {
     try {
         const dbRes = await db.query("SELECT * FROM events WHERE date = $1", [req.params.date]);
 
