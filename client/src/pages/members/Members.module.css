@@ -6,3 +6,7 @@
 .icon:hover {
     cursor: pointer;
 }
+
+.cardSearch {
+    width: 50%;
+}

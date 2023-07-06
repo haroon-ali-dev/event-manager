@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
-import { Alert, Table, Button, Modal, Stack, Spinner } from "react-bootstrap";
+import { Alert, Table, Button, Modal, Stack, Spinner, Card, Form } from "react-bootstrap";
 import { PencilSquare, Trash, ListCheck } from "react-bootstrap-icons";
 import moment from "moment";
 
@@ -168,6 +168,13 @@ const Members = () => {
           Add New
         </Button>
       </div>
+
+      <Card className={`${styles.cardSearch} ms-3 mb-4`}>
+        <Card.Body>
+          <Card.Title>Search</Card.Title>
+          
+        </Card.Body>
+      </Card>
 
       <Table striped bordered hover style={{ tableLayout: "fixed", wordWrap: "break-word" }}>
         <thead>
