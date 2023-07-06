@@ -9,6 +9,7 @@ import AddMemberToEventModal from "./components/AddMemberToEventModal";
 import EventAttendance from "./components/EventAttendance";
 
 import styles from "./Events.module.css";
+import Search from "./components/Search";
 
 const Events = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -212,6 +213,10 @@ const Events = () => {
           Add New
         </Button>
       </div>
+
+      <Search
+        
+      />
 
       <Table
         striped
