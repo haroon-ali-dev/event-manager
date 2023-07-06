@@ -68,7 +68,7 @@ const Dashboard = () => {
           setReqInProcess={setReqInProcess}
           errorAlert={errorAlert}
           setErrorAlert={setErrorAlert}
-          updateCheckedInCount={updateCheckedInCount} // Pass the updateCheckedInCount function
+          updateCheckedInCount={updateCheckedInCount}
         />
         {upcomingEvents &&
           upcomingEvents.map((event) => (
