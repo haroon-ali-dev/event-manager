@@ -1,4 +1,5 @@
 import { React, useEffect, useState } from "react";
+import moment from "moment";
 import { withAuthenticationRequired, useAuth0 } from "@auth0/auth0-react";
 import { Button, Card } from "react-bootstrap";
 
@@ -18,7 +19,7 @@ const Dashboard = () => {
           },
         });
 
-        const res = await fetch("/api/events", {
+        const res = await fetch("/api/events/upcoming", {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -42,7 +43,7 @@ const Dashboard = () => {
           <>
             <Card.Header>{event.name}</Card.Header>
             <Card.Body>
-              <Card.Title>{event.name}</Card.Title>
+              <Card.Title>{moment(event.date).format("YYYY-MM-DD")}</Card.Title>
               <Card.Text>
                 {event.information}
               </Card.Text>

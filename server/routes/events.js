@@ -20,6 +20,16 @@ router.get("/", jwtCheck, async (req, res) => {
     }
 });
 
+router.get("/upcoming", jwtCheck, async (req, res) => {
+    try {
+        const currentDate = moment().utcOffset("+0100").format("YYYY-MM-DD");
+        const { rows } = await db.query("SELECT * FROM events WHERE date > $1", [currentDate]);
+        res.json(rows);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 router.post("/", jwtCheck, async (req, res) => {
     try {
         await validate(req.body);
