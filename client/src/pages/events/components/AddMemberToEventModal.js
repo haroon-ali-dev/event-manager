@@ -21,8 +21,8 @@ export default function AddMemberToEventModal({
     setShowPersonAddModal,
     reqInProcess,
     setReqInProcess,
-    errorAlert,
-    setErrorAlert
+    notification,
+    setNotification
 }) {
     const { getAccessTokenSilently } = useAuth0();
 
@@ -37,7 +37,7 @@ export default function AddMemberToEventModal({
 
     const onSubmit = async (data) => {
         setReqInProcess(true);
-        setErrorAlert(false);
+        setNotification({ show: false, color: "", message: "" });
 
         try {
             const accessToken = await getAccessTokenSilently({
@@ -58,22 +58,23 @@ export default function AddMemberToEventModal({
             if (res.status === 200) {
                 setReqInProcess(false);
                 setShowPersonAddModal(false);
+                setNotification({ show: true, color: "primary", message: "Member added to event.", data: showPersonAddModal[1] });
             } else {
                 const data = await res.json();
                 setReqInProcess(false);
-                setErrorAlert([true, data.message]);
+                setNotification({ show: true, color: "danger", message: data.message });
             }
         } catch (e) {
             console.log(e.message);
             setReqInProcess(false);
-            setErrorAlert(true);
+            setNotification({ show: true, color: "danger", message: "There was a problem." });
         }
     };
 
     let html5QrcodeScanner;
 
     const scanQR = () => {
-        setErrorAlert(false);
+        setNotification({ show: false, color: "", message: "" });
 
         html5QrcodeScanner = new Html5QrcodeScanner(
             "reader",
@@ -142,9 +143,9 @@ export default function AddMemberToEventModal({
                                 </Spinner>}
                         </Button>
 
-                        {errorAlert &&
-                            <Alert className="mt-3" variant="danger">
-                                {errorAlert[1] ? errorAlert[1] : "There was a problem. Please try again."}
+                        {notification.show &&
+                            <Alert className="mt-3" variant={notification.color}>
+                                {notification.message}
                             </Alert>}
                     </div>
                 </Form>

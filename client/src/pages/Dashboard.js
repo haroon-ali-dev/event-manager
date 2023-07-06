@@ -4,7 +4,7 @@ import { withAuthenticationRequired, useAuth0 } from "@auth0/auth0-react";
 import { Button, Card, Container, Modal } from "react-bootstrap";
 
 import AddMemberToEventModal from "../pages/events/components/AddMemberToEventModal";
-import EventAttendance from "../pages/members/EventAttendance.js";
+import EventAttendance from "./events/components/EventAttendance.js";
 
 const Dashboard = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -12,7 +12,12 @@ const Dashboard = () => {
   const [showPersonAddModal, setShowPersonAddModal] = useState([false, 0]);
   const [showAttendanceModal, setShowAttendanceModal] = useState([false, 0]);
   const [reqInProcess, setReqInProcess] = useState(false);
-  const [errorAlert, setErrorAlert] = useState(false);
+  const [notification, setNotification] = useState({
+    show: false,
+    color: "",
+    "message": "",
+    data: ""
+  });
 
   useEffect(() => {
     async function getEvents() {
@@ -40,13 +45,13 @@ const Dashboard = () => {
     getEvents();
   }, []);
 
-  const updateCheckedInCount = (eventId, checkedInCount) => {
-    setUpcomingEvents((prevEvents) =>
-      prevEvents.map((event) =>
-        event.id === eventId ? { ...event, checkedInCount } : event
-      )
-    );
-  };
+  if (notification.message === "Member added to event.") {
+    setUpcomingEvents(upcomingEvents.map((event) =>
+      event.id === notification.data ? { ...event, checkedInCount: +event.checkedInCount + 1 } : event
+    ));
+
+    setNotification({ show: false, color: "", message: "", data: "" });
+  }
 
   return (
     <>
@@ -66,9 +71,8 @@ const Dashboard = () => {
           setShowPersonAddModal={setShowPersonAddModal}
           reqInProcess={reqInProcess}
           setReqInProcess={setReqInProcess}
-          errorAlert={errorAlert}
-          setErrorAlert={setErrorAlert}
-          updateCheckedInCount={updateCheckedInCount}
+          notification={notification}
+          setNotification={setNotification}
         />
         {upcomingEvents &&
           upcomingEvents.map((event) => (
