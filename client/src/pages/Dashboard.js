@@ -40,7 +40,6 @@ const Dashboard = () => {
     getEvents();
   }, []);
 
-  // Function to update the checked-in count for an event
   const updateCheckedInCount = (eventId, checkedInCount) => {
     setUpcomingEvents((prevEvents) =>
       prevEvents.map((event) =>
