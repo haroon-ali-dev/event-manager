@@ -33,8 +33,8 @@ export default function CreateEvent({
   setShowFormModal,
   reqInProcess,
   setReqInProcess,
-  errorAlert,
-  setErrorAlert,
+  notification,
+  setNotification,
 }) {
   const { getAccessTokenSilently, user } = useAuth0();
 
@@ -56,7 +56,7 @@ export default function CreateEvent({
     data.userName = user.name;
 
     setReqInProcess(true);
-    setErrorAlert(false);
+    setNotification({ show: false, color: "", message: "" });
 
     if (formAction === "create") {
       try {
@@ -88,50 +88,50 @@ export default function CreateEvent({
           const data = await res.json();
           console.log(data);
           setReqInProcess(false);
-          setErrorAlert(true);
+          setNotification({ show: false, color: "", message: "" });
         }
       } catch (e) {
         console.log(e.message);
         setReqInProcess(false);
-        setErrorAlert(true);
+        setNotification({ show: false, color: "", message: "" });
       }
     }
 
-  if (formAction === "update") {
-    try {
-      const accessToken = await getAccessTokenSilently({
-        authorizationParams: {
-          audience: process.env.NODE_ENV === "development" ? "http://localhost:3000/api/" : "",
-        },
-      });
+    if (formAction === "update") {
+      try {
+        const accessToken = await getAccessTokenSilently({
+          authorizationParams: {
+            audience: process.env.NODE_ENV === "development" ? "http://localhost:3000/api/" : "",
+          },
+        });
 
-      const res = await fetch(`/api/events/${singleEvent.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify(data),
-      });
+        const res = await fetch(`/api/events/${singleEvent.id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(data),
+        });
 
-      if (res.status === 200) {
-        const event = await res.json();
-        updateEvent(event);
+        if (res.status === 200) {
+          const event = await res.json();
+          updateEvent(event);
+          setReqInProcess(false);
+          setShowFormModal(false);
+        } else {
+          const data = await res.json();
+          console.log(data);
+          setReqInProcess(false);
+          setNotification({ show: false, color: "", message: "" });
+        }
+      } catch (e) {
+        console.log(e.message);
         setReqInProcess(false);
-        setShowFormModal(false);
-      } else {
-        const data = await res.json();
-        console.log(data);
-        setReqInProcess(false);
-        setErrorAlert(true);
+        setNotification({ show: false, color: "", message: "" });
       }
-    } catch (e) {
-      console.log(e.message);
-      setReqInProcess(false);
-      setErrorAlert(true);
     }
-  }
-};
+  };
 
   return (
     <Form className="w-75 mx-auto mt-3" onSubmit={handleSubmit(onSubmit)}>
@@ -209,9 +209,9 @@ export default function CreateEvent({
           </Button>
         )}
 
-        {errorAlert && (
-          <Alert className="mt-3" variant="danger">
-            There was a problem. Please try again.
+        {notification.show && (
+          <Alert className="mt-3" variant={notification.color}>
+            {notification.message}
           </Alert>
         )}
       </div>
