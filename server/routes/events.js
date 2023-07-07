@@ -13,8 +13,18 @@ const jwtCheck = auth({
 
 router.get("/", jwtCheck, async (req, res) => {
     try {
-        const { rows } = await db.query("SELECT * FROM events");
+        const { rows } = await db.query("SELECT * FROM events ORDER BY date DESC");
         res.json(rows);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+router.get("/date/:date", jwtCheck, async (req, res) => {
+    try {
+        const dbRes = await db.query("SELECT * FROM events WHERE date = $1", [req.params.date]);
+
+        res.json(dbRes.rows);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

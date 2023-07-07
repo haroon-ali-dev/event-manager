@@ -1,0 +1,11 @@
+.cardSearch {
+    width: 25%;
+    margin: 0 auto;
+    position: relative;
+}
+
+.spinner {
+    position: absolute;
+    bottom: 13px;
+    right: 13px;
+}

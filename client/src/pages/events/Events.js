@@ -9,6 +9,7 @@ import AddMemberToEventModal from "./components/AddMemberToEventModal";
 import EventAttendance from "./components/EventAttendance";
 
 import styles from "./Events.module.css";
+import Search from "./components/Search";
 
 const Events = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -29,31 +30,31 @@ const Events = () => {
     data: ""
   });
 
-  useEffect(() => {
-    async function getEvents() {
-      try {
-        const accessToken = await getAccessTokenSilently({
-          authorizationParams: {
-            audience:
-              process.env.NODE_ENV === "development"
-                ? "http://localhost:3000/api/"
-                : "",
-          },
-        });
+  async function getEvents() {
+    try {
+      const accessToken = await getAccessTokenSilently({
+        authorizationParams: {
+          audience:
+            process.env.NODE_ENV === "development"
+              ? "http://localhost:3000/api/"
+              : "",
+        },
+      });
 
-        const res = await fetch("/api/events", {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
+      const res = await fetch("/api/events", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
 
-        const events = await res.json();
-        setEvents(events);
-      } catch (e) {
-        console.log(e.message);
-      }
+      const events = await res.json();
+      setEvents(events);
+    } catch (e) {
+      console.log(e.message);
     }
+  }
 
+  useEffect(() => {
     getEvents();
   }, []);
 
@@ -200,7 +201,7 @@ const Events = () => {
         notification={notification}
         setNotification={setNotification}
       />
-        <Modal show={showAttendanceModal[0]} onHide={() => setShowAttendanceModal([false, 0])}>
+      <Modal show={showAttendanceModal[0]} onHide={() => setShowAttendanceModal([false, 0])}>
         <Modal.Header closeButton>
           <Modal.Title>Attendance</Modal.Title>
         </Modal.Header>
@@ -217,6 +218,13 @@ const Events = () => {
           Add New
         </Button>
       </div>
+
+      <Search
+        setEvents={setEvents}
+        getEvents={getEvents}
+        reqInProcess={reqInProcess}
+        setReqInProcess={setReqInProcess}
+      />
 
       <Table
         striped

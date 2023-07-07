@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
-import { Alert, Table, Button, Modal, Stack, Spinner } from "react-bootstrap";
+import { Alert, Table, Button, Modal, Stack, Spinner, Card, Form } from "react-bootstrap";
 import { PencilSquare, Trash, ListCheck } from "react-bootstrap-icons";
 import moment from "moment";
 
@@ -9,6 +9,7 @@ import CreateMember from "./components/CreateMember";
 import MemberAttendance from "./components/MemberAttendance";
 
 import styles from "./Members.module.css";
+import Search from "./components/Search";
 
 const Members = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -22,29 +23,29 @@ const Members = () => {
   const [reqInProcess, setReqInProcess] = useState(false);
   const [errorAlert, setErrorAlert] = useState(false);
 
-  useEffect(() => {
-    async function getMembers() {
-      try {
-        const accessToken = await getAccessTokenSilently({
-          authorizationParams: {
-            audience: process.env.NODE_ENV === "development" ? "http://localhost:3000/api/" : "",
-          },
-        });
+  async function getMembers() {
+    try {
+      const accessToken = await getAccessTokenSilently({
+        authorizationParams: {
+          audience: process.env.NODE_ENV === "development" ? "http://localhost:3000/api/" : "",
+        },
+      });
 
-        const res = await fetch("/api/members", {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
+      const res = await fetch("/api/members", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
 
-        const members = await res.json();
-        setMembers(members);
+      const members = await res.json();
+      setMembers(members);
 
-      } catch (e) {
-        console.log(e.message);
-      }
+    } catch (e) {
+      console.log(e.message);
     }
+  }
 
+  useEffect(() => {
     getMembers();
   }, []);
 
@@ -168,6 +169,13 @@ const Members = () => {
           Add New
         </Button>
       </div>
+
+      <Search
+        setMembers={setMembers}
+        getMembers={getMembers}
+        reqInProcess={reqInProcess}
+        setReqInProcess={setReqInProcess}
+      />
 
       <Table striped bordered hover style={{ tableLayout: "fixed", wordWrap: "break-word" }}>
         <thead>
