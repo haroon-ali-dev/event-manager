@@ -23,7 +23,12 @@ const Events = () => {
   const [deleteEventId, setDeleteEventId] = useState(null);
   const [showPersonAddModal, setShowPersonAddModal] = useState([false, 0]);
   const [reqInProcess, setReqInProcess] = useState(false);
-  const [errorAlert, setErrorAlert] = useState(false);
+  const [notification, setNotification] = useState({
+    show: false,
+    color: "",
+    "message": "",
+    data: ""
+  });
 
   async function getEvents() {
     try {
@@ -56,7 +61,7 @@ const Events = () => {
   const create = () => {
     setFormAction("create");
     setReqInProcess(false);
-    setErrorAlert(false);
+    setNotification({ show: false, color: "", message: "" });
     setShowFormModal(true);
   };
   const createEvent = (event) => {
@@ -72,7 +77,7 @@ const Events = () => {
     };
     setSingleEvent(updatedEvent);
     setReqInProcess(false);
-    setErrorAlert(false);
+    setNotification({ show: false, color: "", message: "" });
     setShowFormModal(true);
   };
 
@@ -84,12 +89,12 @@ const Events = () => {
   const showDeleteConfirmation = (id) => {
     setDeleteEventId(id);
     setShowDeleteModal(true);
-    setErrorAlert(false);
+    setNotification({ show: false, color: "", message: "" });
   };
 
   const deleteEvent = async () => {
     setReqInProcess(true);
-    setErrorAlert(false);
+    setNotification({ show: false, color: "", message: "" });
 
     try {
       const accessToken = await getAccessTokenSilently({
@@ -115,12 +120,12 @@ const Events = () => {
       } else {
         const data = await res.json();
         console.log(data);
-        setErrorAlert(true);
+        setNotification({ show: true, color: "danger", message: "There was a problem." });
         setReqInProcess(false);
       }
     } catch (e) {
       console.log(e.message);
-      setErrorAlert(true);
+      setNotification({ show: true, color: "danger", message: "There was a problem." });
       setReqInProcess(false);
     }
   };
@@ -146,8 +151,8 @@ const Events = () => {
             setShowFormModal={setShowFormModal}
             reqInProcess={reqInProcess}
             setReqInProcess={setReqInProcess}
-            errorAlert={errorAlert}
-            setErrorAlert={setErrorAlert}
+            notification={notification}
+            setNotification={setNotification}
           />
         </Modal.Body>
       </Modal>
@@ -161,9 +166,9 @@ const Events = () => {
         </Modal.Header>
         <Modal.Body>
           Are you sure you want to delete this event?
-          {errorAlert && (
-            <Alert className="mt-3" variant="danger">
-              There was a problem. Please try again.
+          {notification.show && (
+            <Alert className="mt-3" variant={notification.color}>
+              {notification.message}
             </Alert>
           )}
         </Modal.Body>
@@ -193,8 +198,8 @@ const Events = () => {
         setShowPersonAddModal={setShowPersonAddModal}
         reqInProcess={reqInProcess}
         setReqInProcess={setReqInProcess}
-        errorAlert={errorAlert}
-        setErrorAlert={setErrorAlert}
+        notification={notification}
+        setNotification={setNotification}
       />
       <Modal show={showAttendanceModal[0]} onHide={() => setShowAttendanceModal([false, 0])}>
         <Modal.Header closeButton>
@@ -255,13 +260,13 @@ const Events = () => {
                     className={styles.icon}
                     onClick={() => {
                       setReqInProcess(false);
-                      setErrorAlert(false);
+                      setNotification({ show: false, color: "", message: "" });
                       showDeleteConfirmation(event.id);
                     }}
                   />
                   <PersonAdd className={styles.icon} onClick={() => {
                     setReqInProcess(false);
-                    setErrorAlert(false);
+                    setNotification({ show: false, color: "", message: "" });
                     setShowPersonAddModal([true, event.id]);
                   }} />
                   <ListCheck className={styles.icon} onClick={() => setShowAttendanceModal([true, event.id])} />
