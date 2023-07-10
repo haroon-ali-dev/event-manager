@@ -22,6 +22,11 @@ const Members = () => {
   const [showAttendanceModal, setShowAttendanceModal] = useState([false, 0]);
   const [reqInProcess, setReqInProcess] = useState(false);
   const [errorAlert, setErrorAlert] = useState(false);
+  const [outerNot, setOuterNot] = useState({
+    show: false,
+    color: "",
+    "message": ""
+  });
 
   async function getMembers() {
     try {
@@ -124,6 +129,7 @@ const Members = () => {
             setReqInProcess={setReqInProcess}
             errorAlert={errorAlert}
             setErrorAlert={setErrorAlert}
+            setOuterNot={setOuterNot}
           />
         </Modal.Body>
         <Modal.Footer>
@@ -161,6 +167,12 @@ const Members = () => {
         </Modal.Body>
         <Modal.Footer></Modal.Footer>
       </Modal>
+      
+      {outerNot.show && (
+        <Alert className="text-center" variant={outerNot.color} onClose={() => setOuterNot(false)} dismissible>
+          {outerNot.message}
+        </Alert>
+      )}
 
       <h1 className={styles.heading}>Members</h1>
 

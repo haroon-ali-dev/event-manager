@@ -39,6 +39,7 @@ export default function CreateMember({
   setReqInProcess,
   errorAlert,
   setErrorAlert,
+  setOuterNot
 }) {
   const { getAccessTokenSilently, user } = useAuth0();
 
@@ -91,6 +92,8 @@ export default function CreateMember({
           createMember(member);
           setReqInProcess(false);
           setShowFormModal(false);
+          setOuterNot({ show: true, color: "success", message: "Member created." });
+          window.scrollTo(0, 0);
 
           const emailRes = await fetch("/api/sendmail", {
             method: "POST",
