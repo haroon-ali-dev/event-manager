@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import { Alert, Table, Button, Modal, Stack, Spinner, Card, Form } from "react-bootstrap";
-import { PencilSquare, Trash, ListCheck } from "react-bootstrap-icons";
+import { PencilSquare, Trash, ListCheck, PersonVcard, Person } from "react-bootstrap-icons";
 import moment from "moment";
 
 import CreateMember from "./components/CreateMember";
@@ -10,6 +10,7 @@ import MemberAttendance from "./components/MemberAttendance";
 
 import styles from "./Members.module.css";
 import Search from "./components/Search";
+import MemberInfo from "../events/components/MemberInfo";
 
 const Members = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -18,6 +19,7 @@ const Members = () => {
   const [singleMember, setSingleMember] = useState({});
   const [formAction, setFormAction] = useState("");
   const [showFormModal, setShowFormModal] = useState(false);
+  const [showMemberInfoModal, setShowMemberInfoModal] = useState([false, 0]);
   const [showDeleteModal, setShowDeleteModal] = useState([false, 0]);
   const [showAttendanceModal, setShowAttendanceModal] = useState([false, 0]);
   const [reqInProcess, setReqInProcess] = useState(false);
@@ -118,6 +120,11 @@ const Members = () => {
 
   return (
     <>
+      <MemberInfo
+        showMemberInfoModal={showMemberInfoModal}
+        setShowMemberInfoModal={setShowMemberInfoModal}
+      />
+
       <Modal size="lg" show={showFormModal} onHide={() => setShowFormModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>{formAction === "create" ? "Create Member" : "Edit Member"}</Modal.Title>
@@ -220,6 +227,7 @@ const Members = () => {
               <td>{member["created_by"]}</td>
               <td>
                 <Stack direction="horizontal" gap={3}>
+                  <PersonVcard className={styles.icon} onClick={() => setShowMemberInfoModal([true, member.id])} />
                   <PencilSquare className={styles.icon} onClick={() => update(member.id)} />
                   <Trash className={styles.icon} onClick={() => {
                     setReqInProcess(false); setErrorAlert(false); setShowDeleteModal([true, member.id]);
