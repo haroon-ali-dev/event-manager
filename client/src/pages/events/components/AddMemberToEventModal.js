@@ -213,7 +213,7 @@ export default function AddMemberToEventModal({
                             </tbody>
                         </Table>
                         <Stack direction="horizontal" gap={1}>
-                            <Button variant="danger" type="button">Back</Button>
+                            <Button variant="danger" type="button" onClick={() => setSecondStage([false, {}])}>Back</Button>
                             <Button variant="success" type="button" disabled={reqInProcess} onClick={addMember}>
                                 Add
                                 {reqInProcess &&
