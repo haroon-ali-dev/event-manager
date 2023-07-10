@@ -51,6 +51,7 @@ export default function Search({ reqInProcess, setReqInProcess, setMembers, getM
         } else {
             setError(false);
             getMembers();
+            setReqInProcess(false);
         }
     }
 
