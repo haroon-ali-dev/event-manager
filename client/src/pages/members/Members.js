@@ -99,6 +99,10 @@ const Members = () => {
       if (res.status === 200) {
         setMembers(members.filter((member) => member.id !== id));
         setShowDeleteModal([false, 0]);
+        setReqInProcess(false);
+
+        setOuterNot({ show: true, color: "success", message: "Member deleted." });
+        window.scrollTo(0, 0);
       } else {
         const data = await res.json();
         console.log(data);
@@ -167,7 +171,7 @@ const Members = () => {
         </Modal.Body>
         <Modal.Footer></Modal.Footer>
       </Modal>
-      
+
       {outerNot.show && (
         <Alert className="text-center" variant={outerNot.color} onClose={() => setOuterNot(false)} dismissible>
           {outerNot.message}
