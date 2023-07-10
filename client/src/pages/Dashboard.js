@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { withAuthenticationRequired, useAuth0 } from "@auth0/auth0-react";
-import { Button, Card, Container, Modal } from "react-bootstrap";
+import { Button, Card, Container, Modal, Alert } from "react-bootstrap";
 
 import AddMemberToEventModal from "../pages/events/components/AddMemberToEventModal";
 import EventAttendance from "./events/components/EventAttendance.js";
@@ -17,6 +17,11 @@ const Dashboard = () => {
     color: "",
     "message": "",
     data: ""
+  });
+  const [outerNot, setOuterNot] = useState({
+    show: false,
+    color: "",
+    "message": ""
   });
 
   useEffect(() => {
@@ -64,6 +69,12 @@ const Dashboard = () => {
         </Modal.Body>
         <Modal.Footer></Modal.Footer>
       </Modal>
+
+      {outerNot.show && (
+        <Alert className="text-center" variant={outerNot.color} onClose={() => setOuterNot(false)} dismissible>
+          {outerNot.message}
+        </Alert>
+      )}
       <h1 className="heading">Upcoming Events</h1>
       <Container>
         <AddMemberToEventModal
@@ -73,6 +84,7 @@ const Dashboard = () => {
           setReqInProcess={setReqInProcess}
           notification={notification}
           setNotification={setNotification}
+          setOuterNot={setOuterNot}
         />
         {upcomingEvents &&
           upcomingEvents.map((event) => (

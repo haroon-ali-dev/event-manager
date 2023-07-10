@@ -22,7 +22,8 @@ export default function AddMemberToEventModal({
     reqInProcess,
     setReqInProcess,
     notification,
-    setNotification
+    setNotification,
+    setOuterNot
 }) {
     const { getAccessTokenSilently } = useAuth0();
 
@@ -59,6 +60,8 @@ export default function AddMemberToEventModal({
                 setReqInProcess(false);
                 setShowPersonAddModal(false);
                 setNotification({ show: true, color: "primary", message: "Member added to event.", data: showPersonAddModal[1] });
+                setOuterNot({ show: true, color: "success", message: "Member added to event." });
+                window.scrollTo(0, 0);
             } else {
                 const data = await res.json();
                 setReqInProcess(false);
