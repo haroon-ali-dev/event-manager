@@ -34,27 +34,7 @@ export default function AddMemberToEventModal({
         resolver: yupResolver(schema)
     });
 
-    let html5QrcodeScanner;
-
-    const scanQR = () => {
-        setNotification({ show: false, color: "", message: "" });
-
-        html5QrcodeScanner = new Html5QrcodeScanner(
-            "reader",
-            { fps: 10, qrbox: { width: 250, height: 250 } },
-            false);
-
-        html5QrcodeScanner.render(onScanSuccess);
-    }
-
-    async function onScanSuccess(decodedText) {
-        try {
-            await html5QrcodeScanner.clear();
-            setValue("memberId", decodedText);
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    
 
     const onSubmit = async (formData) => {
         setReqInProcess(true);
@@ -129,6 +109,26 @@ export default function AddMemberToEventModal({
             console.log(e.message);
             setReqInProcess(false);
             setNotification({ show: true, color: "danger", message: "There was a problem." });
+        }
+    }
+
+    let html5QrcodeScanner;
+
+    const scanQR = () => {
+        html5QrcodeScanner = new Html5QrcodeScanner(
+            "reader",
+            { fps: 10, qrbox: { width: 250, height: 250 } },
+            false);
+
+        html5QrcodeScanner.render(onScanSuccess);
+    }
+
+    async function onScanSuccess(decodedText) {
+        try {
+            await html5QrcodeScanner.clear();
+            setValue("memberId", decodedText);
+        } catch (error) {
+            console.log(error);
         }
     }
 
