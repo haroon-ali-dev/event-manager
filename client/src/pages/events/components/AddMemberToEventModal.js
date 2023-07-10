@@ -4,7 +4,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Form, Button, Row, Col, Spinner, Alert } from "react-bootstrap";
+import { Form, Button, Row, Col, Spinner, Alert, Table, Stack } from "react-bootstrap";
 import { QrCodeScan } from "react-bootstrap-icons";
 import { Html5QrcodeScanner } from "html5-qrcode";
 
@@ -79,11 +79,6 @@ export default function AddMemberToEventModal({
                 setReqInProcess(false);
                 setValue("memberId", "");
                 setSecondStage([true, { member: data, eventId: showPersonAddModal[1] }]);
-                // setShowPersonAddModal(false);
-                // setNotification({ show: true, color: "primary", message: "Member added to event.", data: showPersonAddModal[1] });
-
-                // setOuterNot({ show: true, color: "success", message: "Member added to event." });
-                // window.scrollTo(0, 0);
             } else {
                 setReqInProcess(false);
                 setNotification({ show: true, color: "danger", message: data.message });
@@ -95,7 +90,47 @@ export default function AddMemberToEventModal({
         }
     };
 
+    const addMember = async () => {
+        setReqInProcess(true);
+        setNotification({ show: false, color: "", message: "" });
 
+        try {
+            const accessToken = await getAccessTokenSilently({
+                authorizationParams: {
+                    audience: process.env.NODE_ENV === "development" ? "http://localhost:3000/api/" : "",
+                },
+            });
+
+            const res = await fetch("/api/add-member-to-event", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${accessToken}`,
+                },
+                body: JSON.stringify({ memberId: secondStage[1].member["g_id"], eventId: showPersonAddModal[1] }),
+            });
+
+            const data = await res.json();
+
+            if (res.status === 200) {
+                setReqInProcess(false);
+                setValue("memberId", "");
+                setSecondStage([false, {}]);
+                setShowPersonAddModal([false, 0]);
+                setNotification({ show: true, color: "primary", message: "Member added to event.", data: showPersonAddModal[1] });
+
+                setOuterNot({ show: true, color: "success", message: "Member added to event." });
+                window.scrollTo(0, 0);
+            } else {
+                setReqInProcess(false);
+                setNotification({ show: true, color: "danger", message: data.message });
+            }
+        } catch (e) {
+            console.log(e.message);
+            setReqInProcess(false);
+            setNotification({ show: true, color: "danger", message: "There was a problem." });
+        }
+    }
 
     return (
         <Modal size="lg" show={showPersonAddModal[0]} onHide={async () => {
@@ -144,7 +179,7 @@ export default function AddMemberToEventModal({
 
                         <div className="container-btn mt-4 mb-2">
                             <Button variant="success" type="submit" disabled={reqInProcess}>
-                                Add
+                                Find
                                 {reqInProcess &&
                                     <Spinner className="ms-2" animation="border" role="status" size="sm">
                                         <span className="visually-hidden">Loading...</span>
@@ -154,12 +189,47 @@ export default function AddMemberToEventModal({
                             {notification.show &&
                                 <Alert className="mt-3" variant={notification.color}>
                                     {notification.message}
-                                </Alert>}
+                                </Alert>
+                            }
                         </div>
                     </Form>
                 )}
                 {secondStage[0] && (
-                    <p>{secondStage[1].member["first_name"]}</p>
+                    <>
+                        <Table striped bordered hover style={{ tableLayout: "fixed", wordWrap: "break-word" }}>
+                            <thead>
+                                <tr>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Email</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{secondStage[1].member["first_name"]}</td>
+                                    <td>{secondStage[1].member["last_name"]}</td>
+                                    <td>{secondStage[1].member["email"]}</td>
+                                </tr>
+                            </tbody>
+                        </Table>
+                        <Stack direction="horizontal" gap={1}>
+                            <Button variant="danger" type="button">Back</Button>
+                            <Button variant="success" type="button" disabled={reqInProcess} onClick={addMember}>
+                                Add
+                                {reqInProcess &&
+                                    <Spinner className="ms-2" animation="border" role="status" size="sm">
+                                        <span className="visually-hidden">Loading...</span>
+                                    </Spinner>
+                                }
+                            </Button>
+                        </Stack>
+
+                        {notification.show &&
+                            <Alert className="mt-3" variant={notification.color}>
+                                {notification.message}
+                            </Alert>
+                        }
+                    </>
                 )}
             </Modal.Body>
             <Modal.Footer></Modal.Footer>

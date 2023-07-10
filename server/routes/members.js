@@ -23,7 +23,7 @@ router.get("/", jwtCheck, async (req, res) => {
     }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", jwtCheck, async (req, res) => {
     try {
         const dbRes = await db.query("SELECT * FROM members WHERE id = $1", [req.params.id]);
 
@@ -120,7 +120,7 @@ router.put("/:id", jwtCheck, async (req, res) => {
     }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", jwtCheck, async (req, res) => {
     try {
         let rs = await db.query("SELECT * FROM members WHERE id = $1", [req.params.id]);
         if (rs.rowCount <= 0) {

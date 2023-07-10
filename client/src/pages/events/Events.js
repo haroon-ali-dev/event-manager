@@ -209,6 +209,7 @@ const Events = () => {
         setReqInProcess={setReqInProcess}
         notification={notification}
         setNotification={setNotification}
+        setOuterNot={setOuterNot}
       />
       <Modal show={showAttendanceModal[0]} onHide={() => setShowAttendanceModal([false, 0])}>
         <Modal.Header closeButton>

@@ -95,7 +95,7 @@ router.put("/:id", jwtCheck, async (req, res) => {
     }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", jwtCheck, async (req, res) => {
     try {
         let rs = await db.query("SELECT * FROM events WHERE id = $1", [req.params.id]);
         if (rs.rowCount <= 0) {
