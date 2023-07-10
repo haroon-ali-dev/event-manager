@@ -10,6 +10,17 @@ const jwtCheck = auth({
     tokenSigningAlg: 'RS256'
 });
 
+router.get("/:memberId", jwtCheck, async (req, res) => {
+    try {
+        let rs = await db.query("SELECT * FROM members WHERE g_id = $1", [req.params.memberId]);
+        if (rs.rowCount <= 0) return res.status(404).json({ message: "Member does not exist." });
+
+        res.json(rs.rows[0]);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 router.post("/", jwtCheck, async (req, res) => {
     try {
         await validate(req.body);

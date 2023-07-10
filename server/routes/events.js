@@ -32,8 +32,8 @@ router.get("/date/:date", jwtCheck, async (req, res) => {
 
 router.get("/upcoming", jwtCheck, async (req, res) => {
     try {
-      const currentDate = moment().format("YYYY-MM-DD");
-      const query = `
+        const currentDate = moment().format("YYYY-MM-DD");
+        const query = `
         SELECT e.id, e.name, e.date, e.information, COUNT(a.u_id) AS "checkedInCount"
         FROM events e
         LEFT JOIN attendance a ON a.e_id = e.id
@@ -41,12 +41,12 @@ router.get("/upcoming", jwtCheck, async (req, res) => {
         GROUP BY e.id, e.name, e.date, e.information
         ORDER BY e.date ASC;
       `;
-      const { rows } = await db.query(query, [currentDate]);
-      res.json(rows);
+        const { rows } = await db.query(query, [currentDate]);
+        res.json(rows);
     } catch (err) {
-      res.status(500).json({ error: err.message });
+        res.status(500).json({ error: err.message });
     }
-  });
+});
 
 router.post("/", jwtCheck, async (req, res) => {
     try {
@@ -79,8 +79,8 @@ router.put("/:id", jwtCheck, async (req, res) => {
     try {
         let rs = await db.query("SELECT * FROM events WHERE id = $1", [req.params.id]);
         if (rs.rowCount <= 0) {
-return res.status(404).json({ message: "Event does not exist." });
-}
+            return res.status(404).json({ message: "Event does not exist." });
+        }
 
         req.body.date = moment(req.body.date).utcOffset("+0100").format("YYYY-MM-DD");
 
@@ -99,8 +99,8 @@ router.delete("/:id", async (req, res) => {
     try {
         let rs = await db.query("SELECT * FROM events WHERE id = $1", [req.params.id]);
         if (rs.rowCount <= 0) {
-return res.status(404).json({ message: "Event does not exist." });
-}
+            return res.status(404).json({ message: "Event does not exist." });
+        }
 
         await db.query("DELETE FROM events WHERE id = $1", [req.params.id]);
 
