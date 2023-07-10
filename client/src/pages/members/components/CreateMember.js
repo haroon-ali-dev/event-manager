@@ -147,6 +147,9 @@ export default function CreateMember({
           updateMember(member);
           setReqInProcess(false);
           setShowFormModal(false);
+
+          setOuterNot({ show: true, color: "success", message: "Member modified." });
+          window.scrollTo(0, 0);
         } else {
           const data = await res.json();
           console.log(data);
