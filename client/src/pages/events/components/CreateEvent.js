@@ -122,6 +122,9 @@ export default function CreateEvent({
           updateEvent(event);
           setReqInProcess(false);
           setShowFormModal(false);
+
+          setOuterNot({ show: true, color: "success", message: "Event modified." });
+          window.scrollTo(0, 0);
         } else {
           const data = await res.json();
           console.log(data);
