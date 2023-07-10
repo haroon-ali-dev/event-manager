@@ -120,10 +120,19 @@ const Members = () => {
 
   return (
     <>
-      <MemberInfo
-        showMemberInfoModal={showMemberInfoModal}
-        setShowMemberInfoModal={setShowMemberInfoModal}
-      />
+      <Modal size="xl" show={showMemberInfoModal[0]} onHide={() => setShowMemberInfoModal([false, 0])}>
+        <Modal.Header closeButton>
+          <Modal.Title>Member Info</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <MemberInfo
+            showMemberInfoModal={showMemberInfoModal}
+            setShowMemberInfoModal={setShowMemberInfoModal}
+          />
+        </Modal.Body>
+        <Modal.Footer>
+        </Modal.Footer>
+      </Modal>
 
       <Modal size="lg" show={showFormModal} onHide={() => setShowFormModal(false)}>
         <Modal.Header closeButton>
