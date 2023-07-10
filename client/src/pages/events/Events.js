@@ -29,6 +29,11 @@ const Events = () => {
     "message": "",
     data: ""
   });
+  const [outerNot, setOuterNot] = useState({
+    show: false,
+    color: "",
+    "message": ""
+  });
 
   async function getEvents() {
     try {
@@ -153,6 +158,7 @@ const Events = () => {
             setReqInProcess={setReqInProcess}
             notification={notification}
             setNotification={setNotification}
+            setOuterNot={setOuterNot}
           />
         </Modal.Body>
       </Modal>
@@ -210,6 +216,12 @@ const Events = () => {
         </Modal.Body>
         <Modal.Footer></Modal.Footer>
       </Modal>
+
+      {outerNot.show && (
+        <Alert className="text-center" variant={outerNot.color} onClose={() => setOuterNot(false)} dismissible>
+          {outerNot.message}
+        </Alert>
+      )}
 
       <h1 className={styles.heading}>Events</h1>
 
