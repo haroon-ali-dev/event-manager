@@ -122,6 +122,9 @@ const Events = () => {
       if (res.status === 200) {
         setEvents(events.filter((event) => event.id !== deleteEventId));
         setShowDeleteModal(false);
+
+        setOuterNot({ show: true, color: "success", message: "Event deleted." });
+        window.scrollTo(0, 0);
       } else {
         const data = await res.json();
         console.log(data);
