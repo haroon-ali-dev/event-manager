@@ -60,6 +60,8 @@ export default function AddMemberToEventModal({
                 setReqInProcess(false);
                 setShowPersonAddModal(false);
                 setNotification({ show: true, color: "primary", message: "Member added to event.", data: showPersonAddModal[1] });
+                setValue("memberId", "");
+
                 setOuterNot({ show: true, color: "success", message: "Member added to event." });
                 window.scrollTo(0, 0);
             } else {
@@ -98,6 +100,8 @@ export default function AddMemberToEventModal({
 
     return (
         <Modal size="lg" show={showPersonAddModal[0]} onHide={async () => {
+            setValue("memberId", "");
+            setNotification({ show: false, color: "", message: "" });
             if (html5QrcodeScanner) {
                 try {
                     await html5QrcodeScanner.clear();
