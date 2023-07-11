@@ -127,7 +127,7 @@ const Events = () => {
         setShowDeleteModal(false);
         setReqInProcess(false);
 
-        setOuterNot({ show: true, color: "success", message: "Event deleted." });
+        setOuterNot({ show: true, color: "danger", message: "Event deleted." });
         window.scrollTo(0, 0);
       } else {
         const data = await res.json();
