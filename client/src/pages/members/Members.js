@@ -1,8 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
-import { Alert, Table, Button, Modal, Stack, Spinner, Card, Form } from "react-bootstrap";
-import { PencilSquare, Trash, ListCheck, PersonVcard, Person } from "react-bootstrap-icons";
+import { Alert, Table, Button, Modal, Stack, Spinner } from "react-bootstrap";
+import { PencilSquare, Trash, ListCheck, PersonVcard } from "react-bootstrap-icons";
 import moment from "moment";
 
 import CreateMember from "./components/CreateMember";
@@ -15,6 +15,7 @@ import MemberInfo from "../events/components/MemberInfo";
 const Members = () => {
   const { getAccessTokenSilently } = useAuth0();
 
+  const [loading, setLoading] = useState(false);
   const [members, setMembers] = useState([]);
   const [singleMember, setSingleMember] = useState({});
   const [formAction, setFormAction] = useState("");
@@ -36,6 +37,8 @@ const Members = () => {
   });
 
   async function getMembers() {
+    setLoading(true);
+
     try {
       const accessToken = await getAccessTokenSilently({
         authorizationParams: {
@@ -54,6 +57,8 @@ const Members = () => {
 
     } catch (e) {
       console.log(e.message);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -215,45 +220,52 @@ const Members = () => {
         setReqInProcess={setReqInProcess}
       />
 
-      <Table striped bordered hover style={{ tableLayout: "fixed", wordWrap: "break-word" }}>
-        <thead>
-          <tr>
-            <th>Member ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Gender</th>
-            <th>Email</th>
-            <th>Mobile</th>
-            <th>Member Since</th>
-            <th>Created By</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {members.map((member, i) => (
-            <tr key={i}>
-              <td>{member["g_id"]}</td>
-              <td>{member["first_name"]}</td>
-              <td>{member["last_name"]}</td>
-              <td>{member["gender"]}</td>
-              <td>{member["email"]}</td>
-              <td>{member["mobile"]}</td>
-              <td>{moment(member["member_since"]).utcOffset("+0100").format("DD-MM-YYYY")}</td>
-              <td>{member["created_by"]}</td>
-              <td>
-                <Stack direction="horizontal" gap={3}>
-                  <PersonVcard className={styles.icon} onClick={() => setShowMemberInfoModal([true, member.id])} />
-                  <PencilSquare className={styles.icon} onClick={() => update(member.id)} />
-                  <Trash className={styles.icon} onClick={() => {
-                    setReqInProcess(false); setNotification({ show: false, color: "", message: "" }); setShowDeleteModal([true, member.id]);
-                  }} />
-                  <ListCheck className={styles.icon} onClick={() => setShowAttendanceModal([true, member.id])} />
-                </Stack>
-              </td>
+      {loading && (
+        <Spinner className="spinner-main" animation="border" role="status" size="lg">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      )}
+      {!loading && (
+        <Table striped bordered hover style={{ tableLayout: "fixed", wordWrap: "break-word" }}>
+          <thead>
+            <tr>
+              <th>Member ID</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Gender</th>
+              <th>Email</th>
+              <th>Mobile</th>
+              <th>Member Since</th>
+              <th>Created By</th>
+              <th>Action</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {members.map((member, i) => (
+              <tr key={i}>
+                <td>{member["g_id"]}</td>
+                <td>{member["first_name"]}</td>
+                <td>{member["last_name"]}</td>
+                <td>{member["gender"]}</td>
+                <td>{member["email"]}</td>
+                <td>{member["mobile"]}</td>
+                <td>{moment(member["member_since"]).utcOffset("+0100").format("DD-MM-YYYY")}</td>
+                <td>{member["created_by"]}</td>
+                <td>
+                  <Stack direction="horizontal" gap={3}>
+                    <PersonVcard className={styles.icon} onClick={() => setShowMemberInfoModal([true, member.id])} />
+                    <PencilSquare className={styles.icon} onClick={() => update(member.id)} />
+                    <Trash className={styles.icon} onClick={() => {
+                      setReqInProcess(false); setNotification({ show: false, color: "", message: "" }); setShowDeleteModal([true, member.id]);
+                    }} />
+                    <ListCheck className={styles.icon} onClick={() => setShowAttendanceModal([true, member.id])} />
+                  </Stack>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      )}
     </>
   );
 };
