@@ -232,11 +232,7 @@ const Members = () => {
               <th>Member ID</th>
               <th>First Name</th>
               <th>Last Name</th>
-              <th>Gender</th>
               <th>Email</th>
-              <th>Mobile</th>
-              <th>Member Since</th>
-              <th>Created By</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -246,11 +242,7 @@ const Members = () => {
                 <td>{member["g_id"]}</td>
                 <td>{member["first_name"]}</td>
                 <td>{member["last_name"]}</td>
-                <td>{member["gender"]}</td>
                 <td>{member["email"]}</td>
-                <td>{member["mobile"]}</td>
-                <td>{moment(member["member_since"]).utcOffset("+0100").format("DD-MM-YYYY")}</td>
-                <td>{member["created_by"]}</td>
                 <td>
                   <Stack direction="horizontal" gap={3}>
                     <PersonVcard className={styles.icon} onClick={() => setShowMemberInfoModal([true, member.id])} />
