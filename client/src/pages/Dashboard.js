@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { withAuthenticationRequired, useAuth0 } from "@auth0/auth0-react";
-import { Button, Card, Container, Modal, Alert } from "react-bootstrap";
+import { Button, Card, Container, Modal, Alert, Spinner } from "react-bootstrap";
 
 import AddMemberToEventModal from "../pages/events/components/AddMemberToEventModal";
 import EventAttendance from "./events/components/EventAttendance.js";
@@ -23,9 +23,12 @@ const Dashboard = () => {
     color: "",
     "message": ""
   });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function getEvents() {
+      setLoading(true);
+
       try {
         const accessToken = await getAccessTokenSilently({
           audience:
@@ -44,6 +47,8 @@ const Dashboard = () => {
         setUpcomingEvents(events);
       } catch (error) {
         console.log(error.message);
+      } finally {
+        setLoading(false);
       }
     }
 
@@ -76,43 +81,51 @@ const Dashboard = () => {
         </Alert>
       )}
       <h1 className="heading">Upcoming Events</h1>
-      <Container>
-        <AddMemberToEventModal
-          showPersonAddModal={showPersonAddModal}
-          setShowPersonAddModal={setShowPersonAddModal}
-          reqInProcess={reqInProcess}
-          setReqInProcess={setReqInProcess}
-          notification={notification}
-          setNotification={setNotification}
-          setOuterNot={setOuterNot}
-        />
-        {upcomingEvents &&
-          upcomingEvents.map((event) => (
-            <Card key={event.id} className="mb-4">
-              <Card.Header style={{ fontSize: "20px" }}>{event.name}</Card.Header>
-              <Card.Body>
-                <Card.Title>{moment(event.date).format("DD-MM-YYYY")}</Card.Title>
-                <Card.Text>
-                  {event.information ? event.information : "No information available."}
-                </Card.Text>
-                <p>Checked-in: {event.checkedInCount ? event.checkedInCount : "0"}</p>
-                <Button
-                  variant="success"
-                  onClick={() => setShowPersonAddModal([true, event.id])}
-                  style={{ marginRight: "10px" }}
-                >
-                  Check-in
-                </Button>
-                <Button
-                  variant="warning"
-                  onClick={() => setShowAttendanceModal([true, event.id])}
-                >
-                  Attended List
-                </Button>
-              </Card.Body>
-            </Card>
-          ))}
-      </Container>
+
+      {loading && (
+        <Spinner className="spinner-main" animation="border" role="status" size="lg">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      )}
+      {!loading && (
+        <Container>
+          <AddMemberToEventModal
+            showPersonAddModal={showPersonAddModal}
+            setShowPersonAddModal={setShowPersonAddModal}
+            reqInProcess={reqInProcess}
+            setReqInProcess={setReqInProcess}
+            notification={notification}
+            setNotification={setNotification}
+            setOuterNot={setOuterNot}
+          />
+          {upcomingEvents &&
+            upcomingEvents.map((event) => (
+              <Card key={event.id} className="mb-4">
+                <Card.Header style={{ fontSize: "20px" }}>{event.name}</Card.Header>
+                <Card.Body>
+                  <Card.Title>{moment(event.date).format("DD-MM-YYYY")}</Card.Title>
+                  <Card.Text>
+                    {event.information ? event.information : "No information available."}
+                  </Card.Text>
+                  <p>Checked-in: {event.checkedInCount ? event.checkedInCount : "0"}</p>
+                  <Button
+                    variant="success"
+                    onClick={() => setShowPersonAddModal([true, event.id])}
+                    style={{ marginRight: "10px" }}
+                  >
+                    Check-in
+                  </Button>
+                  <Button
+                    variant="warning"
+                    onClick={() => setShowAttendanceModal([true, event.id])}
+                  >
+                    Attended List
+                  </Button>
+                </Card.Body>
+              </Card>
+            ))}
+        </Container>
+      )}
     </>
   );
 };
