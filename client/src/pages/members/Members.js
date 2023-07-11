@@ -23,7 +23,12 @@ const Members = () => {
   const [showDeleteModal, setShowDeleteModal] = useState([false, 0]);
   const [showAttendanceModal, setShowAttendanceModal] = useState([false, 0]);
   const [reqInProcess, setReqInProcess] = useState(false);
-  const [errorAlert, setErrorAlert] = useState(false);
+  const [notification, setNotification] = useState({
+    show: false,
+    color: "",
+    "message": "",
+    data: ""
+  });
   const [outerNot, setOuterNot] = useState({
     show: false,
     color: "",
@@ -59,7 +64,7 @@ const Members = () => {
   const create = () => {
     setFormAction("create");
     setReqInProcess(false);
-    setErrorAlert(false);
+    setNotification({ show: false, color: "", message: "" });
     setShowFormModal(true);
   };
 
@@ -67,7 +72,7 @@ const Members = () => {
     setFormAction("update");
     setSingleMember(members.filter((member) => member.id === id)[0]);
     setReqInProcess(false);
-    setErrorAlert(false);
+    setNotification({ show: false, color: "", message: "" });
     setShowFormModal(true);
   };
 
@@ -81,7 +86,7 @@ const Members = () => {
 
   const deleteMember = async (id) => {
     setReqInProcess(true);
-    setErrorAlert(false);
+    setNotification({ show: false, color: "", message: "" });
 
     try {
       const accessToken = await getAccessTokenSilently({
@@ -108,12 +113,12 @@ const Members = () => {
       } else {
         const data = await res.json();
         console.log(data);
-        setErrorAlert(true);
+        setNotification({ show: true, color: "danger", message: "There was a problem." });
         setReqInProcess(false);
       }
     } catch (e) {
       console.log(e.message);
-      setErrorAlert(true);
+      setNotification({ show: true, color: "danger", message: "There was a problem." });
       setReqInProcess(false);
     }
   };
@@ -147,8 +152,8 @@ const Members = () => {
             setShowFormModal={setShowFormModal}
             reqInProcess={reqInProcess}
             setReqInProcess={setReqInProcess}
-            errorAlert={errorAlert}
-            setErrorAlert={setErrorAlert}
+            notification={notification}
+            setNotification={setNotification}
             setOuterNot={setOuterNot}
           />
         </Modal.Body>
@@ -162,10 +167,11 @@ const Members = () => {
         </Modal.Header>
         <Modal.Body>
           Are You Sure?
-          {errorAlert &&
-            <Alert className="mt-3" variant="danger">
-              There was a problem. Please try again.
-            </Alert>}
+          {notification.show && (
+            <Alert className="mt-3" variant={notification.color}>
+              {notification.message}
+            </Alert>
+          )}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="danger" onClick={() => deleteMember(showDeleteModal[1])} disabled={reqInProcess}>
@@ -239,7 +245,7 @@ const Members = () => {
                   <PersonVcard className={styles.icon} onClick={() => setShowMemberInfoModal([true, member.id])} />
                   <PencilSquare className={styles.icon} onClick={() => update(member.id)} />
                   <Trash className={styles.icon} onClick={() => {
-                    setReqInProcess(false); setErrorAlert(false); setShowDeleteModal([true, member.id]);
+                    setReqInProcess(false); setNotification({ show: false, color: "", message: "" }); setShowDeleteModal([true, member.id]);
                   }} />
                   <ListCheck className={styles.icon} onClick={() => setShowAttendanceModal([true, member.id])} />
                 </Stack>
