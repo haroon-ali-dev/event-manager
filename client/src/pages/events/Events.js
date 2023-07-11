@@ -14,6 +14,7 @@ import Search from "./components/Search";
 const Events = () => {
   const { getAccessTokenSilently } = useAuth0();
 
+  const [loading, setLoading] = useState(false);
   const [events, setEvents] = useState([]);
   const [singleEvent, setSingleEvent] = useState({});
   const [formAction, setFormAction] = useState("");
@@ -36,6 +37,8 @@ const Events = () => {
   });
 
   async function getEvents() {
+    setLoading(true);
+
     try {
       const accessToken = await getAccessTokenSilently({
         authorizationParams: {
@@ -54,8 +57,8 @@ const Events = () => {
 
       const events = await res.json();
       setEvents(events);
-    } catch (e) {
-      console.log(e.message);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -242,56 +245,63 @@ const Events = () => {
         setReqInProcess={setReqInProcess}
       />
 
-      <Table
-        striped
-        bordered
-        hover
-        style={{ tableLayout: "fixed", wordWrap: "break-word" }}
-      >
-        <thead>
-          <tr>
-            <th>Events</th>
-            <th>Date</th>
-            <th>Information</th>
-            <th>Created By</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {events.map((event, index) => (
-            <tr key={index}>
-              <td>{event["name"]}</td>
-              <td>
-                {moment(event["date"]).utcOffset("+0100").format("DD-MM-YYYY")}
-              </td>
-              <td>{event["information"]}</td>
-              <td>{event["created_by"]}</td>
-              <td>
-                <Stack direction="horizontal" gap={3}>
-                  <PencilSquare
-                    className={styles.icon}
-                    onClick={() => update(event.id)}
-                  />
-                  <Trash
-                    className={styles.icon}
-                    onClick={() => {
+      {loading && (
+        <Spinner className="spinner-main" animation="border" role="status" size="lg">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      )}
+      {!loading && (
+        <Table
+          striped
+          bordered
+          hover
+          style={{ tableLayout: "fixed", wordWrap: "break-word" }}
+        >
+          <thead>
+            <tr>
+              <th>Events</th>
+              <th>Date</th>
+              <th>Information</th>
+              <th>Created By</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {events.map((event, index) => (
+              <tr key={index}>
+                <td>{event["name"]}</td>
+                <td>
+                  {moment(event["date"]).utcOffset("+0100").format("DD-MM-YYYY")}
+                </td>
+                <td>{event["information"]}</td>
+                <td>{event["created_by"]}</td>
+                <td>
+                  <Stack direction="horizontal" gap={3}>
+                    <PencilSquare
+                      className={styles.icon}
+                      onClick={() => update(event.id)}
+                    />
+                    <Trash
+                      className={styles.icon}
+                      onClick={() => {
+                        setReqInProcess(false);
+                        setNotification({ show: false, color: "", message: "" });
+                        showDeleteConfirmation(event.id);
+                      }}
+                    />
+                    <PersonAdd className={styles.icon} onClick={() => {
                       setReqInProcess(false);
                       setNotification({ show: false, color: "", message: "" });
-                      showDeleteConfirmation(event.id);
-                    }}
-                  />
-                  <PersonAdd className={styles.icon} onClick={() => {
-                    setReqInProcess(false);
-                    setNotification({ show: false, color: "", message: "" });
-                    setShowPersonAddModal([true, event.id]);
-                  }} />
-                  <ListCheck className={styles.icon} onClick={() => setShowAttendanceModal([true, event.id])} />
-                </Stack>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+                      setShowPersonAddModal([true, event.id]);
+                    }} />
+                    <ListCheck className={styles.icon} onClick={() => setShowAttendanceModal([true, event.id])} />
+                  </Stack>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      )}
     </>
   );
 };
