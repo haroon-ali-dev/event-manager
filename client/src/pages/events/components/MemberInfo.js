@@ -42,7 +42,7 @@ export default function MemberInfo({ showMemberInfoModal }) {
     return (
         <>
             {loading && (
-                <Spinner className="spinner-main" animation="border" role="status" size="lg">
+                <Spinner className="spinner-main" animation="border" role="status" size="md">
                     <span className="visually-hidden">Loading...</span>
                 </Spinner>
             )}
