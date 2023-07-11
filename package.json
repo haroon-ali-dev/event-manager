@@ -82,6 +82,7 @@
 		"express-oauth2-jwt-bearer": "^1.5.0",
 		"helmet": "^6.1.5",
 		"html5-qrcode": "^2.3.8",
+		"lodash": "^4.17.21",
 		"moment": "^2.29.4",
 		"morgan": "^1.10.0",
 		"nanoid": "^3.3.6",

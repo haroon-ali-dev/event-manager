@@ -139,7 +139,7 @@ export default function CreateMember({
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
           },
-          body: JSON.stringify(data),
+          body: JSON.stringify({ original: singleMember, new: data}),
         });
 
         if (res.status === 200) {
