@@ -8,6 +8,7 @@ import EventAttendance from "./events/components/EventAttendance.js";
 
 const Dashboard = () => {
   const { getAccessTokenSilently } = useAuth0();
+  const [loading, setLoading] = useState(false);
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [showPersonAddModal, setShowPersonAddModal] = useState([false, 0]);
   const [showAttendanceModal, setShowAttendanceModal] = useState([false, 0]);
@@ -23,7 +24,6 @@ const Dashboard = () => {
     color: "",
     "message": ""
   });
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function getEvents() {
