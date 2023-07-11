@@ -113,7 +113,7 @@ const Members = () => {
         setShowDeleteModal([false, 0]);
         setReqInProcess(false);
 
-        setOuterNot({ show: true, color: "success", message: "Member deleted." });
+        setOuterNot({ show: true, color: "danger", message: "Member deleted." });
         window.scrollTo(0, 0);
       } else {
         const data = await res.json();
