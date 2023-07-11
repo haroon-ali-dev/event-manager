@@ -102,7 +102,7 @@ router.put("/:id", jwtCheck, async (req, res) => {
 
         if (!_.isEqual(req.body.original, rs.rows[0])) return res.status(400).json({ message: "Member has already been modifed. Please reload the page and try again." });
 
-        req.body.dateOfBirth = moment(req.body.dateOfBirth).utcOffset("+0100").format("YYYY-MM-DD");
+        req.body.new.dateOfBirth = moment(req.body.new.dateOfBirth).utcOffset("+0100").format("YYYY-MM-DD");
 
         rs = await db.query(
             "UPDATE members SET first_name = $1, last_name = $2, gender = $3, date_of_birth = $4, address = $5, post_code = $6, email = $7, mobile = $8, additional_info = $9 WHERE id = $10 RETURNING *",

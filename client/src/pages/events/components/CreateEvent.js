@@ -91,12 +91,12 @@ export default function CreateEvent({
           const data = await res.json();
           console.log(data);
           setReqInProcess(false);
-          setNotification({ show: false, color: "", message: "" });
+          setNotification({ show: true, color: "danger", message: data.message });
         }
       } catch (e) {
         console.log(e.message);
         setReqInProcess(false);
-        setNotification({ show: false, color: "", message: "" });
+        setNotification({ show: true, color: "danger", message: data.message });
       }
     }
 
@@ -114,7 +114,7 @@ export default function CreateEvent({
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
           },
-          body: JSON.stringify(data),
+          body: JSON.stringify({ original: singleEvent, new: data }),
         });
 
         if (res.status === 200) {
@@ -129,12 +129,12 @@ export default function CreateEvent({
           const data = await res.json();
           console.log(data);
           setReqInProcess(false);
-          setNotification({ show: false, color: "", message: "" });
+          setNotification({ show: true, color: "danger", message: data.message });
         }
       } catch (e) {
         console.log(e.message);
         setReqInProcess(false);
-        setNotification({ show: false, color: "", message: "" });
+        setNotification({ show: true, color: "danger", message: data.message });
       }
     }
   };
