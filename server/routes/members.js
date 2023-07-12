@@ -85,6 +85,10 @@ router.post("/", jwtCheck, async (req, res) => {
 
         res.json(rs.rows[0]);
     } catch (error) {
+        // error.code '23505' is for unique_violation in PostgreSQL
+        if (error.code === "23505") {
+            return res.status(400).json({ message: "The email already exists." });
+        }
         res.status(500).json({ message: error.message });
     }
 });
