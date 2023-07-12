@@ -6,7 +6,6 @@ import { parse, isDate } from "date-fns";
 import moment from "moment";
 import { Form, Button, Row, Col, Spinner, Alert } from "react-bootstrap";
 
-
 const today = new Date();
 
 function parseDateString(value, originalValue) {
@@ -37,8 +36,9 @@ export default function CreateMember({
   setShowFormModal,
   reqInProcess,
   setReqInProcess,
-  errorAlert,
-  setErrorAlert,
+  notification,
+  setNotification,
+  setOuterNot
 }) {
   const { getAccessTokenSilently, user } = useAuth0();
 
@@ -67,7 +67,7 @@ export default function CreateMember({
     data.userName = user.name;
 
     setReqInProcess(true);
-    setErrorAlert(false);
+    setNotification({ show: false, color: "", message: "" });
 
     if (formAction === "create") {
       try {
@@ -91,6 +91,8 @@ export default function CreateMember({
           createMember(member);
           setReqInProcess(false);
           setShowFormModal(false);
+          setOuterNot({ show: true, color: "success", message: "Member created." });
+          window.scrollTo(0, 0);
 
           const emailRes = await fetch("/api/sendmail", {
             method: "POST",
@@ -113,12 +115,12 @@ export default function CreateMember({
           const data = await res.json();
           console.log(data);
           setReqInProcess(false);
-          setErrorAlert(true);
+          setNotification({ show: true, color: "danger", message: data.messasge });
         }
       } catch (e) {
         console.log(e.message);
         setReqInProcess(false);
-        setErrorAlert(true);
+        setNotification({ show: true, color: "danger", message: "There was a problem." });
       }
     }
 
@@ -136,7 +138,7 @@ export default function CreateMember({
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
           },
-          body: JSON.stringify(data),
+          body: JSON.stringify({ original: singleMember, new: data }),
         });
 
         if (res.status === 200) {
@@ -144,16 +146,19 @@ export default function CreateMember({
           updateMember(member);
           setReqInProcess(false);
           setShowFormModal(false);
+
+          setOuterNot({ show: true, color: "success", message: "Member modified." });
+          window.scrollTo(0, 0);
         } else {
           const data = await res.json();
           console.log(data);
           setReqInProcess(false);
-          setErrorAlert(true);
+          setNotification({ show: true, color: "danger", message: data.message });
         }
       } catch (e) {
         console.log(e.message);
         setReqInProcess(false);
-        setErrorAlert(true);
+        setNotification({ show: true, color: "danger", message: "There was a problem." });
       }
     }
   };
@@ -345,10 +350,11 @@ export default function CreateMember({
               </Spinner>}
           </Button>}
 
-        {errorAlert &&
-          <Alert className="mt-3" variant="danger">
-            There was a problem. Please try again.
-          </Alert>}
+        {notification.show && (
+          <Alert className="mt-3" variant={notification.color}>
+            {notification.message}
+          </Alert>
+        )}
       </div>
     </Form>
   );

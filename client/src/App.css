@@ -6,3 +6,13 @@
 .icon:hover {
     cursor: pointer;
 }
+
+.accordion-button:focus {
+    box-shadow: none;
+    border-color: rgba(0,0,0,.125);
+}
+
+.spinner-main {
+    display: block;
+    margin: 0px auto 0px auto;
+}

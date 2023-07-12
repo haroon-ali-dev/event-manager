@@ -1,14 +1,17 @@
 import { useState, useEffect } from "react";
-import { Table } from "react-bootstrap";
+import { Table, Spinner } from "react-bootstrap";
 import { useAuth0 } from "@auth0/auth0-react";
 
 export default function EventAttendance({ eventID }) {
+    const [loading, setLoading] = useState(false);
     const [EventAttendance, setEventAttendance] = useState([]);
 
     const { getAccessTokenSilently } = useAuth0();
 
     useEffect(() => {
         async function getAttendance() {
+            setLoading(true);
+
             try {
                 const accessToken = await getAccessTokenSilently({
                     authorizationParams: {
@@ -27,6 +30,8 @@ export default function EventAttendance({ eventID }) {
 
             } catch (e) {
                 console.log(e.message);
+            } finally {
+                setLoading(false);
             }
         }
 
@@ -35,26 +40,35 @@ export default function EventAttendance({ eventID }) {
 
     return (
         <>
-            {EventAttendance.length <= 0 && (
-                <div className="text-center">No members attended to this event.</div>
+            {loading && (
+                <Spinner className="spinner-main" animation="border" role="status" size="md">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
             )}
-            {EventAttendance.length >= 1 && (
-                <Table striped bordered hover style={{ tableLayout: "fixed", wordWrap: "break-word" }}>
-                    <thead>
-                        <tr>
-                            <th>Members ID</th>
-                            <th>Name</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {EventAttendance.map((aItem, i) => (
-                            <tr key={i}>
-                                <td>{aItem["g_id"]}</td>
-                                <td>{aItem["first_name"]} {aItem["last_name"]}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </Table>
+            {!loading && (
+                <>
+                    {EventAttendance.length <= 0 && (
+                        <div className="text-center">No members attended to this event.</div>
+                    )}
+                    {EventAttendance.length >= 1 && (
+                        <Table striped bordered hover style={{ tableLayout: "fixed", wordWrap: "break-word" }}>
+                            <thead>
+                                <tr>
+                                    <th>Members ID</th>
+                                    <th>Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {EventAttendance.map((aItem, i) => (
+                                    <tr key={i}>
+                                        <td>{aItem["g_id"]}</td>
+                                        <td>{aItem["first_name"]} {aItem["last_name"]}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                    )}
+                </>
             )}
         </>
     );

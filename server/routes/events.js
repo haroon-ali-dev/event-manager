@@ -4,6 +4,7 @@ import moment from "moment";
 import db from "../db";
 const validate = require("../validations/events");
 const { auth } = require("express-oauth2-jwt-bearer");
+const _ = require("lodash");
 
 const jwtCheck = auth({
     audience: process.env.NODE_ENV === "development" ? "http://localhost:3000/api/" : "",
@@ -32,8 +33,8 @@ router.get("/date/:date", jwtCheck, async (req, res) => {
 
 router.get("/upcoming", jwtCheck, async (req, res) => {
     try {
-      const currentDate = moment().format("YYYY-MM-DD");
-      const query = `
+        const currentDate = moment().format("YYYY-MM-DD");
+        const query = `
         SELECT e.id, e.name, e.date, e.information, COUNT(a.u_id) AS "checkedInCount"
         FROM events e
         LEFT JOIN attendance a ON a.e_id = e.id
@@ -41,12 +42,12 @@ router.get("/upcoming", jwtCheck, async (req, res) => {
         GROUP BY e.id, e.name, e.date, e.information
         ORDER BY e.date ASC;
       `;
-      const { rows } = await db.query(query, [currentDate]);
-      res.json(rows);
+        const { rows } = await db.query(query, [currentDate]);
+        res.json(rows);
     } catch (err) {
-      res.status(500).json({ error: err.message });
+        res.status(500).json({ error: err.message });
     }
-  });
+});
 
 router.post("/", jwtCheck, async (req, res) => {
     try {
@@ -71,7 +72,7 @@ router.post("/", jwtCheck, async (req, res) => {
 
 router.put("/:id", jwtCheck, async (req, res) => {
     try {
-        await validate(req.body);
+        await validate(req.body.new);
     } catch (error) {
         return res.status(400).json({ message: error.message });
     }
@@ -79,14 +80,19 @@ router.put("/:id", jwtCheck, async (req, res) => {
     try {
         let rs = await db.query("SELECT * FROM events WHERE id = $1", [req.params.id]);
         if (rs.rowCount <= 0) {
-return res.status(404).json({ message: "Event does not exist." });
-}
+            return res.status(404).json({ message: "Event does not exist." });
+        }
 
-        req.body.date = moment(req.body.date).utcOffset("+0100").format("YYYY-MM-DD");
+        req.body.original["date"] = moment(req.body.original["date"]).utcOffset("+0100").format("YYYY-MM-DD");
+        rs.rows[0]["date"] = moment(rs.rows[0]["date"]).utcOffset("+0100").format("YYYY-MM-DD");
+
+        if (!_.isEqual(req.body.original, rs.rows[0])) return res.status(400).json({ message: "Event has already been modifed. Please reload the page and try again." });
+
+        req.body.new.date = moment(req.body.new.date).utcOffset("+0100").format("YYYY-MM-DD");
 
         rs = await db.query(
             "UPDATE events SET name = $1, date = $2, information = $3 WHERE id = $4 RETURNING *",
-            [req.body.name, req.body.date, req.body.information, req.params.id]
+            [req.body.new.name, req.body.new.date, req.body.new.information, req.params.id]
         );
 
         res.json(rs.rows[0]);
@@ -95,12 +101,12 @@ return res.status(404).json({ message: "Event does not exist." });
     }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", jwtCheck, async (req, res) => {
     try {
         let rs = await db.query("SELECT * FROM events WHERE id = $1", [req.params.id]);
         if (rs.rowCount <= 0) {
-return res.status(404).json({ message: "Event does not exist." });
-}
+            return res.status(404).json({ message: "Event does not exist." });
+        }
 
         await db.query("DELETE FROM events WHERE id = $1", [req.params.id]);
 
