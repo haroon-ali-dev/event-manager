@@ -5,7 +5,6 @@ import db from "../db";
 const validate = require("../validations/members");
 const { auth } = require("express-oauth2-jwt-bearer");
 import { nanoid } from "nanoid";
-const uniqueId = nanoid(10);
 const _ = require("lodash");
 
 const jwtCheck = auth({
@@ -28,7 +27,9 @@ router.get("/:id", jwtCheck, async (req, res) => {
     try {
         const dbRes = await db.query("SELECT * FROM members WHERE id = $1", [req.params.id]);
 
-        if (dbRes.rowCount <= 0) return res.status(404).json({ message: "Member doesn't exist." });
+        if (dbRes.rowCount <= 0) {
+return res.status(404).json({ message: "Member doesn't exist." });
+}
 
         res.json(dbRes.rows[0]);
     } catch (err) {
@@ -40,7 +41,9 @@ router.get("/email/:email", jwtCheck, async (req, res) => {
     try {
         const dbRes = await db.query("SELECT * FROM members WHERE email = $1", [req.params.email]);
 
-        if (dbRes.rowCount <= 0) return res.status(404).json({ message: "Member doesn't exist." });
+        if (dbRes.rowCount <= 0) {
+return res.status(404).json({ message: "Member doesn't exist." });
+}
 
         res.json(dbRes.rows[0]);
     } catch (err) {
@@ -57,6 +60,8 @@ router.post("/", jwtCheck, async (req, res) => {
 
     req.body.dateOfBirth = moment(req.body.dateOfBirth).utcOffset("+0100").format("YYYY-MM-DD");
     const member_since = moment().utcOffset("+0100").format("YYYY-MM-DD");
+    const uniqueId = nanoid(10);
+
 
 
     try {
@@ -93,14 +98,18 @@ router.put("/:id", jwtCheck, async (req, res) => {
 
     try {
         let rs = await db.query("SELECT * FROM members WHERE id = $1", [req.params.id]);
-        if (rs.rowCount <= 0) return res.status(404).json({ message: "Member does not exist." });
+        if (rs.rowCount <= 0) {
+return res.status(404).json({ message: "Member does not exist." });
+}
 
         req.body.original["date_of_birth"] = moment(req.body.original["date_of_birth"]).utcOffset("+0100").format("YYYY-MM-DD");
         req.body.original["member_since"] = moment(req.body.original["member_since"]).utcOffset("+0100").format("YYYY-MM-DD");
         rs.rows[0]["date_of_birth"] = moment(rs.rows[0]["date_of_birth"]).utcOffset("+0100").format("YYYY-MM-DD");
         rs.rows[0]["member_since"] = moment(rs.rows[0]["member_since"]).utcOffset("+0100").format("YYYY-MM-DD");
 
-        if (!_.isEqual(req.body.original, rs.rows[0])) return res.status(400).json({ message: "Member has already been modifed. Please reload the page and try again." });
+        if (!_.isEqual(req.body.original, rs.rows[0])) {
+return res.status(400).json({ message: "Member has already been modifed. Please reload the page and try again." });
+}
 
         req.body.new.dateOfBirth = moment(req.body.new.dateOfBirth).utcOffset("+0100").format("YYYY-MM-DD");
 
