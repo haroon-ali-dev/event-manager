@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import { Alert, Table, Button, Modal, Stack, Spinner } from "react-bootstrap";
-import { PencilSquare, Trash, ListCheck, PersonVcard } from "react-bootstrap-icons";
+import { PencilSquare, Trash, ListCheck, PersonVcard, Envelope } from "react-bootstrap-icons";
 import moment from "moment";
 
 import CreateMember from "./components/CreateMember";
@@ -22,18 +22,19 @@ const Members = () => {
   const [showFormModal, setShowFormModal] = useState(false);
   const [showMemberInfoModal, setShowMemberInfoModal] = useState([false, 0]);
   const [showDeleteModal, setShowDeleteModal] = useState([false, 0]);
+  const [showMailModal, setShowMailModal] = useState([false, 0]);
   const [showAttendanceModal, setShowAttendanceModal] = useState([false, 0]);
   const [reqInProcess, setReqInProcess] = useState(false);
   const [notification, setNotification] = useState({
     show: false,
     color: "",
     "message": "",
-    data: ""
+    data: "",
   });
   const [outerNot, setOuterNot] = useState({
     show: false,
     color: "",
-    "message": ""
+    "message": "",
   });
 
   async function getMembers() {
@@ -128,6 +129,42 @@ const Members = () => {
     }
   };
 
+      const sendEmail = async (member) => {
+    try {
+      const accessToken = await getAccessTokenSilently({
+        authorizationParams: {
+          audience: process.env.NODE_ENV === "development" ? "http://localhost:3000/api/" : "",
+        },
+      });
+
+      const res = await fetch("/api/sendmail", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          to: member.email,
+          data: member,
+        }),
+      });
+
+      if (res.status === 200) {
+        console.log("Email sent successfully.");
+        setNotification({ show: true, color: "success", message: "Email sent successfully." });
+        setOuterNot({ show: true, color: "success", message: "Email sent successfully." });
+        setShowMailModal([false, 0]);
+        window.scrollTo(0, 0);
+      } else {
+        console.log("Failed to send email.");
+        setNotification({ show: true, color: "danger", message: "Failed to send email." });
+        setOuterNot({ show: true, color: "danger", message: "Failed to send email." });
+      }
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
   return (
     <>
       <Modal size="xl" show={showMemberInfoModal[0]} onHide={() => setShowMemberInfoModal([false, 0])}>
@@ -165,6 +202,31 @@ const Members = () => {
         <Modal.Footer>
         </Modal.Footer>
       </Modal>
+
+        <Modal show={showMailModal[0]} onHide={() => setShowMailModal([false, 0])}>
+        <Modal.Header closeButton>
+          <Modal.Title>Send Email</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Are you sure?
+          {notification.show && notification.color && (
+            <Alert className="mt-3" variant={notification.color}>
+              {notification.message}
+            </Alert>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger" onClick={() => sendEmail(members.find((member) => member.id === showMailModal[1]))} disabled={reqInProcess}>
+            Yes
+            {reqInProcess && (
+              <Spinner className="ms-2" animation="border" role="status" size="sm">
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+            )}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
 
       <Modal show={showDeleteModal[0]} onHide={() => setShowDeleteModal(false)}>
         <Modal.Header closeButton>
@@ -251,6 +313,11 @@ const Members = () => {
                       setReqInProcess(false); setNotification({ show: false, color: "", message: "" }); setShowDeleteModal([true, member.id]);
                     }} />
                     <ListCheck className={styles.icon} onClick={() => setShowAttendanceModal([true, member.id])} />
+                    <Envelope className={styles.icon} onClick={() => {
+                      setReqInProcess(false); setNotification({ show: false, color: "", message: "" }); setShowMailModal([true, member.id]);
+                    }}
+                    />
+
                   </Stack>
                 </td>
               </tr>
