@@ -1,5 +1,7 @@
-create table attendance (
-	id SERIAL PRIMARY KEY,
-	e_id INT NOT NULL,
-    u_id INT NOT NULL
+CREATE TABLE attendance (
+    id SERIAL PRIMARY KEY,
+    e_id INT NOT NULL,
+    u_id INT NOT NULL,
+    FOREIGN KEY (e_id) REFERENCES events (id) ON DELETE CASCADE,
+    FOREIGN KEY (u_id) REFERENCES members (id) ON DELETE CASCADE
 );
