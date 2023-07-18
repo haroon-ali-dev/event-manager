@@ -234,6 +234,8 @@ const Members = () => {
         </Modal.Header>
         <Modal.Body>
           Are You Sure?
+              <br />
+          If you delete this member, all of their attendance records will be deleted as well.
           {notification.show && (
             <Alert className="mt-3" variant={notification.color}>
               {notification.message}
