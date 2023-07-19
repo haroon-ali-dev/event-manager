@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import { Alert, Table, Button, Modal, Stack, Spinner } from "react-bootstrap";
 import { PencilSquare, Trash, ListCheck, PersonVcard, Envelope } from "react-bootstrap-icons";
-import moment from "moment";
 
 import CreateMember from "./components/CreateMember";
 import MemberAttendance from "./components/MemberAttendance";
@@ -11,7 +10,6 @@ import MemberAttendance from "./components/MemberAttendance";
 import styles from "./Members.module.css";
 import Search from "./components/Search";
 import MemberInfo from "../events/components/MemberInfo";
-import { ca } from "date-fns/locale";
 
 const Members = () => {
   const { getAccessTokenSilently } = useAuth0();
