@@ -26,7 +26,7 @@ router.post("/", requestSource, async (req, res) => {
         <li>Membership ID: ${req.body.data.g_id}</li>
       </ul>
       <img src="cid:qrcode" alt="QR Code" />
-      <p>Thank you for your membership!s</p>
+      <p>Thank you for your membership!</p>
     `,
     attachments: [
       {
