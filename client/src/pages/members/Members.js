@@ -11,6 +11,7 @@ import MemberAttendance from "./components/MemberAttendance";
 import styles from "./Members.module.css";
 import Search from "./components/Search";
 import MemberInfo from "../events/components/MemberInfo";
+import { ca } from "date-fns/locale";
 
 const Members = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -113,7 +114,6 @@ const Members = () => {
         setMembers(members.filter((member) => member.id !== id));
         setShowDeleteModal([false, 0]);
         setReqInProcess(false);
-
         setOuterNot({ show: true, color: "danger", message: "Member deleted." });
         window.scrollTo(0, 0);
       } else {
@@ -130,10 +130,13 @@ const Members = () => {
   };
 
       const sendEmail = async (member) => {
-    try {
+        try {
+          setReqInProcess(true);
       const accessToken = await getAccessTokenSilently({
         authorizationParams: {
           audience: process.env.NODE_ENV === "development" ? "http://localhost:3000/api/" : "",
+        }, catch(e) {
+          console.log(e.message);
         },
       });
 
@@ -160,6 +163,7 @@ const Members = () => {
         setNotification({ show: true, color: "danger", message: "Failed to send email." });
         setOuterNot({ show: true, color: "danger", message: "Failed to send email." });
       }
+      setReqInProcess(false);
     } catch (e) {
       console.log(e.message);
     }
