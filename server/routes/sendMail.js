@@ -4,12 +4,19 @@ const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const requestSource = require("../middlewares/requestSource");
 const QrCode = require("qrcode");
+const validate = require("../validations/sendQRCode");
 
 router.post("/", requestSource, async (req, res) => {
-  const qrCode = await QrCode.toDataURL(body.data.g_id);
+  try {
+    await validate(req.body);
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+
+  const qrCode = await QrCode.toDataURL(req.body.data.g_id, { width: "300px" });
 
   const msg = {
-    to: body.to,
+    to: req.body.to,
     from: `Event Manager System <${process.env.SENDGRID_EMAIL}>`,
     subject: "Your Membership Information",
     html: `
@@ -18,18 +25,18 @@ router.post("/", requestSource, async (req, res) => {
         <li>Name: ${req.body.data.first_name} ${req.body.data.last_name}</li>
         <li>Membership ID: ${req.body.data.g_id}</li>
       </ul>
-      <img style="width:300px" src="cid:qrcode" alt="QR Code" />
+      <img src="cid:qrcode" alt="QR Code" />
       <p>Thank you for your membership!s</p>
     `,
     attachments: [
       {
-          content: qrCode.split(",")[1],
-          filename: "qr-code",
-          type: "image/png",
-          content_id: "qrcode",
-          disposition: "inline"
+        content: qrCode.split(",")[1],
+        filename: "qr-code",
+        type: "image/png",
+        content_id: "qrcode",
+        disposition: "inline"
       }
-  ]
+    ]
   };
 
   try {
