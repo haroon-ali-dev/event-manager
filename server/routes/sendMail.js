@@ -13,7 +13,7 @@ router.post("/", requestSource, async (req, res) => {
     return res.status(400).json({ message: error.message });
   }
 
-  const qrCode = await QrCode.toDataURL(req.body.data.g_id, { width: "300px" });
+  const qrCode = await QrCode.toDataURL(req.body.data.g_id, { width: 300 });
 
   const msg = {
     to: req.body.to,
