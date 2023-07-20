@@ -28,12 +28,12 @@ const Events = () => {
     show: false,
     color: "",
     "message": "",
-    data: ""
+    data: "",
   });
   const [outerNot, setOuterNot] = useState({
     show: false,
     color: "",
-    "message": ""
+    "message": "",
   });
 
   async function getEvents() {
@@ -178,6 +178,8 @@ const Events = () => {
         </Modal.Header>
         <Modal.Body>
           Are you sure you want to delete this event?
+          <br />
+          If you delete this event, all the attendance records will be deleted.
           {notification.show && (
             <Alert className="mt-3" variant={notification.color}>
               {notification.message}

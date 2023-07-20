@@ -38,7 +38,7 @@ export default function CreateMember({
   setReqInProcess,
   notification,
   setNotification,
-  setOuterNot
+  setOuterNot,
 }) {
   const { getAccessTokenSilently, user } = useAuth0();
 
@@ -115,7 +115,7 @@ export default function CreateMember({
           const data = await res.json();
           console.log(data);
           setReqInProcess(false);
-          setNotification({ show: true, color: "danger", message: data.messasge });
+          setNotification({ show: true, color: "danger", message: data.message });
         }
       } catch (e) {
         console.log(e.message);

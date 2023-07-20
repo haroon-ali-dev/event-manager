@@ -1,40 +1,42 @@
 const express = require("express");
 const router = express.Router();
 const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const requestSource = require("../middlewares/requestSource");
 const QrCode = require("qrcode");
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const validate = require("../validations/sendQRCode");
 
-router.post("/",requestSource, async (req, res) => {
-  const { body } = req;
-    const qrCode = await QrCode.toDataURL(body.data.g_id);
-    body.data.qrCode = qrCode;
+router.post("/", requestSource, async (req, res) => {
+  try {
+    await validate(req.body);
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
 
-  const formatData = (data) => {
-    let result = "";
-    if (!data || typeof data !== "object") {
-      return result;
-    }
-    result += `Name: ${data.first_name} ${data.last_name} \nMembership ID: ${data.g_id}\n\n`;
-    return result;
-  };
-
-  const formattedData = formatData(body.data);
+  const qrCode = await QrCode.toDataURL(req.body.data.g_id, { width: 300 });
 
   const msg = {
-    to: body.to,
+    to: req.body.to,
     from: `Event Manager System <${process.env.SENDGRID_EMAIL}>`,
     subject: "Your Membership Information",
-    text: `Your Membership Information is as follows:\n\n${formattedData}\n\nThank you for your membership!`,
+    html: `
+      <p>Your Membership Information is as follows:</p>
+      <ul>
+        <li>Name: ${req.body.data.first_name} ${req.body.data.last_name}</li>
+        <li>Membership ID: ${req.body.data.g_id}</li>
+      </ul>
+      <img src="cid:qrcode" alt="QR Code" />
+      <p>Thank you for your membership!</p>
+    `,
     attachments: [
-        {
-          filename: "qrcode.png",
-          content: qrCode.split(",")[1],
-          type: "image/png",
-          disposition: "attachment",
-          contentId: "qrcode",
-        },
-      ],
+      {
+        content: qrCode.split(",")[1],
+        filename: "qr-code",
+        type: "image/png",
+        content_id: "qrcode",
+        disposition: "inline"
+      }
+    ]
   };
 
   try {
