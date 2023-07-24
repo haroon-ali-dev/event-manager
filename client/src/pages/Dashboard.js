@@ -34,7 +34,7 @@ const Dashboard = () => {
           audience:
             process.env.NODE_ENV === "development"
               ? "http://localhost:3000/api/"
-              : "",
+              : "https://d3n27sahgwxchw.cloudfront.net/",
         });
 
         const res = await fetch("/api/events/upcoming", {
