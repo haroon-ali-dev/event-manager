@@ -22,7 +22,7 @@ export default function Search({ reqInProcess, setReqInProcess, setMembers, getM
                     try {
                         const accessToken = await getAccessTokenSilently({
                             authorizationParams: {
-                                audience: process.env.NODE_ENV === "development" ? "http://localhost:3000/api/" : "",
+                                audience: process.env.NODE_ENV === "development" ? "http://localhost:3000/api/" : "https://d3n27sahgwxchw.cloudfront.net/",
                             },
                         });
 
