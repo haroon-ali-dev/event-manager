@@ -22,7 +22,7 @@ function NavBar() {
               <Nav.Link to="/events" as={Link}>Events</Nav.Link>
             </Nav>
             <Form className="d-flex align-items-center">
-              <Image style={{ width: "15%", marginRight: "5px" }} src={user.picture} alt={user.name} roundedCircle />
+              <Image style={{ width: "15%", marginRight: "5px" }} crossOrigin="anonymous" src={user.picture} alt={user.name} roundedCircle />
               <Nav.Link href="#" className="w-100">{user.name}</Nav.Link>
               <LogoutButton />
             </Form>
