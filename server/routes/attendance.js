@@ -4,7 +4,7 @@ import db from "../db";
 const { auth } = require("express-oauth2-jwt-bearer");
 
 const jwtCheck = auth({
-    audience: process.env.NODE_ENV === "development" ? "http://localhost:3000/api/" : "",
+    audience: process.env.NODE_ENV === "development" ? "http://localhost:3000/api/" : "https://d3n27sahgwxchw.cloudfront.net/",
     issuerBaseURL: "https://dev-e5so586xmispuho0.us.auth0.com/",
     tokenSigningAlg: "RS256",
 });
