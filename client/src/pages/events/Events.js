@@ -282,12 +282,14 @@ const Events = () => {
                     <OverlayTrigger overlay={<Tooltip id="Edit">Edit</Tooltip>}>
                     <PencilSquare
                       className={styles.icon}
-                      onClick={() => update(event.id)}
+                        onClick={() => update(event.id)}
+                        style={{ color: "blue" }}
                     />
                     </OverlayTrigger>
                     <OverlayTrigger overlay={<Tooltip id="Delete">Delete</Tooltip>}>
                     <Trash
-                      className={styles.icon}
+                        className={styles.icon}
+                        style={{ color: "red" }}
                       onClick={() => {
                         setReqInProcess(false);
                         setNotification({ show: false, color: "", message: "" });
@@ -296,7 +298,7 @@ const Events = () => {
                       />
                     </OverlayTrigger>
                     <OverlayTrigger overlay={<Tooltip id="Check-In">Check-In</Tooltip>}>
-                    <PersonAdd className={styles.icon} onClick={() => {
+                    <PersonAdd className={styles.icon} style={{ color: "green" }} onClick={() => {
                       setReqInProcess(false);
                       setNotification({ show: false, color: "", message: "" });
                       setShowPersonAddModal([true, event.id]);
