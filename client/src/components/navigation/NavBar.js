@@ -20,8 +20,8 @@ function NavBar() {
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
             <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: "100px" }} navbarScroll>
-              <Nav.Link to="/members" as={Link}>Members</Nav.Link>
-              <Nav.Link to="/events" as={Link}>Events</Nav.Link>
+              <Nav.Link to="/members"  className="d-block d-lg-none" as={Link}>Members</Nav.Link>
+              <Nav.Link to="/events"   className="d-block d-lg-none" as={Link}>Events</Nav.Link>
             </Nav>
             <Form className="d-flex align-items-center">
               <Image style={{ width: "15%", marginRight: "5px" }} src={user.picture} alt={user.name} roundedCircle />

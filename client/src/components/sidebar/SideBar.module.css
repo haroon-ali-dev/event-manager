@@ -14,7 +14,7 @@
   .sidebar a:hover {
     background-color: #e9ecef;
   }
-  @media (max-width: 767.98px) {
+  @media (max-width: 923px) {
     .sidebar {
       display: none;
     }
