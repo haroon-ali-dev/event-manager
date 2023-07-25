@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
-import { Alert, Table, Button, Modal, Stack, Spinner } from "react-bootstrap";
+import { Alert, Table, Button, Modal, Stack, Spinner, Tooltip, OverlayTrigger } from "react-bootstrap";
 import { PencilSquare, Trash, ListCheck, PersonVcard, Envelope } from "react-bootstrap-icons";
 
 import CreateMember from "./components/CreateMember";
@@ -311,17 +311,26 @@ const Members = () => {
                 <td>{member["email"]}</td>
                 <td>
                   <Stack direction="horizontal" gap={3}>
-                    <PersonVcard className={styles.icon} onClick={() => setShowMemberInfoModal([true, member.id])} />
-                    <PencilSquare className={styles.icon} onClick={() => update(member.id)} />
+                    <OverlayTrigger overlay={<Tooltip id="more-info">More info</Tooltip>}>
+                      <PersonVcard className={styles.icon} onClick={() => setShowMemberInfoModal([true, member.id])} />
+                    </OverlayTrigger>
+                    <OverlayTrigger overlay={<Tooltip id="Edit">Edit</Tooltip>}>
+                      <PencilSquare className={styles.icon} onClick={() => update(member.id)} />
+                    </OverlayTrigger>
+                    <OverlayTrigger overlay={<Tooltip id="Delete">Delete</Tooltip>}>
                     <Trash className={styles.icon} onClick={() => {
                       setReqInProcess(false); setNotification({ show: false, color: "", message: "" }); setShowDeleteModal([true, member.id]);
-                    }} />
-                    <ListCheck className={styles.icon} onClick={() => setShowAttendanceModal([true, member.id])} />
+                      }} />
+                    </OverlayTrigger>
+                    <OverlayTrigger overlay={<Tooltip id="Attendance">Attendance</Tooltip>}>
+                      <ListCheck className={styles.icon} onClick={() => setShowAttendanceModal([true, member.id])} />
+                    </OverlayTrigger>
+                    <OverlayTrigger overlay={<Tooltip id="email">Email</Tooltip>}>
                     <Envelope className={styles.icon} onClick={() => {
                       setReqInProcess(false); setNotification({ show: false, color: "", message: "" }); setShowMailModal([true, member.id]);
                     }}
                     />
-
+                    </OverlayTrigger>
                   </Stack>
                 </td>
               </tr>
