@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Container, Form, Nav, Navbar, Image, Button, Offcanvas } from "react-bootstrap";
+import { Nav } from "react-bootstrap";
 
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
