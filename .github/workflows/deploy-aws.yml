@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - 33-deploy-to-aws
+      - main
 
 jobs:
   deploy:
