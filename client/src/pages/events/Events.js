@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import moment from "moment";
-import { Alert, Table, Button, Modal, Stack, Spinner } from "react-bootstrap";
+import { Alert, Table, Button, Modal, Stack, Spinner, Tooltip, OverlayTrigger } from "react-bootstrap";
 import { PencilSquare, Trash, PersonAdd, ListCheck } from "react-bootstrap-icons";
 
 import CreateEvent from "./components/CreateEvent";
@@ -279,10 +279,13 @@ const Events = () => {
                 <td>{event["created_by"]}</td>
                 <td>
                   <Stack direction="horizontal" gap={3}>
+                    <OverlayTrigger overlay={<Tooltip id="Edit">Edit</Tooltip>}>
                     <PencilSquare
                       className={styles.icon}
                       onClick={() => update(event.id)}
                     />
+                    </OverlayTrigger>
+                    <OverlayTrigger overlay={<Tooltip id="Delete">Delete</Tooltip>}>
                     <Trash
                       className={styles.icon}
                       onClick={() => {
@@ -290,13 +293,18 @@ const Events = () => {
                         setNotification({ show: false, color: "", message: "" });
                         showDeleteConfirmation(event.id);
                       }}
-                    />
+                      />
+                    </OverlayTrigger>
+                    <OverlayTrigger overlay={<Tooltip id="Check-In">Check-In</Tooltip>}>
                     <PersonAdd className={styles.icon} onClick={() => {
                       setReqInProcess(false);
                       setNotification({ show: false, color: "", message: "" });
                       setShowPersonAddModal([true, event.id]);
-                    }} />
-                    <ListCheck className={styles.icon} onClick={() => setShowAttendanceModal([true, event.id])} />
+                      }} />
+                    </OverlayTrigger>
+                    <OverlayTrigger overlay={<Tooltip id="Attendance">Attendance List</Tooltip>}>
+                      <ListCheck className={styles.icon} onClick={() => setShowAttendanceModal([true, event.id])} />
+                      </OverlayTrigger>
                   </Stack>
                 </td>
               </tr>
