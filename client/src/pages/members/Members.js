@@ -266,7 +266,7 @@ const Members = () => {
       </Modal>
 
       {outerNot.show && (
-        <Alert className="text-center" variant={outerNot.color} onClose={() => setOuterNot(false)} dismissible>
+        <Alert className="text-center position-absolute top-5 end-1 m-2" variant={outerNot.color} onClose={() => setOuterNot(false)} dismissible>
           {outerNot.message}
         </Alert>
       )}
@@ -312,13 +312,13 @@ const Members = () => {
                 <td>
                   <Stack direction="horizontal" gap={3}>
                     <OverlayTrigger overlay={<Tooltip id="more-info">More info</Tooltip>}>
-                      <PersonVcard className={styles.icon} onClick={() => setShowMemberInfoModal([true, member.id])} />
+                      <PersonVcard className={styles.icon} style={{ color: "#654573" }} onClick={() => setShowMemberInfoModal([true, member.id])} />
                     </OverlayTrigger>
                     <OverlayTrigger overlay={<Tooltip id="Edit">Edit</Tooltip>}>
-                      <PencilSquare className={styles.icon} onClick={() => update(member.id)} />
+                      <PencilSquare className={styles.icon} style={{ color: "blue" }} onClick={() => update(member.id)} />
                     </OverlayTrigger>
                     <OverlayTrigger overlay={<Tooltip id="Delete">Delete</Tooltip>}>
-                    <Trash className={styles.icon} onClick={() => {
+                    <Trash className={styles.icon} style={{ color: "red" }} onClick={() => {
                       setReqInProcess(false); setNotification({ show: false, color: "", message: "" }); setShowDeleteModal([true, member.id]);
                       }} />
                     </OverlayTrigger>
@@ -326,7 +326,7 @@ const Members = () => {
                       <ListCheck className={styles.icon} onClick={() => setShowAttendanceModal([true, member.id])} />
                     </OverlayTrigger>
                     <OverlayTrigger overlay={<Tooltip id="email">Email</Tooltip>}>
-                    <Envelope className={styles.icon} onClick={() => {
+                    <Envelope className={styles.icon} style={{ color: "#009fd9" }} onClick={() => {
                       setReqInProcess(false); setNotification({ show: false, color: "", message: "" }); setShowMailModal([true, member.id]);
                     }}
                     />

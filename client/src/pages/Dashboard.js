@@ -78,7 +78,7 @@ const Dashboard = () => {
       </Modal>
 
       {outerNot.show && (
-        <Alert className="text-center" variant={outerNot.color} onClose={() => setOuterNot(false)} dismissible>
+        <Alert className="text-center position-absolute top-5 end-1 m-2" variant={outerNot.color} onClose={() => setOuterNot(false)} dismissible>
           {outerNot.message}
         </Alert>
       )}
