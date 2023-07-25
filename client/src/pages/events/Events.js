@@ -231,21 +231,21 @@ const Events = () => {
           {outerNot.message}
         </Alert>
       )}
-
-      <h1 className={styles.heading}>Events</h1>
-
-      <div className="text-center">
-        <Button variant="success" onClick={create} className="mb-4">
-          Add New
-        </Button>
+       <div className={styles.eventsHeading}>
+        <h1 className={styles.heading}>Events</h1>
+        <p>Here you can see all the events.</p>
       </div>
-
+      <div>
       <Search
         setEvents={setEvents}
         getEvents={getEvents}
         reqInProcess={reqInProcess}
         setReqInProcess={setReqInProcess}
       />
+        <Button variant="success" onClick={create} className="mb-4">
+          Add New
+        </Button>
+      </div>
 
       {loading && (
         <Spinner className="spinner-main" animation="border" role="status" size="lg">
