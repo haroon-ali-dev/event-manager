@@ -14,7 +14,7 @@ function SideBar() {
       isAuthenticated && (
           <div className={styles.sidebar} >
               <Nav className="flex-column">
-                <Nav.Link to="/dashboard" as={Link}><House  size={20} style={{ marginRight:"10px" }}></House> Dashboard</Nav.Link>
+              <Nav.Link to="/dashboard" as={Link}><House  size={20} style={{ marginRight:"10px" }}></House> Dashboard</Nav.Link>
               <Nav.Link to="/members" as={Link}><People size={20} style={{ marginRight:"10px" }}></People> Members</Nav.Link>
               <Nav.Link to="/events" as={Link}><Calendar size={20} style={{ marginRight:"10px" }}></Calendar> Events</Nav.Link>
       </Nav>
