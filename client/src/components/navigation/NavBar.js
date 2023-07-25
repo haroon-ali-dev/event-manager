@@ -7,6 +7,7 @@ import Image from "react-bootstrap/Image";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
 
+
 function NavBar() {
   const { user, isAuthenticated } = useAuth0();
 

@@ -9,6 +9,7 @@ import Events from "./pages/events/Events";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
+import SideBar from "../src/components/sidebar/SideBar";
 
 const App = () => {
   const { isLoading, error } = useAuth0();
@@ -24,13 +25,22 @@ const App = () => {
   return (
     <>
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/members" element={<Members />} />
-        <Route path="/events" element={<Events />} />
-      </Routes>
-      </>
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-md-2">
+            <SideBar />
+          </div>
+          <div className="col-md-10">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/members" element={<Members />} />
+              <Route path="/events" element={<Events />} />
+            </Routes>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 

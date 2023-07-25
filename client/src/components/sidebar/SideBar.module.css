@@ -1,0 +1,22 @@
+.sidebar {
+    background-color: #f8f9fa;
+    padding-top: 20px;
+    height: 100vh;
+    margin: -10px;
+    
+  }
+  
+  .sidebar a {
+    display: block;
+    color: #212529;
+    text-decoration: none;
+  }
+  
+  .sidebar a:hover {
+    background-color: #e9ecef;
+  }
+  @media (max-width: 767.98px) {
+    .sidebar {
+      display: none;
+    }
+  }
