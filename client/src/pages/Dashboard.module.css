@@ -1,0 +1,16 @@
+.heading {
+    text-align: center;
+    height: 50px;
+    color: azure !important;
+}
+
+.dashboardHeading{
+    background: rgb(2,122,64);
+    background: linear-gradient(180deg, rgba(2,122,64,1) 0%, rgba(0,191,99,1) 100%);
+    color: rgba(225, 225, 225, 0.977) !important;
+    text-align: center;
+    height: 200px !important;
+    margin: 0px -15px -35px -15px;
+    padding: 45px;
+    border-radius: 0px 0px 40px 40px;
+}

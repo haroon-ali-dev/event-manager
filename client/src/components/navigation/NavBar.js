@@ -24,8 +24,8 @@ function NavBar() {
               <Nav.Link to="/events"   className="d-block d-lg-none" as={Link}>Events</Nav.Link>
             </Nav>
             <Form className="d-flex align-items-center">
-              <Image style={{ width: "15%", marginRight: "5px" }} src={user.picture} alt={user.name} roundedCircle />
-              <Nav.Link href="#" className="w-100">{user.name}</Nav.Link>
+              <Image style={{ width: "10%", marginRight: "5px" }} src={user.picture} alt={user.name} roundedCircle />
+              <Nav.Link href="#" className="w-100">Hello {user.name}!</Nav.Link>
               <LogoutButton />
             </Form>
           </Navbar.Collapse>

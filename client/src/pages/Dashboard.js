@@ -6,6 +6,8 @@ import { Button, Card, Container, Modal, Alert, Spinner } from "react-bootstrap"
 import AddMemberToEventModal from "../pages/events/components/AddMemberToEventModal";
 import EventAttendance from "./events/components/EventAttendance.js";
 
+import styles from "./Dashboard.module.css";
+
 const Dashboard = () => {
   const { getAccessTokenSilently } = useAuth0();
   const [loading, setLoading] = useState(false);
@@ -17,12 +19,12 @@ const Dashboard = () => {
     show: false,
     color: "",
     "message": "",
-    data: ""
+    data: "",
   });
   const [outerNot, setOuterNot] = useState({
     show: false,
     color: "",
-    "message": ""
+    "message": "",
   });
 
   useEffect(() => {
@@ -80,7 +82,10 @@ const Dashboard = () => {
           {outerNot.message}
         </Alert>
       )}
-      <h1 className="heading">Upcoming Events</h1>
+      <div className={styles.dashboardHeading}>
+        <h1 className={styles.heading}>Upcoming Events</h1>
+        <p>Here you can see all the upcoming events.</p>
+      </div>
 
       {loading && (
         <Spinner className="spinner-main" animation="border" role="status" size="lg">
