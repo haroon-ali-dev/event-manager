@@ -1,7 +1,7 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Container, Row, Col, Button, Image } from "react-bootstrap";
-import Logo from "../../src/assets/Attendry-logo.png";
+import Logo from "../../src/assets/EventManager.png";
 
 const LoginButton = () => {
   const { loginWithRedirect } = useAuth0();

@@ -6,7 +6,7 @@ import LogoutButton from "../LogoutButton";
 import Image from "react-bootstrap/Image";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
-import Logo from "../../assets/Attendry-logo.png";
+import Logo from "../../assets/EventManager.png";
 
 
 function NavBar() {
@@ -16,7 +16,7 @@ function NavBar() {
     isAuthenticated && (
       <Navbar bg="light" expand="lg">
         <Container fluid>
-          <Navbar.Brand to="/dashboard" as={Link}><Image src={Logo} style={{ width:"120px" }}></Image></Navbar.Brand>
+          <Navbar.Brand to="/dashboard" as={Link}><Image src={Logo} style={{ width:"170px" }}></Image></Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
             <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: "100px" }} navbarScroll>
