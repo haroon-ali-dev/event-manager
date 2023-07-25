@@ -14,3 +14,15 @@
     padding: 45px;
     border-radius: 0px 0px 40px 40px;
 }
+
+.heading{
+    animation: fadeIn 1s;
+}
+@keyframes fadeIn{
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
