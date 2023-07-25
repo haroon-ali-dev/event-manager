@@ -274,18 +274,17 @@ const Members = () => {
         <h1 className={styles.heading}>Members</h1>
         <p>Here you can see all the members.</p>
       </div>
-      <div className="text-center">
-        <Button variant="success" onClick={create} className="mb-4">
-          Add New
-        </Button>
-      </div>
-
-      <Search
+      <div>
+        <Search
         setMembers={setMembers}
         getMembers={getMembers}
         reqInProcess={reqInProcess}
         setReqInProcess={setReqInProcess}
       />
+        <Button variant="success" onClick={create} className="mb-4">
+          Add New
+        </Button>
+      </div>
 
       {loading && (
         <Spinner className="spinner-main" animation="border" role="status" size="lg">
