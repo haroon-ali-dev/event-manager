@@ -9,3 +9,9 @@
     bottom: 13px;
     right: 13px;
 }
+
+@media (max-width: 767px) {
+    .cardSearch {
+        width: 100%;
+    }
+}
