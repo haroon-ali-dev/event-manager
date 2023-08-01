@@ -26,6 +26,9 @@
         opacity: 1;
     }
 }
+.icon{
+    font-size: 20px;
+}
 
 .icon:hover {
     cursor: pointer;
