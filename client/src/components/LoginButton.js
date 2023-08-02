@@ -7,10 +7,10 @@ const LoginButton = () => {
   const { loginWithRedirect } = useAuth0();
 
   return (
-    <Container className="d-flex wrap align-items-center justify-content-center min-vh-100" style={{ marginRight:"500px" }}>
+    <Container className="d-flex wrap align-items-center justify-content-center min-vh-100">
       <Row>
         <Col className="text-center">
-          <Image src={Logo} alt="logo" style={{ width: "400px" }} />
+          <Image src={Logo} alt="logo" />
           <h4 style={{ color:"#848181" }} >Event management has never been easier.</h4>
           <Button variant="success" onClick={() => loginWithRedirect()} >
             Log In
