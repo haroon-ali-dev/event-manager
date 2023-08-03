@@ -1,8 +1,8 @@
 .sidebar {
     background-color: #f8f9fa;
-    padding-top: 20px;
     height: 100vh;
-    margin: -10px;
+    margin-left: -10px;
+    margin-right: -10px;
   }
   
   .sidebar a {
@@ -12,8 +12,14 @@
   }
   
   .sidebar a:hover {
-    background-color: #e9ecef;
+    background-color: #a4eb94;
+    color: #212529;
   }
+  .sidebar a.active {
+    background-color: #a4eb94;
+    color: #212529;
+}
+
   @media (max-width: 767px) {
     .sidebar {
       display: none;
