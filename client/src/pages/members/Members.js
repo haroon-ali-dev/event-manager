@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
-import { Alert, Table, Button, Modal, Stack, Spinner } from "react-bootstrap";
+import { Alert, Table, Button, Modal, Stack, Spinner, Tooltip, OverlayTrigger } from "react-bootstrap";
 import { PencilSquare, Trash, ListCheck, PersonVcard, Envelope } from "react-bootstrap-icons";
 
 import CreateMember from "./components/CreateMember";
@@ -266,25 +266,25 @@ const Members = () => {
       </Modal>
 
       {outerNot.show && (
-        <Alert className="text-center" variant={outerNot.color} onClose={() => setOuterNot(false)} dismissible>
+        <Alert className="text-center position-absolute top-5 end-1 m-2" variant={outerNot.color} onClose={() => setOuterNot(false)} dismissible>
           {outerNot.message}
         </Alert>
       )}
-
-      <h1 className={styles.heading}>Members</h1>
-
-      <div className="text-center">
-        <Button variant="success" onClick={create} className="mb-4">
-          Add New
-        </Button>
+      <div className={styles.membersHeading}>
+        <h1 className={styles.heading}>Members</h1>
+        <p>Here you can see all the members.</p>
       </div>
-
-      <Search
+      <div>
+        <Search
         setMembers={setMembers}
         getMembers={getMembers}
         reqInProcess={reqInProcess}
         setReqInProcess={setReqInProcess}
       />
+        <Button variant="success" onClick={create} className="mb-4">
+          Add New
+        </Button>
+      </div>
 
       {loading && (
         <Spinner className="spinner-main" animation="border" role="status" size="lg">
@@ -311,17 +311,26 @@ const Members = () => {
                 <td>{member["email"]}</td>
                 <td>
                   <Stack direction="horizontal" gap={3}>
-                    <PersonVcard className={styles.icon} onClick={() => setShowMemberInfoModal([true, member.id])} />
-                    <PencilSquare className={styles.icon} onClick={() => update(member.id)} />
-                    <Trash className={styles.icon} onClick={() => {
+                    <OverlayTrigger overlay={<Tooltip id="more-info">More info</Tooltip>}>
+                      <PersonVcard className={styles.icon} style={{ color: "#654573" }} onClick={() => setShowMemberInfoModal([true, member.id])} />
+                    </OverlayTrigger>
+                    <OverlayTrigger overlay={<Tooltip id="Edit">Edit</Tooltip>}>
+                      <PencilSquare className={styles.icon} style={{ color: "blue" }} onClick={() => update(member.id)} />
+                    </OverlayTrigger>
+                    <OverlayTrigger overlay={<Tooltip id="Delete">Delete</Tooltip>}>
+                    <Trash className={styles.icon} style={{ color: "red" }} onClick={() => {
                       setReqInProcess(false); setNotification({ show: false, color: "", message: "" }); setShowDeleteModal([true, member.id]);
-                    }} />
-                    <ListCheck className={styles.icon} onClick={() => setShowAttendanceModal([true, member.id])} />
-                    <Envelope className={styles.icon} onClick={() => {
+                      }} />
+                    </OverlayTrigger>
+                    <OverlayTrigger overlay={<Tooltip id="Attendance">Attendance</Tooltip>}>
+                      <ListCheck className={styles.icon} onClick={() => setShowAttendanceModal([true, member.id])} />
+                    </OverlayTrigger>
+                    <OverlayTrigger overlay={<Tooltip id="email">Email</Tooltip>}>
+                    <Envelope className={styles.icon} style={{ color: "#009fd9" }} onClick={() => {
                       setReqInProcess(false); setNotification({ show: false, color: "", message: "" }); setShowMailModal([true, member.id]);
                     }}
                     />
-
+                    </OverlayTrigger>
                   </Stack>
                 </td>
               </tr>

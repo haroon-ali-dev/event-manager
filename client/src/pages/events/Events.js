@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import moment from "moment";
-import { Alert, Table, Button, Modal, Stack, Spinner } from "react-bootstrap";
+import { Alert, Table, Button, Modal, Stack, Spinner, Tooltip, OverlayTrigger } from "react-bootstrap";
 import { PencilSquare, Trash, PersonAdd, ListCheck } from "react-bootstrap-icons";
 
 import CreateEvent from "./components/CreateEvent";
@@ -225,25 +225,25 @@ const Events = () => {
       </Modal>
 
       {outerNot.show && (
-        <Alert className="text-center" variant={outerNot.color} onClose={() => setOuterNot(false)} dismissible>
+        <Alert className="text-center position-absolute top-5 end-1 m-2" variant={outerNot.color} onClose={() => setOuterNot(false)} dismissible>
           {outerNot.message}
         </Alert>
       )}
-
-      <h1 className={styles.heading}>Events</h1>
-
-      <div className="text-center">
-        <Button variant="success" onClick={create} className="mb-4">
-          Add New
-        </Button>
+       <div className={styles.eventsHeading}>
+        <h1 className={styles.heading}>Events</h1>
+        <p>Here you can see all the events.</p>
       </div>
-
+      <div>
       <Search
         setEvents={setEvents}
         getEvents={getEvents}
         reqInProcess={reqInProcess}
         setReqInProcess={setReqInProcess}
       />
+        <Button variant="success" onClick={create} className="mb-4">
+          Add New
+        </Button>
+      </div>
 
       {loading && (
         <Spinner className="spinner-main" animation="border" role="status" size="lg">
@@ -277,24 +277,34 @@ const Events = () => {
                 <td>{event["created_by"]}</td>
                 <td>
                   <Stack direction="horizontal" gap={3}>
+                    <OverlayTrigger overlay={<Tooltip id="Edit">Edit</Tooltip>}>
                     <PencilSquare
                       className={styles.icon}
-                      onClick={() => update(event.id)}
+                        onClick={() => update(event.id)}
+                        style={{ color: "blue" }}
                     />
+                    </OverlayTrigger>
+                    <OverlayTrigger overlay={<Tooltip id="Delete">Delete</Tooltip>}>
                     <Trash
-                      className={styles.icon}
+                        className={styles.icon}
+                        style={{ color: "red" }}
                       onClick={() => {
                         setReqInProcess(false);
                         setNotification({ show: false, color: "", message: "" });
                         showDeleteConfirmation(event.id);
                       }}
-                    />
-                    <PersonAdd className={styles.icon} onClick={() => {
+                      />
+                    </OverlayTrigger>
+                    <OverlayTrigger overlay={<Tooltip id="Check-In">Check-In</Tooltip>}>
+                    <PersonAdd className={styles.icon} style={{ color: "green" }} onClick={() => {
                       setReqInProcess(false);
                       setNotification({ show: false, color: "", message: "" });
                       setShowPersonAddModal([true, event.id]);
-                    }} />
-                    <ListCheck className={styles.icon} onClick={() => setShowAttendanceModal([true, event.id])} />
+                      }} />
+                    </OverlayTrigger>
+                    <OverlayTrigger overlay={<Tooltip id="Attendance">Attendance List</Tooltip>}>
+                      <ListCheck className={styles.icon} onClick={() => setShowAttendanceModal([true, event.id])} />
+                      </OverlayTrigger>
                   </Stack>
                 </td>
               </tr>

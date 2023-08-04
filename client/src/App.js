@@ -6,6 +6,8 @@ import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Members from "./pages/members/Members";
 import Events from "./pages/events/Events";
+import WrapperAdmin from "./components/wrappers/WrapperAdmin";
+import WrapperUser from "./components/wrappers/WrapperUser";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
@@ -25,12 +27,16 @@ const App = () => {
     <>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/members" element={<Members />} />
-        <Route path="/events" element={<Events />} />
+        <Route path="/" element={<WrapperUser />}>
+          <Route path="/" element={<Home />} />
+        </Route>
+        <Route path="/" element={<WrapperAdmin />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/members" element={<Members />} />
+          <Route path="/events" element={<Events />} />
+        </Route>
       </Routes>
-      </>
+    </>
   );
 };
 

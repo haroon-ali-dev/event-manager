@@ -9,7 +9,7 @@ import { QrCodeScan } from "react-bootstrap-icons";
 import { Html5QrcodeScanner } from "html5-qrcode";
 
 const schema = yup.object({
-    memberId: yup.string().min(3).max(100).required().label("Member ID")
+    memberId: yup.string().min(3).max(100).required().label("Member ID"),
 }).required();
 
 export default function AddMemberToEventModal({
@@ -19,22 +19,22 @@ export default function AddMemberToEventModal({
     setReqInProcess,
     notification,
     setNotification,
-    setOuterNot
+    setOuterNot,
 }) {
     const { getAccessTokenSilently } = useAuth0();
 
-    const [secondStage, setSecondStage] = useState([false, {}])
+    const [secondStage, setSecondStage] = useState([false, {}]);
 
     const {
         register,
         handleSubmit,
         formState: { errors },
-        setValue
+        setValue,
     } = useForm({
-        resolver: yupResolver(schema)
+        resolver: yupResolver(schema),
     });
 
-    
+
 
     const onSubmit = async (formData) => {
         setReqInProcess(true);
@@ -50,7 +50,7 @@ export default function AddMemberToEventModal({
             const res = await fetch(`/api/add-member-to-event/${formData.memberId}`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
-                }
+                },
             });
 
             const data = await res.json();
@@ -110,7 +110,7 @@ export default function AddMemberToEventModal({
             setReqInProcess(false);
             setNotification({ show: true, color: "danger", message: "There was a problem." });
         }
-    }
+    };
 
     let html5QrcodeScanner;
 
@@ -121,7 +121,7 @@ export default function AddMemberToEventModal({
             false);
 
         html5QrcodeScanner.render(onScanSuccess);
-    }
+    };
 
     async function onScanSuccess(decodedText) {
         try {
@@ -153,7 +153,7 @@ export default function AddMemberToEventModal({
             </Modal.Header>
             <Modal.Body>
                 {!secondStage[0] && (
-                    <Form className="w-75 mx-auto mt-3" onSubmit={handleSubmit(onSubmit)}>
+                    <Form className="w-100 mx-auto mt-3" onSubmit={handleSubmit(onSubmit)}>
                         <Form.Group className="mb-3" controlId="memberId">
                             <Row>
                                 <Col>
