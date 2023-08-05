@@ -47,6 +47,7 @@ const Dashboard = () => {
 
         const events = await res.json();
         setUpcomingEvents(events);
+        console.log(events);
       } catch (error) {
         console.log(error.message);
       } finally {
@@ -103,7 +104,7 @@ const Dashboard = () => {
             setNotification={setNotification}
             setOuterNot={setOuterNot}
           />
-          {upcomingEvents &&
+          {upcomingEvents.length > 0 ?
             upcomingEvents.map((event) => (
               <Card key={event.id} className="mb-4">
                 <Card.Header style={{ fontSize: "20px" }}>{event.name}</Card.Header>
@@ -128,7 +129,11 @@ const Dashboard = () => {
                   </Button>
                 </Card.Body>
               </Card>
-            ))}
+            ))
+            : (
+              <h2 className={styles.error}>No upcoming events.</h2>
+              )
+          }
         </Container>
       )}
     </>
