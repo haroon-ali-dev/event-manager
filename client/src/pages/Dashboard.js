@@ -108,7 +108,7 @@ const Dashboard = () => {
               <Card key={event.id} className="mb-4">
                 <Card.Header style={{ fontSize: "20px" }}>{event.name}</Card.Header>
                 <Card.Body>
-                  <Card.Title>{moment(event.date).format("DD-MM-YYYY")}</Card.Title>
+                  <Card.Title>{moment(event.date).utcOffset("+0100").format("DD-MM-YYYY")}</Card.Title>
                   <Card.Text>
                     {event.information ? event.information : "No information available."}
                   </Card.Text>
