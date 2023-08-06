@@ -159,7 +159,9 @@ export default function AddMemberToEventModal({
                                 <Col>
                                     <Form.Label>Member ID</Form.Label>
                                 </Col>
-                                <Col>
+                            </Row>
+                            <Row>
+                                <Col style={{ flex: "3" }}>
                                     <Form.Control
                                         type="text"
                                         {...register("memberId")}
