@@ -8,6 +8,7 @@ import Members from "./pages/members/Members";
 import Events from "./pages/events/Events";
 import WrapperAdmin from "./components/wrappers/WrapperAdmin";
 import WrapperUser from "./components/wrappers/WrapperUser";
+import { Spinner } from "react-bootstrap";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
@@ -16,7 +17,13 @@ const App = () => {
   const { isLoading, error } = useAuth0();
 
   if (isLoading) {
-    return <div>Loading ...</div>;
+    return (
+      <div style={{ paddingTop: "300px" }}>
+        <Spinner className="spinner-main" animation="border" role="status" size="lg">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      </div>
+    );
   }
 
   if (error) {
