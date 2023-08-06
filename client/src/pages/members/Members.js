@@ -63,6 +63,8 @@ const Members = () => {
   }
 
   useEffect(() => {
+    document.title = 'Members - Event Manager';
+
     getMembers();
   }, []);
 

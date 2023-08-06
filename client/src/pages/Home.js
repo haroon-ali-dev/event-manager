@@ -8,6 +8,8 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    document.title = 'Event Manager';
+
     if (isAuthenticated) {
       navigate("/dashboard", { replace: true });
     }
