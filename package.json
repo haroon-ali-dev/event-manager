@@ -20,7 +20,8 @@
 		"start": "node dist/server.js",
 		"lint:eslint": "eslint .",
 		"lint:fix": "npm run lint:eslint -- --fix && npm run lint:prettier -- --write",
-		"lint:prettier": "prettier ."
+		"lint:prettier": "prettier .",
+		"cypress:open": "cypress open"
 	},
 	"repository": {
 		"type": "git",
