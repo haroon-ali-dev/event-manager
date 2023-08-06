@@ -29,7 +29,7 @@ module.exports = {
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
-			favicon: "./client/src/favicon.ico",
+			favicon: "./client/src/favicon.svg",
 			template: "./client/src/index.html",
 		}),
 	],
