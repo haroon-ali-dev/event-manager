@@ -246,7 +246,7 @@ const Events = () => {
       </div>
 
       {loading && (
-        <Spinner className="spinner-main" animation="border" role="status" size="lg">
+        <Spinner className="spinner-main" variant="success" animation="border" role="status" size="lg">
           <span className="visually-hidden">Loading...</span>
         </Spinner>
       )}

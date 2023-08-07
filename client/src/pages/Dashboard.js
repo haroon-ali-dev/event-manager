@@ -89,7 +89,7 @@ const Dashboard = () => {
       </div>
 
       {loading && (
-        <Spinner className="spinner-main" animation="border" role="status" size="lg">
+        <Spinner className="spinner-main" style={{ marginTop:"50px" }} variant="success" animation="border" role="status" size="lg">
           <span className="visually-hidden">Loading...</span>
         </Spinner>
       )}

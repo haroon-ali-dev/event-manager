@@ -221,7 +221,7 @@ const Members = () => {
           <Button variant="danger" onClick={() => sendEmail(members.find((member) => member.id === showMailModal[1]))} disabled={reqInProcess}>
             Yes
             {reqInProcess && (
-              <Spinner className="ms-2" animation="border" role="status" size="sm">
+              <Spinner className="ms-2" variant="success" animation="border" role="status" size="sm">
                 <span className="visually-hidden">Loading...</span>
               </Spinner>
             )}
