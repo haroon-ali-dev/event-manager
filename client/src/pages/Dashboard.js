@@ -49,6 +49,7 @@ const Dashboard = () => {
 
         const events = await res.json();
         setUpcomingEvents(events);
+        console.log(events);
       } catch (error) {
         console.log(error.message);
       } finally {
@@ -90,7 +91,7 @@ const Dashboard = () => {
       </div>
 
       {loading && (
-        <Spinner className="spinner-main" animation="border" role="status" size="lg">
+        <Spinner className="spinner-main" style={{ marginTop:"50px" }} variant="success" animation="border" role="status" size="lg">
           <span className="visually-hidden">Loading...</span>
         </Spinner>
       )}
@@ -105,12 +106,12 @@ const Dashboard = () => {
             setNotification={setNotification}
             setOuterNot={setOuterNot}
           />
-          {upcomingEvents &&
+          {upcomingEvents.length > 0 ?
             upcomingEvents.map((event) => (
               <Card key={event.id} className="mb-4">
                 <Card.Header style={{ fontSize: "20px" }}>{event.name}</Card.Header>
                 <Card.Body>
-                  <Card.Title>{moment(event.date).format("DD-MM-YYYY")}</Card.Title>
+                  <Card.Title>{moment(event.date).utcOffset("+0100").format("DD-MM-YYYY")}</Card.Title>
                   <Card.Text>
                     {event.information ? event.information : "No information available."}
                   </Card.Text>
@@ -130,7 +131,11 @@ const Dashboard = () => {
                   </Button>
                 </Card.Body>
               </Card>
-            ))}
+            ))
+            : (
+              <h2 className={styles.error}>No upcoming events.</h2>
+              )
+          }
         </Container>
       )}
     </>

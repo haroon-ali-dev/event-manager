@@ -10,8 +10,8 @@ const LoginButton = () => {
     <Container className="d-flex wrap align-items-center justify-content-center min-vh-100">
       <Row>
         <Col className="text-center">
-          <Image src={Logo} alt="logo" />
-          <h4 style={{ color:"#848181" }} >Event management has never been easier.</h4>
+          <Image src={Logo} alt="logo" fluid />
+          <h4 style={{ color:"#848181", fontSize:"20px" }} >Event management has never been easier.</h4>
           <Button variant="success" onClick={() => loginWithRedirect()} >
             Log In
           </Button>
