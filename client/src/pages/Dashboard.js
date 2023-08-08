@@ -28,6 +28,8 @@ const Dashboard = () => {
   });
 
   useEffect(() => {
+    document.title = 'Dashboard - Event Manager';
+
     async function getEvents() {
       setLoading(true);
 

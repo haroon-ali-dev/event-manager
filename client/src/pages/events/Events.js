@@ -62,6 +62,8 @@ const Events = () => {
   }
 
   useEffect(() => {
+    document.title = 'Events - Event Manager';
+
     getEvents();
   }, []);
 
