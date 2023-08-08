@@ -20,7 +20,7 @@ function NavBar() {
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll" className="justify-content-end">
             <Form className="d-flex align-items-center justify-content-lg-end" style={{ marginLeft:"10px" }}>
-              <Image style={{ width: "10%", marginRight: "5px" }} src={user.picture} alt={user.name} roundedCircle />
+              <Image style={{ width: "17%", marginRight: "5px" }} src={user.picture} alt={user.name} roundedCircle />
               <Nav.Link href="#" className="w-auto">Hello {user.name}!</Nav.Link>
             </Form>
             <hr style={{ width: "10%", borderTop: "1px solid green", borderRadius:"10px" , marginLeft:"10px" }} />
