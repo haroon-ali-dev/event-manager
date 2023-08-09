@@ -3,6 +3,7 @@
  margin-right: 5px;
 }
 
+/* Mobile Version */
 @media (max-width: 991px) {
  .userImage{
   width: 50px;
