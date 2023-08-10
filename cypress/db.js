@@ -28,6 +28,8 @@ async function seed() {
         await client.query(members);
         await client.query(events);
 
+        await client.query('INSERT INTO attendance (e_id, u_id) VALUES($1, $2)', [1, 5]);
+
         await client.query("COMMIT");
 
         result = "ok";
