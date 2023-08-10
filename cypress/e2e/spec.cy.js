@@ -1,5 +1,6 @@
-describe('Auth0', () => {
+describe('Auth0 & db reseed', () => {
   beforeEach(() => {
+    cy.task('seedDB');
     cy.loginToAuth0(
       Cypress.env('auth0_username'),
       Cypress.env('auth0_password')
@@ -7,11 +8,11 @@ describe('Auth0', () => {
     cy.visit('/dashboard');
   });
 
-  it('has logged in', () => {
+  it('first check', () => {
     cy.contains("Upcoming Events").should("exist");
   })
 
-  it('has logged in', () => {
+  it('second check', () => {
     cy.contains("No upcoming events.").should("exist");
   })
 })

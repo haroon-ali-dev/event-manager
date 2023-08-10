@@ -1,5 +1,6 @@
 const { defineConfig } = require("cypress");
-require('dotenv').config()
+const db = require('./cypress/db');
+require('dotenv').config();
 
 module.exports = defineConfig({
   e2e: {
@@ -10,7 +11,12 @@ module.exports = defineConfig({
       auth0_domain: process.env.REACT_APP_AUTH0_DOMAIN,
     },
     setupNodeEvents(on, config) {
-      // implement node event listeners here
+      on('task', {
+        'seedDB': () => {
+          db.seed();
+          return null;
+        },
+      })
     },
   },
 });
