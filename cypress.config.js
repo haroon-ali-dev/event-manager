@@ -12,9 +12,13 @@ module.exports = defineConfig({
     },
     setupNodeEvents(on, config) {
       on('task', {
-        'seedDB': () => {
-          db.seed();
-          return null;
+        'seedDB': async () => {
+          const result = await db.seed();
+          if (result === "ok") {
+            return null;
+          } else {
+            throw new Error('Database transaction failed.');
+          }
         },
       })
     },
