@@ -1,4 +1,4 @@
-create table members (
+CREATE TABLE IF NOT EXISTS members (
 	id SERIAL PRIMARY KEY,
 	g_id VARCHAR(100) NOT NULL UNIQUE,
 	first_name VARCHAR(150) NOT NULL,

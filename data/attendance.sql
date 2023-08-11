@@ -1,4 +1,4 @@
-CREATE TABLE attendance (
+CREATE TABLE IF NOT EXISTS attendance (
     id SERIAL PRIMARY KEY,
     e_id INT NOT NULL,
     u_id INT NOT NULL,
