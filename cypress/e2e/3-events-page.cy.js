@@ -43,8 +43,34 @@ describe('Form validation', () => {
   })
 })
 
-// create
+describe('CRUD', () => {
+  beforeEach(() => {
+    cy.task('seedDB');
+    cy.loginToAuth0(
+      Cypress.env('auth0_username'),
+      Cypress.env('auth0_password')
+    )
+    cy.visit('/events');
+  });
 
-// update
+  it('Creates event', () => {
+    cy.contains('Add New').click();
+    cy.get('[name=name]').type('E3 2016');
+    cy.get('[name=date]').type('2023-07-14');
+    cy.get('[type=submit]').contains('Add').click();
+    cy.contains('E3 2016').should('exist');
+  })
 
-// delete
+  it('Updates event', () => {
+    cy.get('.editEvent').first().click();
+    cy.get('[name=name]').clear().type('RTX 2017');
+    cy.get('[type=submit]').contains('Save').click();
+    cy.contains('RTX 2017').should('exist');
+  })
+
+  it('Deletes event', () => {
+    cy.get('.deleteEvent').first().click();
+    cy.contains('Delete').click();
+    cy.contains('ultrices posuere cubilia').should('not.exist');
+  })
+})
