@@ -1,5 +1,6 @@
 const { Pool } = require('pg');
 const { readFileSync } = require('fs');
+const moment = require('moment');
 require('dotenv').config();
 
 const pool = new Pool({
@@ -27,6 +28,9 @@ async function seed() {
 
         await client.query(members);
         await client.query(events);
+
+        const plus3months = moment().add('3', 'months').format("YYYY-MM-DD");
+        await client.query('UPDATE events SET date = $1 WHERE id = $2', [plus3months, 1]);
 
         await client.query('INSERT INTO attendance (e_id, u_id) VALUES($1, $2)', [1, 5]);
 

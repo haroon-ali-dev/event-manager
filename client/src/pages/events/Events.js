@@ -281,14 +281,14 @@ const Events = () => {
                   <Stack direction="horizontal" gap={3}>
                     <OverlayTrigger overlay={<Tooltip id="Edit">Edit</Tooltip>}>
                     <PencilSquare
-                      className={styles.icon}
+                      className={`${styles.icon} editEvent`}
                         onClick={() => update(event.id)}
                         style={{ color: "blue" }}
                     />
                     </OverlayTrigger>
                     <OverlayTrigger overlay={<Tooltip id="Delete">Delete</Tooltip>}>
                     <Trash
-                        className={styles.icon}
+                        className={`${styles.icon} deleteEvent`}
                         style={{ color: "red" }}
                       onClick={() => {
                         setReqInProcess(false);
