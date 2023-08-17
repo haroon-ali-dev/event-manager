@@ -1,4 +1,4 @@
-describe('Members', () => {
+describe('Display and search', () => {
     beforeEach(() => {
       cy.task('seedDB');
       cy.loginToAuth0(
@@ -14,6 +14,6 @@ describe('Members', () => {
     it('Searches members', () => {
         cy.get('#email').type('hvivien2@jiathis.com');
         cy.contains('01H3HG091E37XFPA1VX9M42690').should('exist');
-        cy.get('#email').clear();    
+        cy.get('#email').clear();
     })
   })
