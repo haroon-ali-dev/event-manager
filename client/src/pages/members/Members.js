@@ -317,10 +317,10 @@ const Members = () => {
                       <PersonVcard className={styles.icon} style={{ color: "#654573" }} onClick={() => setShowMemberInfoModal([true, member.id])} />
                     </OverlayTrigger>
                     <OverlayTrigger overlay={<Tooltip id="Edit">Edit</Tooltip>}>
-                      <PencilSquare className={styles.icon} style={{ color: "blue" }} onClick={() => update(member.id)} />
+                      <PencilSquare  className={`${styles.icon} editMember`} style={{ color: "blue" }} onClick={() => update(member.id)} />
                     </OverlayTrigger>
                     <OverlayTrigger overlay={<Tooltip id="Delete">Delete</Tooltip>}>
-                    <Trash className={styles.icon} style={{ color: "red" }} onClick={() => {
+                    <Trash className={`${styles.icon} deleteMember`} style={{ color: "red" }} onClick={() => {
                       setReqInProcess(false); setNotification({ show: false, color: "", message: "" }); setShowDeleteModal([true, member.id]);
                       }} />
                     </OverlayTrigger>

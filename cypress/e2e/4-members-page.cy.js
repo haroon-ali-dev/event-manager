@@ -1,5 +1,3 @@
-import { be } from "date-fns/locale";
-
 describe('Display and search', () => {
   beforeEach(() => {
     cy.task('seedDB');
@@ -28,10 +26,10 @@ describe('Form validation', () => {
       Cypress.env('auth0_password')
     );
     cy.visit('/members');
-    cy.contains('Add New').click();
   });
 
   it('Required fields cannot be empty', () => {
+    cy.contains('Add New').click();
     cy.get('[type=submit]').contains('Add').click();
     cy.contains('First Name must be at least 3 characters').should('exist');
     cy.contains('Last Name must be at least 3 characters').should('exist');
@@ -41,7 +39,20 @@ describe('Form validation', () => {
     cy.contains('Email is a required field').should('exist');
     cy.contains('Mobile must be at least 3 characters').should('exist');
   });
+});
+
+describe('CRUD', () => {
+  beforeEach(() => {
+    cy.task('seedDB');
+    cy.loginToAuth0(
+      Cypress.env('auth0_username'),
+      Cypress.env('auth0_password')
+    )
+    cy.visit('/members');
+  });
+
   it('Creates a new member', () => {
+    cy.contains('Add New').click();
     cy.get('#firstName').type('John');
     cy.get('#lastName').type('Doe');
     cy.get('#gender').select('Male');
@@ -56,5 +67,12 @@ describe('Form validation', () => {
     cy.contains('Member created.').should('exist');
     cy.contains('John').should('exist');
   });
+  it('Updates a member', () => {
+    cy.get('.editMember').first().click();
+    cy.get('#firstName').clear().type('Mike');
 
+    cy.get('[type=submit]').contains('Save').click();
+    cy.contains('Member modified.').should('exist');
+    cy.contains('Mike').should('exist');
+ });
 });
