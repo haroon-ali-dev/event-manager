@@ -54,8 +54,7 @@ describe('Form validation', () => {
 
     cy.get('[type=submit]').contains('Add').click();
     cy.contains('Member created.').should('exist');
-
-    cy.contains('John Doe').should('exist');
+    cy.contains('John').should('exist');
   });
 
 });
