@@ -75,4 +75,10 @@ describe('CRUD', () => {
     cy.contains('Member modified.').should('exist');
     cy.contains('Mike').should('exist');
  });
+  it('Deletes a member', () => {
+    cy.get('.deleteMember').first().click();
+    cy.contains('Are You Sure?').should('exist');
+    cy.contains('Yes').click();
+    cy.contains('01H3HG091BARNMZNKTZVPYFRJW').should('not.exist');
+  });
 });
