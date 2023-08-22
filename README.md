@@ -17,7 +17,7 @@ This application addresses these challenges head-on by providing a comprehensive
 - Manage events. View, create, update, delete and search.
 - When it's event time, members can show the QR code on their mobile devices. Admins can use the website on their mobile devices to check-in members to events by using the phone camera to scan the QR codes.
 
-## :bookmark_tabs: Utilizations
+## :bookmark_tabs: Utilization
 - Fully responsive.
 - Authentication with Auth0.
 - Data validation with React Hook Form and Yup.
