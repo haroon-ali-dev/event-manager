@@ -35,4 +35,8 @@ HTML, CSS, JavaScript, React.js, Node.js, PostgreSQL, AWS Elastic Beanstalk, AWS
 - Database deployed to AWS.
 
 ## Deployment Links
-- <a href="https://d3n27sahgwxchw.cloudfront.net" target="_blank">Deployed Application</a>
+- [Deployed Application](https://d3n27sahgwxchw.cloudfront.net)
+
+## Deployed application Auth0 login details
+- Email: tester@eventmanager.com
+- Password: Admin123456
