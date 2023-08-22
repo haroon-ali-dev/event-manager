@@ -20,6 +20,7 @@ This application addresses these challenges head-on by providing a comprehensive
 ## :bookmark_tabs: Utilizations
 - Fully responsive.
 - Authentication with Auth0.
+- Data validation with React Hook Form and Yup.
 - Data overwrite protection using optimistic locking in PostgreSQL.
 - Application deployed to AWS using AWS Elastic Beanstalk, AWS EC2, AWS Load Balancer, AWS S3, AWS CloudFront and GitHub Actions.
 - Database deployed to AWS RDS.
