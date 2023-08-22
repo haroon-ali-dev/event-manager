@@ -35,4 +35,4 @@ HTML, CSS, JavaScript, React.js, Node.js, PostgreSQL, AWS Elastic Beanstalk, AWS
 - Database deployed to AWS.
 
 ## Deployment Links
-- Deployed Application: https://d3n27sahgwxchw.cloudfront.net
+- <a href="https://d3n27sahgwxchw.cloudfront.net" target="_blank">Deployed Application</a>
