@@ -26,10 +26,10 @@ This application addresses these challenges head-on by providing a comprehensive
 - Database deployed to AWS RDS.
 
 ## :hammer: Tech Stack
-[![My Skills](https://skillicons.dev/icons?i=html,css,bootstrap,js,react,nodejs,postgres,aws,githubactions)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=html,css,bootstrap,js,react,nodejs,postgres,aws)](https://skillicons.dev)
 
 ## :wrench: Additional Tech
-Auth0, SendGrid, React Hook Form, Yup, AWS Elastic Beanstalk, AWS EC2, AWS Load Balancer, AWS S3, AWS CloudFront, AWS RDS, GitHub Actions.
+Auth0, SendGrid, React Hook Form, Yup, Cypress, AWS Elastic Beanstalk, AWS EC2, AWS Load Balancer, AWS S3, AWS CloudFront, AWS RDS, GitHub Actions.
 
 ## :gear: Automated Tests
 - End-to-End tests with Cypress.
