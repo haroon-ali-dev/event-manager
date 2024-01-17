@@ -1,6 +1,10 @@
 # :calendar: Event Manager
 This full-stack application empowers admins to efficiently track member event attendance.
 
+## 🧑‍🤝‍🧑 Team Project
+- Agile/SCRUM.
+- Two team members.
+
 ## :computer: Demo
 https://github.com/haroon-ali-dev/event-manager/assets/87202358/0ca71947-394a-480f-bb2f-55a6f37a1586
 
